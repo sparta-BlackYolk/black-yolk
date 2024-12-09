@@ -1,13 +1,13 @@
-package com.sparta.blackyolk.product_service;
+package com.sparta.blackyolk.logistic_service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ProductServiceApplication {
+public class LogisticServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ProductServiceApplication.class, args);
+		SpringApplication.run(LogisticServiceApplication.class, args);
 	}
 
 }
