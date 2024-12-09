@@ -1,0 +1,13 @@
+rootProject.name = 'blackyolk'
+
+include 'infra'
+include 'config'
+include 'global'
+include 'eureka-server'
+include 'gateway'
+include 'auth-service'
+include 'order-service'
+include 'logistic:hub-service'
+include 'logistic:product-service'
+include 'logistic:company-service'
+include 'delivery-service'
