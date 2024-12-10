@@ -4,3 +4,7 @@ server:
 spring:
   application:
     name: address-service
+
+  config:
+    import:
+      - optional:file:.env[.properties]
