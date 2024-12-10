@@ -1,0 +1,6 @@
+server:
+  port: 19107
+
+spring:
+  application:
+    name: address-service
