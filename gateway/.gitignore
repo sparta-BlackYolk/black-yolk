@@ -28,6 +28,7 @@ out/
 src/main/resources/env.properties
 env.properties
 
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
