@@ -5,7 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d5c36263-2a60-427b-b245-b9c0ab6c0732" name="Changes" comment="멀티 모듈 프로젝트 구조 생성">
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logistic-service/src/main/resources/application.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logistic-service/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/logistic-service/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logistic-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/logistic-service/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logistic-service/src/main/resources/application.properties" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,7 +25,25 @@
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
+    <projectState path="$PROJECT_DIR$/auth-service">
+      <ProjectState />
+    </projectState>
     <projectState path="$PROJECT_DIR$/company-service">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/delivery-service">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/eureka-server">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/gateway">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/logistic-service">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/order-service">
       <ProjectState />
     </projectState>
   </component>
@@ -31,12 +58,7 @@
         </task>
         <projects_view>
           <tree_state>
-            <expand>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="blackyolk" type="f1a62948:ProjectNode" />
-              </path>
-            </expand>
+            <expand />
             <select />
           </tree_state>
         </projects_view>
@@ -54,15 +76,15 @@
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
     &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;Coscle&quot;
+    &quot;assignee&quot;: &quot;choiy6&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/sparta-BlackYolk/black-yolk.git&quot;,
-    &quot;accountId&quot;: &quot;b6a5b9ad-4287-465c-b38d-bf5e17d73e62&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/sparta-BlackYolk/black-yolk.git",
+    "accountId": "b6a5b9ad-4287-465c-b38d-bf5e17d73e62"
   }
-}</component>
+}]]></component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
@@ -71,38 +93,42 @@
   &quot;associatedIndex&quot;: 7
 }</component>
   <component name="ProjectId" id="2pxvclwj0zxGqgphnkQs92hgzBL" />
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
-    <option name="flattenPackages" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;company&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/sangwoo/Documents/Dev/sparta/chapter2/black-yolk&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "company",
+    "jdk.selected.JAVA_MODULE": "17",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/sangwoo/Documents/Dev/sparta/chapter2/black-yolk",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15527344",
+    "project.structure.side.proportion": "0.2",
+    "run.configurations.included.in.services": "true",
+    "settings.editor.selected.configurable": "File.Encoding",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
+    ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/logistic-service/src/main" />
-      <recent name="$PROJECT_DIR$/logistic-service/src/" />
-      <recent name="$PROJECT_DIR$/logistic-service/src/main/java/com/sparta/" />
       <recent name="$PROJECT_DIR$/logistic/src/main" />
       <recent name="$PROJECT_DIR$/logistic" />
     </key>
@@ -117,8 +143,19 @@
     </option>
   </component>
   <component name="RunManager" selected="Spring Boot.AuthServiceApplication">
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="AuthServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="blackyolk.auth-service.main" />
+      <module name="auth-service.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.sparta.msa_exam.auth.auth_service.AuthServiceApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -139,28 +176,35 @@
       </method>
     </configuration>
     <configuration name="DeliveryServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="blackyolk.delivery-service.main" />
+      <module name="delivery-service.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.sparta.blackyolk.delivery_service.DeliveryServiceApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration name="EurekaServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="blackyolk.eureka-server.main" />
+      <module name="eureka-server.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.sparta.blackyolk.eureka_server.EurekaServerApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration name="GatewayApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="blackyolk.gateway.main" />
+      <module name="gateway.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.sparta.blackyolk.gateway.GatewayApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="LogisticServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="logistic-service.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sparta.blackyolk.logistic_service.LogisticServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="OrderServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="blackyolk.order-service.main" />
+      <module name="order-service.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.sparta.msa_exam.order.order_service.OrderServiceApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -204,12 +248,8 @@
       <workItem from="1733738302729" duration="46000" />
       <workItem from="1733738356343" duration="195000" />
       <workItem from="1733738592183" duration="10000" />
-      <workItem from="1733917481240" duration="610000" />
-      <workItem from="1733918102970" duration="713000" />
-      <workItem from="1733918828545" duration="53000" />
-      <workItem from="1733918899241" duration="113000" />
-      <workItem from="1733919074195" duration="15000" />
-      <workItem from="1733919178290" duration="27000" />
+      <workItem from="1733798761254" duration="596000" />
+      <workItem from="1733922459708" duration="4913000" />
     </task>
     <task id="LOCAL-00001" summary="project init">
       <option name="closed" value="true" />
@@ -248,6 +288,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="project init" />
