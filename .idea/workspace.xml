@@ -5,79 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d5c36263-2a60-427b-b245-b9c0ab6c0732" name="Changes" comment="멀티 모듈 프로젝트 구조 생성">
-      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/.gitattributes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/AuthServiceApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/sparta/msa_exam/auth/auth_service/AuthServiceApplicationTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery-service/.gitattributes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery-service/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery-service/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery-service/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery-service/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery-service/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery-service/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery-service/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery-service/src/main/java/com/sparta/blackyolk/delivery_service/DeliveryServiceApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery-service/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery-service/src/test/java/com/sparta/blackyolk/delivery_service/DeliveryServiceApplicationTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/.gitattributes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/sparta/blackyolk/gateway/GatewayApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/src/test/java/com/sparta/blackyolk/gateway/GatewayApplicationTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/libs.versions.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logistic/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logistic/src/main/product-service/.gitattributes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logistic/src/main/product-service/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logistic/src/main/product-service/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logistic/src/main/product-service/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logistic/src/main/product-service/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logistic/src/main/product-service/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logistic/src/main/product-service/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logistic/src/main/product-service/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logistic/src/main/product-service/src/main/java/com/sparta/blackyolk/product_service/ProductServiceApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logistic/src/main/product-service/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logistic/src/main/product-service/src/test/java/com/sparta/blackyolk/product_service/ProductServiceApplicationTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/.gitattributes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/java/com/sparta/msa_exam/order/order_service/OrderServiceApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/order-service/src/test/java/com/sparta/msa_exam/order/order_service/OrderServiceApplicationTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,6 +51,18 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Coscle&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/sparta-BlackYolk/black-yolk.git&quot;,
+    &quot;accountId&quot;: &quot;b6a5b9ad-4287-465c-b38d-bf5e17d73e62&quot;
+  }
+}</component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
@@ -135,15 +75,16 @@
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="flattenPackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;company&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/nyungnim/Desktop/blackyolk&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/sangwoo/Documents/Dev/sparta/chapter2/black-yolk&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -153,12 +94,15 @@
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;File.Encoding&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/logistic-service/src/main" />
+      <recent name="$PROJECT_DIR$/logistic-service/src/" />
+      <recent name="$PROJECT_DIR$/logistic-service/src/main/java/com/sparta/" />
       <recent name="$PROJECT_DIR$/logistic/src/main" />
       <recent name="$PROJECT_DIR$/logistic" />
     </key>
@@ -240,8 +184,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18968.26" />
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18968.26" />
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23726.103" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23726.103" />
       </set>
     </attachedChunks>
   </component>
@@ -260,6 +204,12 @@
       <workItem from="1733738302729" duration="46000" />
       <workItem from="1733738356343" duration="195000" />
       <workItem from="1733738592183" duration="10000" />
+      <workItem from="1733917481240" duration="610000" />
+      <workItem from="1733918102970" duration="713000" />
+      <workItem from="1733918828545" duration="53000" />
+      <workItem from="1733918899241" duration="113000" />
+      <workItem from="1733919074195" duration="15000" />
+      <workItem from="1733919178290" duration="27000" />
     </task>
     <task id="LOCAL-00001" summary="project init">
       <option name="closed" value="true" />
