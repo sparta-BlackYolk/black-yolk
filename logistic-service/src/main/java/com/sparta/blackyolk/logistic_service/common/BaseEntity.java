@@ -30,7 +30,7 @@ public class BaseEntity {
     private LocalDateTime deletedAt;
     private Long deletedBy;
 
-    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    @Column(name = "is_deleted", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
     private boolean isDeleted = false;
 
     protected BaseEntity(Long createdBy, Long updatedBy) {

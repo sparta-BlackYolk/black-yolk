@@ -20,7 +20,7 @@ public class HubPersistenceAdapter implements HubPersistencePort {
     private final HubRepository hubRepository;
 
     public Optional<Hub> findByHubId(String hubId) {
-        return hubRepository.findById(hubId)
+        return hubRepository.findByHubIdAndIsDeletedFalse(hubId)
             .map(HubEntity::toDomain)
             .or(Optional::empty);
     }
@@ -34,7 +34,7 @@ public class HubPersistenceAdapter implements HubPersistencePort {
     @Override
     public Hub updateHub(HubForUpdate hubForUpdate, BigDecimal axisX, BigDecimal axisY) {
 
-        HubEntity hubEntity = hubRepository.findById(hubForUpdate.hubId()).get();
+        HubEntity hubEntity = hubRepository.findByHubIdAndIsDeletedFalse(hubForUpdate.hubId()).get();
         hubEntity.updateHub(hubForUpdate, axisX, axisY);
 
         return hubEntity.toDomain();
@@ -44,7 +44,7 @@ public class HubPersistenceAdapter implements HubPersistencePort {
     @Override
     public Hub deleteHub(HubForDelete hubForDelete) {
 
-        HubEntity hubEntity = hubRepository.findById(hubForDelete.hubId()).get();
+        HubEntity hubEntity = hubRepository.findByHubIdAndIsDeletedFalse(hubForDelete.hubId()).get();
         hubEntity.deleteHub(hubForDelete);
 
         return hubEntity.toDomain();

@@ -3,6 +3,7 @@ package com.sparta.blackyolk.logistic_service.hub.application.service;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForCreate;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForDelete;
+import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForRead;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForUpdate;
 import com.sparta.blackyolk.logistic_service.hub.application.port.HubPersistencePort;
 import com.sparta.blackyolk.logistic_service.hub.application.usecase.HubUseCase;
@@ -17,6 +18,17 @@ public class HubService implements HubUseCase {
     private final HubPersistencePort hubPersistencePort;
     private final String URL = "https://dapi.kakao.com/v2/local/search/address.json?query=";
     private final String ADDRESS = "제주 애월읍";
+
+    @Override
+    public Hub getHub(HubForRead hubForRead) {
+
+        // TODO : 사용자 권한 예외처리 추가
+
+        // TODO : 예외처리 추가하기
+        return hubPersistencePort.findByHubId(hubForRead.hubId()).orElseThrow(
+
+        );
+    }
 
     @Override
     public Hub createHub(HubForCreate hubForCreate) {
