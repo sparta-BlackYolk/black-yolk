@@ -43,7 +43,7 @@ public class HubService implements HubUseCase {
         BigDecimal axisX = new BigDecimal("126.851675");
         BigDecimal axisY = new BigDecimal("37.54815556");
 
-        // TODO : 허브 이름이나 좌표 혹은 주소 가지고 중복된 허브인지 확인하는 로직 추가
+        // TODO : 허브 이름이나 좌표 혹은 주소 가지고 중복된 허브인지 확인하는 로직 추가 -> domain으로 넘길 수 있을까?
 
         return hubPersistencePort.saveHub(hubForCreate, axisX, axisY);
     }
@@ -61,7 +61,7 @@ public class HubService implements HubUseCase {
         BigDecimal axisX = hub.getHubCoordinate().getAxisX();
         BigDecimal axisY = hub.getHubCoordinate().getAxisY();
 
-        // TODO : 좌표 업데이트 하는 로직 추가
+        // TODO : 좌표 업데이트 하는 로직 추가 -> domain으로 넘길 수 있을까?
         if (hubForUpdate.address() != null) {
             // 좌표 업데이트 함
             axisX = new BigDecimal("130.851675");

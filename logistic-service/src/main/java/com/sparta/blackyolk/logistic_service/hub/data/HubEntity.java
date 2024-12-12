@@ -134,7 +134,7 @@ public class HubEntity extends BaseEntity {
     }
 
     public void deleteHub(HubForDelete hubForDelete) {
-        this.status = HubStatus.INACTIVE;
+        this.status = HubStatus.INACTIVE; // TODO : Domain 으로 넘길 수 있을까?
         super.deleteFrom(hubForDelete.userId());
     }
 }
