@@ -30,4 +30,13 @@ public class CompanyService {
         return CompanyResponseDto.toResponseDto(company);
     }
 
+    @Transactional
+    public CompanyResponseDto updateCompany(UUID companyId, CompanyRequestDto requestDto) {
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new IllegalArgumentException("업체 정보가 없습니다."));
+
+        company.update(requestDto);
+        return CompanyResponseDto.toResponseDto(company);
+    }
+
 }

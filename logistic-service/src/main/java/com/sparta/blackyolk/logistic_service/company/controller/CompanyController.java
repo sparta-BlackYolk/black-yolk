@@ -31,5 +31,13 @@ public class CompanyController {
         return ResponseEntity.ok(companyService.getCompany(company_id));
     }
 
+    @PutMapping("/companies/{company_id}")
+    public ResponseEntity<CompanyResponseDto> updateCompany(@PathVariable(name = "company_id") UUID company_id,
+                                                            @RequestBody CompanyRequestDto requestDto) {
+        CompanyResponseDto responseDto = companyService.updateCompany(company_id, requestDto);
+
+        return ResponseEntity.ok(responseDto);
+    }
+
 
 }
