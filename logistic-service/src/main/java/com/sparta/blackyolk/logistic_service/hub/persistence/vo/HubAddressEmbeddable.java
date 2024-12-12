@@ -3,6 +3,7 @@ package com.sparta.blackyolk.logistic_service.hub.persistence.vo;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.model.HubAddress;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,5 +43,21 @@ public class HubAddressEmbeddable {
             this.buildingNumber,
             this.zipCode
         );
+    }
+
+    public void updateAddress(
+        String sido,
+        String sigungu,
+        String eupmyun,
+        String roadName,
+        String buildingNumber,
+        String zipCode
+    ) {
+        Optional.ofNullable(sido).ifPresent(value -> this.sido = value);
+        Optional.ofNullable(sigungu).ifPresent(value -> this.sigungu = value);
+        Optional.ofNullable(eupmyun).ifPresent(value -> this.eupmyun = value);
+        Optional.ofNullable(roadName).ifPresent(value -> this.roadName = value);
+        Optional.ofNullable(buildingNumber).ifPresent(value -> this.buildingNumber = value);
+        Optional.ofNullable(zipCode).ifPresent(value -> this.zipCode = value);
     }
 }

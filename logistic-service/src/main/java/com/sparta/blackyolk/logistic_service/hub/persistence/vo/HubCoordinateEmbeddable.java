@@ -26,4 +26,12 @@ public class HubCoordinateEmbeddable {
             this.axisY
         );
     }
+
+    public void updateCoordinate(
+        BigDecimal axisX,
+        BigDecimal axisY
+    ) {
+        this.axisX = axisX;
+        this.axisY = axisY;
+    }
 }

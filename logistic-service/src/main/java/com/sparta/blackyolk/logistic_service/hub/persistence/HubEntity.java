@@ -3,6 +3,7 @@ package com.sparta.blackyolk.logistic_service.hub.persistence;
 import com.sparta.blackyolk.logistic_service.common.BaseEntity;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForCreate;
+import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForUpdate;
 import com.sparta.blackyolk.logistic_service.hub.persistence.vo.HubAddressEmbeddable;
 import com.sparta.blackyolk.logistic_service.hub.persistence.vo.HubCoordinateEmbeddable;
 import com.sparta.blackyolk.logistic_service.hub.persistence.vo.HubStatus;
@@ -15,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -102,5 +104,31 @@ public class HubEntity extends BaseEntity {
             this.hubManagerId,
             super.isDeleted()
         );
+    }
+
+    // TODO : update 하는 시점에 updateAt 변경 되는지 확인 하기
+    public void updateHub(
+        HubForUpdate hubForUpdate,
+        BigDecimal axisX,
+        BigDecimal axisY
+    ) {
+        super.updateFrom(hubForUpdate.userId());
+
+        Optional.ofNullable(hubForUpdate.hubManagerId()).ifPresent(value -> this.hubManagerId = value);
+        Optional.ofNullable(hubForUpdate.name()).ifPresent(value -> this.hubName = value);
+        Optional.ofNullable(hubForUpdate.status()).ifPresent(value -> this.status = value);
+
+        hubCoordinate.updateCoordinate(axisX, axisY);
+
+        if (hubForUpdate.address() != null) {
+            hubAddress.updateAddress(
+                hubForUpdate.address().sido(),
+                hubForUpdate.address().sigungu(),
+                hubForUpdate.address().eupmyun(),
+                hubForUpdate.address().roadName(),
+                hubForUpdate.address().buildingNumber(),
+                hubForUpdate.address().zipCode()
+            );
+        }
     }
 }
