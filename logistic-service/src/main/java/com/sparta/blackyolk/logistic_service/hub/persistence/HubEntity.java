@@ -3,6 +3,7 @@ package com.sparta.blackyolk.logistic_service.hub.persistence;
 import com.sparta.blackyolk.logistic_service.common.BaseEntity;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForCreate;
+import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForDelete;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForUpdate;
 import com.sparta.blackyolk.logistic_service.hub.persistence.vo.HubAddressEmbeddable;
 import com.sparta.blackyolk.logistic_service.hub.persistence.vo.HubCoordinateEmbeddable;
@@ -130,5 +131,10 @@ public class HubEntity extends BaseEntity {
                 hubForUpdate.address().zipCode()
             );
         }
+    }
+
+    public void deleteHub(HubForDelete hubForDelete) {
+        this.status = HubStatus.INACTIVE;
+        super.deleteFrom(hubForDelete.userId());
     }
 }
