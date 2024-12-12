@@ -1,6 +1,6 @@
 package com.sparta.blackyolk.logistic_service.hub.framework.repository;
 
-import com.sparta.blackyolk.logistic_service.hub.persistence.HubEntity;
+import com.sparta.blackyolk.logistic_service.hub.data.HubEntity;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

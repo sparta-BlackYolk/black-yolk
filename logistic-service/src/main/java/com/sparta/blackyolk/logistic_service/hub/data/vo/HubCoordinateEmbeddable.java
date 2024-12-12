@@ -1,4 +1,4 @@
-package com.sparta.blackyolk.logistic_service.hub.persistence.vo;
+package com.sparta.blackyolk.logistic_service.hub.data.vo;
 
 import com.sparta.blackyolk.logistic_service.hub.application.domain.model.HubCoordinate;
 import jakarta.persistence.Column;

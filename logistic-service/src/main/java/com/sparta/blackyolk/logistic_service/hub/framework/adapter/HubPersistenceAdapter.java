@@ -6,7 +6,7 @@ import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForDelete
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForUpdate;
 import com.sparta.blackyolk.logistic_service.hub.application.port.HubPersistencePort;
 import com.sparta.blackyolk.logistic_service.hub.framework.repository.HubRepository;
-import com.sparta.blackyolk.logistic_service.hub.persistence.HubEntity;
+import com.sparta.blackyolk.logistic_service.hub.data.HubEntity;
 import java.math.BigDecimal;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
