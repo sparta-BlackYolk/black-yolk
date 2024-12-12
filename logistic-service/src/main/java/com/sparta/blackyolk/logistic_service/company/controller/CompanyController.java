@@ -25,5 +25,11 @@ public class CompanyController {
         return ResponseEntity.ok(responseDto);
     }
 
+    @GetMapping("/companies/{company_id}")
+    public ResponseEntity<CompanyResponseDto> getCompany(@PathVariable(name = "company_id") UUID company_id) {
+
+        return ResponseEntity.ok(companyService.getCompany(company_id));
+    }
+
 
 }

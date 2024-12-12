@@ -23,4 +23,11 @@ public class CompanyService {
         return CompanyResponseDto.toResponseDto(company);
     }
 
+    public CompanyResponseDto getCompany(UUID companyId) {
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new IllegalArgumentException("업체 정보가 없습니다."));
+
+        return CompanyResponseDto.toResponseDto(company);
+    }
+
 }
