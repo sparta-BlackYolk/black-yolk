@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class HubCoordinateEmbeddable {
 
-    @Column(name = "axis_x", precision = 11, scale = 2, nullable = false)
+    @Column(name = "axis_x", precision = 16, scale = 11, nullable = false)
     private BigDecimal axisX;
 
-    @Column(name = "axis_y", precision = 10, scale = 2, nullable = false)
+    @Column(name = "axis_y", precision = 16, scale = 11, nullable = false)
     private BigDecimal axisY;
 
     public HubCoordinate toDomain() {
