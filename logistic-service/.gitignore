@@ -38,3 +38,5 @@ env.properties
 
 ### VS Code ###
 .vscode/
+
+.env
