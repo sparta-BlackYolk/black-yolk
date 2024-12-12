@@ -1,6 +1,5 @@
 package com.sparta.blackyolk.logistic_service.hub.application.usecase;
 
-
 import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForCreate;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForDelete;
