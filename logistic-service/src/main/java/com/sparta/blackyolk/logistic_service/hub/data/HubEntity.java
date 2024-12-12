@@ -1,13 +1,13 @@
-package com.sparta.blackyolk.logistic_service.hub.persistence;
+package com.sparta.blackyolk.logistic_service.hub.data;
 
 import com.sparta.blackyolk.logistic_service.common.BaseEntity;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForCreate;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForDelete;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForUpdate;
-import com.sparta.blackyolk.logistic_service.hub.persistence.vo.HubAddressEmbeddable;
-import com.sparta.blackyolk.logistic_service.hub.persistence.vo.HubCoordinateEmbeddable;
-import com.sparta.blackyolk.logistic_service.hub.persistence.vo.HubStatus;
+import com.sparta.blackyolk.logistic_service.hub.data.vo.HubAddressEmbeddable;
+import com.sparta.blackyolk.logistic_service.hub.data.vo.HubCoordinateEmbeddable;
+import com.sparta.blackyolk.logistic_service.hub.data.vo.HubStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;

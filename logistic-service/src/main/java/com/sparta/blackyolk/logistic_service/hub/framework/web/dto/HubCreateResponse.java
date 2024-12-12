@@ -1,6 +1,6 @@
 package com.sparta.blackyolk.logistic_service.hub.framework.web.dto;
 
-import com.sparta.blackyolk.logistic_service.hub.persistence.vo.HubStatus;
+import com.sparta.blackyolk.logistic_service.hub.data.vo.HubStatus;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 
 public record HubCreateResponse(
