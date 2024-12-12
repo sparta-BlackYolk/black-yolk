@@ -4,7 +4,7 @@ import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForCreate
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-public record HubAddressRequest(
+public record HubAddressCreateRequest(
 
     @NotBlank(message = "시/도를 입력해주세요.")
     String sido,

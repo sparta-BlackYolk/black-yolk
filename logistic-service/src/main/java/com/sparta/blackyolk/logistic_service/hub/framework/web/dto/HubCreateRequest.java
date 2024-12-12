@@ -11,7 +11,7 @@ public record HubCreateRequest(
     String name,
 
     @Valid
-    HubAddressRequest address
+    HubAddressCreateRequest address
 ) {
 
 }
