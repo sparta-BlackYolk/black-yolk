@@ -24,6 +24,8 @@ public class HubService implements HubUseCase {
 
         // TODO : 사용자 권한 예외처리 추가
 
+        // TODO: 사용자 권한에 따라서, ACTIVE, INACTIVE 정보를 다르게 보여줘야 할까?
+
         // TODO : 예외처리 추가하기
         return hubPersistencePort.findByHubId(hubForRead.hubId()).orElseThrow(
 
