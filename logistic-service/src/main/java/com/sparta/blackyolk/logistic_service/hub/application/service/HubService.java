@@ -2,6 +2,7 @@ package com.sparta.blackyolk.logistic_service.hub.application.service;
 
 import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForCreate;
+import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForDelete;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForUpdate;
 import com.sparta.blackyolk.logistic_service.hub.application.port.HubPersistencePort;
 import com.sparta.blackyolk.logistic_service.hub.application.usecase.HubUseCase;
@@ -54,5 +55,18 @@ public class HubService implements HubUseCase {
         }
 
         return hubPersistencePort.updateHub(hubForUpdate, axisX, axisY);
+    }
+
+    @Override
+    public Hub deleteHub(HubForDelete hubForDelete) {
+
+        // TODO : 사용자 권한 예외처리 추가
+
+        // TODO : 예외 처리 하기
+        Hub hub = hubPersistencePort.findByHubId(hubForDelete.hubId()).orElseThrow(
+
+        );
+
+        return hubPersistencePort.deleteHub(hubForDelete);
     }
 }

@@ -2,6 +2,7 @@ package com.sparta.blackyolk.logistic_service.hub.framework.adapter;
 
 import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForCreate;
+import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForDelete;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForUpdate;
 import com.sparta.blackyolk.logistic_service.hub.application.port.HubPersistencePort;
 import com.sparta.blackyolk.logistic_service.hub.framework.repository.HubRepository;
@@ -10,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
@@ -28,11 +30,22 @@ public class HubPersistenceAdapter implements HubPersistencePort {
         return hubRepository.save(HubEntity.toEntity(hubForCreate, axisX, axisY)).toDomain();
     }
 
+    @Transactional
     @Override
     public Hub updateHub(HubForUpdate hubForUpdate, BigDecimal axisX, BigDecimal axisY) {
 
         HubEntity hubEntity = hubRepository.findById(hubForUpdate.hubId()).get();
         hubEntity.updateHub(hubForUpdate, axisX, axisY);
+
+        return hubEntity.toDomain();
+    }
+
+    @Transactional
+    @Override
+    public Hub deleteHub(HubForDelete hubForDelete) {
+
+        HubEntity hubEntity = hubRepository.findById(hubForDelete.hubId()).get();
+        hubEntity.deleteHub(hubForDelete);
 
         return hubEntity.toDomain();
     }

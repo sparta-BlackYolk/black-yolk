@@ -2,18 +2,21 @@ package com.sparta.blackyolk.logistic_service.hub.framework.web.controller;
 
 import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForCreate;
+import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForDelete;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForUpdate;
 import com.sparta.blackyolk.logistic_service.hub.application.usecase.HubUseCase;
 import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubAddressCreateRequest;
 import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubAddressUpdateRequest;
 import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubCreateRequest;
 import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubCreateResponse;
+import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubDeleteResponse;
 import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubUpdateRequest;
 import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubUpdateResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -65,5 +68,20 @@ public class HubCommandController {
         Hub hub = hubUseCase.updateHub(hubForUpdate);
 
         return HubUpdateResponse.toDTO(hub);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/{hubId}")
+    public HubDeleteResponse deleteHub(
+        @PathVariable(value = "hubId") String hubId
+    ) {
+        // TODO : user token, user role 받기
+        HubForDelete hubForDelete = new HubForDelete(
+            TEST_USER,
+            hubId
+        );
+        Hub hub = hubUseCase.deleteHub(hubForDelete);
+
+        return HubDeleteResponse.toDTO(hub);
     }
 }
