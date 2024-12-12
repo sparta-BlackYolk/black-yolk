@@ -39,7 +39,7 @@ public class HubEntity extends BaseEntity {
     private String hubName;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "varchar(255)")
+    @Column(name = "hub_status", nullable = false)
     private HubStatus status = HubStatus.ACTIVE;
 
     @Embedded
