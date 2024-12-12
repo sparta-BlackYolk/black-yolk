@@ -1,0 +1,29 @@
+server:
+  port: 19097
+
+spring:
+  application:
+    name: logistic-service
+
+  config:
+    import:
+      - optional:file:.env[.properties]
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PW}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    properties:
+      hibernate:
+#        ddl-auto: create
+        hbm2ddl.auto: create
+        show-sql: true
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+logging:
+  level:
+    org.hibernate: DEBUG
