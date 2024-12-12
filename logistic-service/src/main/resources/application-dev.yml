@@ -14,16 +14,22 @@ spring:
     username: ${DB_USER}
     password: ${DB_PW}
     driver-class-name: org.postgresql.Driver
+    hikari:
+      auto-commit: false
+      minimum-idle: 5
+      maximum-pool-size: 20
+      transaction-isolation: TRANSACTION_READ_COMMITTED
 
   jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
     properties:
       hibernate:
-#        ddl-auto: create
-        hbm2ddl.auto: create
-        show-sql: true
         format_sql: true
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
 
 logging:
   level:
-    org.hibernate: DEBUG
+    org.hibernate: WARN
