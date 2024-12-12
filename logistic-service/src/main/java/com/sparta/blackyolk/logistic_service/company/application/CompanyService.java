@@ -39,4 +39,12 @@ public class CompanyService {
         return CompanyResponseDto.toResponseDto(company);
     }
 
+    @Transactional
+    public void deleteCompany(UUID companyId) {
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new IllegalArgumentException("업체 정보가 없습니다."));
+
+        company.delete();
+    }
+
 }
