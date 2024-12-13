@@ -32,7 +32,7 @@ public class LocalJwtAuthenticationFilter implements GlobalFilter {
         // 요청 URI 경로를 가져옴
         String path = exchange.getRequest().getURI().getPath();
         // 특정 경로에 대해 필터를 건너뜀 (예: /auth/signIn, /auth/signUp)
-        if (path.equals("/api/users/signup") || path.equals("/api/users/login")) {
+        if (path.equals("/api/auth/users/signup") || path.equals("/api/auth/users/login")) {
             return chain.filter(exchange);  // /signIn 및 /signUp 경로는 필터 적용하지 않음
         }
 
