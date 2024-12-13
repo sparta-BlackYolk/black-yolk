@@ -4,13 +4,47 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-
-    <list default="true" id="d5c36263-2a60-427b-b245-b9c0ab6c0732" name="Changes" comment="멀티 모듈 프로젝트 구조 생성">
+    <list default="true" id="d5c36263-2a60-427b-b245-b9c0ab6c0732" name="Changes" comment=".">
+      <change afterPath="$PROJECT_DIR$/gateway/src/main/java/com/sparta/blackyolk/gateway/LocalJwtAuthenticationFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway/src/main/java/com/sparta/blackyolk/gateway/config/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/08ab774c-aeaa-4a62-b886-e6f84ad150da.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/08ab774c-aeaa-4a62-b886-e6f84ad150da/storage_v2/_src_/database/auth_db.ddJ22Q.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/08ab774c-aeaa-4a62-b886-e6f84ad150da/storage_v2/_src_/database/auth_db.ddJ22Q/schema/public.abK9xQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6974319e-d1fe-401a-be70-802d1ff99b70.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6974319e-d1fe-401a-be70-802d1ff99b70/storage_v2/_src_/database/auth_db.ddJ22Q.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6974319e-d1fe-401a-be70-802d1ff99b70/storage_v2/_src_/database/auth_db.ddJ22Q/schema/public.abK9xQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6974319e-d1fe-401a-be70-802d1ff99b70/storage_v2/_src_/database/postgres.edMnLQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6974319e-d1fe-401a-be70-802d1ff99b70/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logistic-service/src/main/java/com/sparta/blackyolk/logistic_service/LogisticServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/logistic-service/src/main/java/com/sparta/blackyolk/logistic_service/LogisticServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logistic-service/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/logistic-service/src/main/resources/application-dev.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/AuthServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/AuthServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/config/PasswordConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/config/PasswordConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/config/QueryDslConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/config/QueryDslConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/config/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/config/WebSecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/jwt/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/jwt/JwtAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/jwt/JwtAuthorizationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/jwt/JwtAuthorizationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/jwt/JwtUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/jwt/JwtUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/security/UserDetailsImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/security/UserDetailsImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/security/UserDetailsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/security/UserDetailsServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/user/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/dto/CustomPageResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/user/dto/CustomPageResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/dto/DeleteResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/user/dto/DeleteResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/dto/LoginRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/user/dto/LoginRequestDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/dto/LoginResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/user/dto/LoginResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/dto/RoleRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/user/dto/RoleRequestDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/dto/RoleUpdateResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/user/dto/RoleUpdateResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/dto/UserResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/user/dto/UserResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/dto/UserSignUpRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/user/dto/UserSignUpRequestDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/user/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/entity/UserRoleEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/user/entity/UserRoleEnum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/user/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/repository/UserRepositoryCustom.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/user/repository/UserRepositoryCustom.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/repository/UserRepositoryCustomImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/user/repository/UserRepositoryCustomImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/user/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,11 +61,10 @@
     <projectState path="$PROJECT_DIR$/company-service">
       <ProjectState />
     </projectState>
-
-    <projectState path="$PROJECT_DIR$/gateway">
+    <projectState path="$PROJECT_DIR$/eureka-server">
       <ProjectState />
     </projectState>
-    <projectState path="$PROJECT_DIR$/logistic-service">
+    <projectState path="$PROJECT_DIR$/gateway">
       <ProjectState />
     </projectState>
   </component>
@@ -98,17 +131,20 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-
-    "Gradle.Build logistic-service.executor": "Run",
+    "Gradle.Build auth-service.executor": "Run",
+    "Gradle.Build eureka-server.executor": "Run",
+    "Gradle.Build gateway.executor": "Run",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
     "RequestMappingsPanelWidth0": "75",
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-
-    "Spring Boot.LogisticServiceApplication.executor": "Run",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.AuthServiceApplication.executor": "Run",
+    "Spring Boot.EurekaServerApplication.executor": "Run",
+    "Spring Boot.GatewayApplication.executor": "Run",
     "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "company",
+    "git-widget-placeholder": "gateway",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/dudwn/scIntellij/spring-auth",
     "node.js.detected.package.eslint": "true",
@@ -138,7 +174,11 @@
       <recent name="$PROJECT_DIR$/logistic/src/main" />
       <recent name="$PROJECT_DIR$/logistic" />
     </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.sparta.blackyolk.auth_service" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.sparta.blackyolk.gateway" />
       <recent name="com.sparta.msa_exam.auth.auth_service.config" />
       <recent name="com.sparta.msa_exam.auth.auth_service.security" />
     </key>
@@ -152,10 +192,10 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.LogisticServiceApplication">
+  <component name="RunManager" selected="Spring Boot.GatewayApplication">
     <configuration name="AuthServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="auth-service.main" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sparta.msa_exam.auth.auth_service.AuthServiceApplication" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sparta.blackyolk.auth_service.AuthServiceApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -174,45 +214,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LogisticServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="logistic-service.main" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sparta.blackyolk.logistic_service.LogisticServiceApplication" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.sparta.blackyolk.logistic_service.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="OrderServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="blackyolk.order-service.main" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sparta.msa_exam.order.order_service.OrderServiceApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ProductServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="blackyolk.logistic.product-service.main" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sparta.blackyolk.product_service.ProductServiceApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="UserServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="blackyolk.user-service.main" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sparta.blackyolk.user_service.UserServiceApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Spring Boot.LogisticServiceApplication" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -240,7 +241,7 @@
       <workItem from="1733798761254" duration="596000" />
       <workItem from="1733966773564" duration="175000" />
       <workItem from="1733966980977" duration="24978000" />
-      <workItem from="1734055284233" duration="6971000" />
+      <workItem from="1734055284233" duration="10415000" />
     </task>
     <task id="LOCAL-00001" summary="project init">
       <option name="closed" value="true" />
@@ -298,7 +299,23 @@
       <option name="project" value="LOCAL" />
       <updated>1734061577763</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary=".">
+      <option name="closed" value="true" />
+      <created>1734066471590</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1734066471590</updated>
+    </task>
+    <task id="LOCAL-00009" summary=".">
+      <option name="closed" value="true" />
+      <created>1734067030709</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1734067030709</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -321,6 +338,7 @@
     <MESSAGE value="폴더 구조 생성" />
     <MESSAGE value="user 엔티티생성" />
     <MESSAGE value="user crud, jwt, 시큐리티 적용" />
-    <option name="LAST_COMMIT_MESSAGE" value="user crud, jwt, 시큐리티 적용" />
+    <MESSAGE value="." />
+    <option name="LAST_COMMIT_MESSAGE" value="." />
   </component>
 </project>
