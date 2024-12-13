@@ -25,12 +25,14 @@ public class HubPersistenceAdapter implements HubPersistencePort {
     private final HubRepository hubRepository;
     private final HubReadOnlyRepository hubReadOnlyRepository;
 
+    @Transactional(readOnly = true)
     public Optional<Hub> findByHubId(String hubId) {
         return hubReadOnlyRepository.findByHubIdAndIsDeletedFalse(hubId)
             .map(HubEntity::toDomain)
             .or(Optional::empty);
     }
 
+    @Transactional(readOnly = true)
     public List<Hub> findHubsByIds(List<String> hubIds) {
         return hubReadOnlyRepository.findByHubIdsAndIsDeletedFalse(hubIds)
             .stream()
@@ -38,7 +40,8 @@ public class HubPersistenceAdapter implements HubPersistencePort {
             .collect(Collectors.toList());
     }
 
-    public Page<HubEntity> findAllHubs(String keyword, Pageable pageable) {
+    @Transactional(readOnly = true)
+    public Page<HubEntity> findAllHubsWithKeyword(String keyword, Pageable pageable) {
         return hubReadOnlyRepository.findAllHubsAndIsDeletedFalseWithKeyword(keyword, pageable);
     }
 
