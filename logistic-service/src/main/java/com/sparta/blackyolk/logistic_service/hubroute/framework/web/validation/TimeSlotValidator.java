@@ -18,8 +18,8 @@ public class TimeSlotValidator implements ConstraintValidator<ValidTimeSlot, Str
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if (value == null || value.isBlank()) {
-            return false;
+        if (value == null) {
+            return true; // null을 허용
         }
         return ALLOWED_TIME_SLOTS.contains(value);
     }
