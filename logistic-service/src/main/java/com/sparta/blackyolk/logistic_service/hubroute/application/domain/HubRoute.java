@@ -9,6 +9,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class HubRoute {
+
     private String hubRouteId;
     private Hub departureHub;
     private Hub arrivalHub;
@@ -18,19 +19,7 @@ public class HubRoute {
     private BigDecimal distance;
     private double timeSlotWeight;
 
-    public HubRoute(
-        Hub departureHub,
-        Hub arrivalHub,
-        String timeSlot,
-        Integer duration,
-        BigDecimal distance,
-        double timeSlotWeight
-    ) {
-        this.departureHub = departureHub;
-        this.arrivalHub = arrivalHub;
-        this.timeSlot = timeSlot;
-        this.duration = duration;
-        this.distance = distance;
-        this.timeSlotWeight = timeSlotWeight;
+    public boolean isDepartureHubBelongToHubRoute(String departureHubId) {
+        return departureHubId.equals(departureHub.getHubId());
     }
 }
