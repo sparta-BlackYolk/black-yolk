@@ -1,9 +1,10 @@
 package com.sparta.blackyolk.logistic_service.hub.application.service;
 
+import com.sparta.blackyolk.logistic_service.common.exception.CustomException;
+import com.sparta.blackyolk.logistic_service.common.exception.ErrorCode;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForCreate;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForDelete;
-import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForRead;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForUpdate;
 import com.sparta.blackyolk.logistic_service.hub.application.port.HubPersistencePort;
 import com.sparta.blackyolk.logistic_service.hub.application.usecase.HubUseCase;
@@ -20,22 +21,10 @@ public class HubService implements HubUseCase {
     private final String ADDRESS = "제주 애월읍";
 
     @Override
-    public Hub getHub(HubForRead hubForRead) {
-
-        // TODO : 사용자 권한 예외처리 추가
-
-        // TODO: 사용자 권한에 따라서, ACTIVE, INACTIVE 정보를 다르게 보여줘야 할까?
-
-        // TODO : 예외처리 추가하기
-        return hubPersistencePort.findByHubId(hubForRead.hubId()).orElseThrow(
-
-        );
-    }
-
-    @Override
     public Hub createHub(HubForCreate hubForCreate) {
 
-        // TODO : 사용자 권한 예외처리 추가 & hubManagerId 있으면 hubManagerId 검증하는 로직 필요
+        // TODO : hubManagerId 있으면 hubManagerId 검증하는 로직 필요
+        validateMaster(hubForCreate.role());
 
         // TODO: 좌표 조회하는 로직
         String url = URL + ADDRESS;
@@ -51,12 +40,10 @@ public class HubService implements HubUseCase {
     @Override
     public Hub updateHub(HubForUpdate hubForUpdate) {
 
-        // TODO : 사용자 권한 예외처리 추가 & hubManagerId 있으면 hubManagerId 검증하는 로직 필요
+        // TODO : hubManagerId 있으면 hubManagerId 검증하는 로직 필요
+        validateMaster(hubForUpdate.role());
 
-        // TODO : 예외 처리 하기
-        Hub hub = hubPersistencePort.findByHubId(hubForUpdate.hubId()).orElseThrow(
-
-        );
+        Hub hub = validateHub(hubForUpdate.hubId());
 
         BigDecimal axisX = hub.getHubCoordinate().getAxisX();
         BigDecimal axisY = hub.getHubCoordinate().getAxisY();
@@ -74,20 +61,21 @@ public class HubService implements HubUseCase {
     @Override
     public Hub deleteHub(HubForDelete hubForDelete) {
 
-        // TODO : 사용자 권한 예외처리 추가
-
-        // TODO : 예외 처리 하기
-        Hub hub = hubPersistencePort.findByHubId(hubForDelete.hubId()).orElseThrow(
-
-        );
+        validateMaster(hubForDelete.role());
+        validateHub(hubForDelete.hubId());
 
         return hubPersistencePort.deleteHub(hubForDelete);
     }
 
     public Hub validateHub(String hubId) {
-        // TODO : 예외처리하기
         return hubPersistencePort.findByHubId(hubId).orElseThrow(
-
+            () -> new CustomException(ErrorCode.HUB_NOT_EXIST)
         );
+    }
+
+    private void validateMaster(String role) {
+        if (!"MASTER".equals(role)) {
+            throw new CustomException(ErrorCode.ACCESS_DENIED);
+        }
     }
 }

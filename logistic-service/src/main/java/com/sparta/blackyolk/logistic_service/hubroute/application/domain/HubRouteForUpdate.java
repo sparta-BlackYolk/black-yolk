@@ -4,6 +4,7 @@ import com.sparta.blackyolk.logistic_service.hubroute.data.vo.HubRouteStatus;
 
 public record HubRouteForUpdate(
     Long userId,
+    String role,
     String hubRouteId,
     String departureHubId,
     String arrivalHubId,

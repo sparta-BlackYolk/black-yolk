@@ -1,7 +1,10 @@
 package com.sparta.msa_exam.order.order_service.domain.model;
 
+import com.sparta.msa_exam.order.order_service.application.dto.request.OrderCreateRequestDto;
+import com.sparta.msa_exam.order.order_service.application.dto.request.OrderUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
 
@@ -11,43 +14,49 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "p_order")
-public class Order {
+public class Order extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", updatable = false, nullable = false)
+    @UuidGenerator(style = UuidGenerator.Style.TIME)
     private UUID id;
 
-    @Column(name = "request_company_id", nullable = false)
     private UUID requestCompanyId;
 
-    @Column(name = "supply_company_id", nullable = false)
-    private UUID supplyCompanyId;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private OrderStatus status;
 
-    @Column(name = "product_id", nullable = false)
+    @Column(nullable = false)
     private UUID productId;
 
-    @Column(name = "quantity", nullable = false)
+    @Column(nullable = false)
     private Integer quantity;
 
-    @Column(name = "remarks", length = 255)
+    @Column(nullable = false)
+    private Integer price;
+
+    @Column(nullable = false)
+    private Integer totalPrice;
+
+    @Column(columnDefinition = "TEXT")
     private String remarks;
 
-    @Column(name = "is_deleted", nullable = false)
-    private boolean isDeleted = false;
-
-    public static Order createOrder(UUID requestCompanyId, UUID supplyCompanyId, UUID productId,
-                                    Integer quantity, String remarks) {
+    public static Order create(OrderCreateRequestDto request) {
         return Order.builder()
-                .requestCompanyId(requestCompanyId)
-                .supplyCompanyId(supplyCompanyId)
-                .productId(productId)
-                .quantity(quantity)
-                .remarks(remarks)
+                .requestCompanyId(request.requestCompanyId())
+                .productId(request.productId())
+                .quantity(request.quantity())
+                .remarks(request.remarks())
                 .build();
     }
 
-    public void cancelOrder() {
-        this.isDeleted = true;
+    public void updateOrder(OrderUpdateRequestDto requestDto) {
+        this.status = requestDto.orderStatus();
+        this.quantity = requestDto.quantity();
+        this.remarks = requestDto.remarks();
+    }
+
+    public void deleteOrder(UUID deletedBy) {
+        super.delete(deletedBy);
     }
 }
