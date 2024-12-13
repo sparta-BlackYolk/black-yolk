@@ -28,6 +28,7 @@ public record HubPageResponse(
         String id,
         Long hubManagerId,
         String name,
+        String center,
         HubStatus status,
         HubCoordinateResponse coordinate,
         HubAddressResponse address
@@ -43,6 +44,7 @@ public record HubPageResponse(
                 hubEntity.getHubId(),
                 hubEntity.getHubManagerId(),
                 hubEntity.getHubName(),
+                hubEntity.getHubCenter(),
                 hubEntity.getStatus(),
                 HubCoordinateResponse.fromDomain(hubEntity.getHubCoordinate().toDomain()),
                 HubAddressResponse.fromDomain(hubEntity.getHubAddress().toDomain())
