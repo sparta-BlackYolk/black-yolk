@@ -13,6 +13,7 @@ public record HubUpdateRequest(
 
     public static HubForUpdate toDomain(
         Long userId,
+        String role,
         String hubId,
         HubUpdateRequest hubUpdateRequest
     ) {
@@ -30,6 +31,7 @@ public record HubUpdateRequest(
 
         return new HubForUpdate(
             userId,
+            role,
             hubId,
             hubUpdateRequest.hubManagerId(),
             hubUpdateRequest.name(),

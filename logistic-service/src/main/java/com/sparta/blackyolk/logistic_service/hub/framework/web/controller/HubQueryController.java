@@ -2,8 +2,6 @@ package com.sparta.blackyolk.logistic_service.hub.framework.web.controller;
 
 import com.sparta.blackyolk.logistic_service.common.pagenation.PaginationConstraint;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
-import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForRead;
-import com.sparta.blackyolk.logistic_service.hub.application.usecase.HubUseCase;
 import com.sparta.blackyolk.logistic_service.hub.data.HubEntity;
 import com.sparta.blackyolk.logistic_service.hub.framework.adapter.HubPersistenceAdapter;
 import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubGetResponse;
@@ -26,23 +24,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/hubs")
 public class HubQueryController {
 
-    private final HubUseCase hubUseCase;
     private final HubPersistenceAdapter hubPersistenceAdapter;
-
-    // TODO : 지우기
-    private final Long TEST_USER = 1L;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{hubId}")
     public HubGetResponse getHub(
         @PathVariable(value = "hubId") String hubId
     ) {
-        // TODO : user token, user role 받기
-        HubForRead hubForRead = new HubForRead(
-            TEST_USER,
-            hubId
+        // TODO : user token, user role 받아야 하나?
+        Hub hub = hubPersistenceAdapter.findByHubId(hubId).orElseThrow(
+
         );
-        Hub hub = hubUseCase.getHub(hubForRead);
 
         return HubGetResponse.toDTO(hub);
     }
