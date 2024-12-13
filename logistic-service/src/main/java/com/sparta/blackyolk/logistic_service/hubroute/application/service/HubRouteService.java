@@ -33,8 +33,9 @@ public class HubRouteService implements HubRouteUseCase {
     @Override
     public HubRoute getHubRoute(HubRouteForRead hubRouteForRead) {
 
+        Hub departureHub = hubService.validateHub(hubRouteForRead.departureHubId());
         HubRoute hubRoute = validateHubRoute(hubRouteForRead.hubRouteId());
-        validateDepartureHubInRoute(hubRoute, hubRouteForRead.departureHubId());
+        validateDepartureHubInRoute(hubRoute, departureHub);
 
         return hubRoute;
     }
@@ -76,8 +77,9 @@ public class HubRouteService implements HubRouteUseCase {
     public HubRoute updateHubRoute(HubRouteForUpdate hubRouteForUpdate) {
 
         validateMaster(hubRouteForUpdate.role());
+        Hub departureHub = hubService.validateHub(hubRouteForUpdate.departureHubId());
         HubRoute hubRoute = validateHubRoute(hubRouteForUpdate.hubRouteId());
-        validateDepartureHubInRoute(hubRoute, hubRouteForUpdate.departureHubId());
+        validateDepartureHubInRoute(hubRoute, departureHub);
 
         Hub arrivalHub = Optional.ofNullable(hubRouteForUpdate.arrivalHubId())
             .map(hubService::validateHub)
@@ -106,8 +108,9 @@ public class HubRouteService implements HubRouteUseCase {
     public HubRoute deleteHubRoute(HubRouteForDelete hubRouteForDelete) {
 
         validateMaster(hubRouteForDelete.role());
+        Hub departureHub = hubService.validateHub(hubRouteForDelete.departureHubId());
         HubRoute hubRoute = validateHubRoute(hubRouteForDelete.hubRouteId());
-        validateDepartureHubInRoute(hubRoute, hubRouteForDelete.departureHubId());
+        validateDepartureHubInRoute(hubRoute, departureHub);
 
         return hubRoutePersistencePort.deleteHubRoute(hubRouteForDelete);
     }
@@ -124,8 +127,8 @@ public class HubRouteService implements HubRouteUseCase {
         }
     }
 
-    private void validateDepartureHubInRoute(HubRoute hubRoute, String departureHubId) {
-        if (!hubRoute.isDepartureHubBelongToHubRoute(departureHubId)) {
+    private void validateDepartureHubInRoute(HubRoute hubRoute, Hub departureHub) {
+        if (!hubRoute.isDepartureHubBelongToHubRoute(departureHub.getHubId())) {
             throw new CustomException(ErrorCode.HUB_ROUTE_BAD_REQUEST);
         }
     }
