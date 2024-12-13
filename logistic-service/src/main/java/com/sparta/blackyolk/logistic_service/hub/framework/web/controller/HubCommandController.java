@@ -60,7 +60,7 @@ public class HubCommandController {
         @RequestBody HubUpdateRequest hubUpdateRequest
     ) {
         // TODO : user token, user role 받기
-        HubForUpdate hubForUpdate = HubAddressUpdateRequest.toDomain(
+        HubForUpdate hubForUpdate = HubUpdateRequest.toDomain(
             TEST_USER,
             hubId,
             hubUpdateRequest
