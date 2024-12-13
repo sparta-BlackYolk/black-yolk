@@ -18,7 +18,7 @@ spring:
         - id: logistic-service  # Logistic(Hub, Product, Company) 서비스 라우트
           uri: lb://logistic-service
           predicates:
-            - Path=/logistic/**  # /Logistic/** 경로 매칭
+            - Path=/api/hubs/**  # /Logistic/** 경로 매칭
         - id: delivery-service  # 배송 서비스 라우트
           uri: lb://delivery-service
           predicates:

@@ -4,21 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5c36263-2a60-427b-b245-b9c0ab6c0732" name="Changes" comment="user crud, jwt, 시큐리티 적용">
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/courier/controller/CourierController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/courier/dto/CourierRequestDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/courier/dto/CourierResponseDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/courier/dto/CourierUpdateRequestDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/courier/entity/Courier.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/courier/repository/CourierRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/courier/service/CourierService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/config/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/config/WebSecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/jwt/JwtUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/jwt/JwtUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/sparta/blackyolk/gateway/LocalJwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/sparta/blackyolk/gateway/LocalJwtAuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logistic-service/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/logistic-service/.gitignore" afterDir="false" />
-    </list>
+    <list default="true" id="d5c36263-2a60-427b-b245-b9c0ab6c0732" name="Changes" comment="courier crud 개발(hub_id 조회는 미완성)" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -280,7 +266,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734061577763</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="courier crud 개발(hub_id 조회는 미완성)">
+      <option name="closed" value="true" />
+      <created>1734086896354</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1734086896354</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -303,6 +297,7 @@
     <MESSAGE value="폴더 구조 생성" />
     <MESSAGE value="user 엔티티생성" />
     <MESSAGE value="user crud, jwt, 시큐리티 적용" />
-    <option name="LAST_COMMIT_MESSAGE" value="user crud, jwt, 시큐리티 적용" />
+    <MESSAGE value="courier crud 개발(hub_id 조회는 미완성)" />
+    <option name="LAST_COMMIT_MESSAGE" value="courier crud 개발(hub_id 조회는 미완성)" />
   </component>
 </project>
