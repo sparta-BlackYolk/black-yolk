@@ -9,11 +9,11 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class Hub {
-    private final String hubId;
-    private final String hubName;
-    private final HubStatus hubStatus;
-    private final HubCoordinate hubCoordinate;
-    private final HubAddress hubAddress;
-    private final Long hubManagerId;
+    private String hubId;
+    private String hubName;
+    private HubStatus hubStatus;
+    private HubCoordinate hubCoordinate;
+    private HubAddress hubAddress;
+    private Long hubManagerId;
     private boolean isDeleted;
 }
