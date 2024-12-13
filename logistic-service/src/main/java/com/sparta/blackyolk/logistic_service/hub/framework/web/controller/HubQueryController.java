@@ -1,5 +1,7 @@
 package com.sparta.blackyolk.logistic_service.hub.framework.web.controller;
 
+import com.sparta.blackyolk.logistic_service.common.exception.CustomException;
+import com.sparta.blackyolk.logistic_service.common.exception.ErrorCode;
 import com.sparta.blackyolk.logistic_service.common.pagenation.PaginationConstraint;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.data.HubEntity;
@@ -33,7 +35,7 @@ public class HubQueryController {
     ) {
         // TODO : user token, user role 받아야 하나?
         Hub hub = hubPersistenceAdapter.findByHubId(hubId).orElseThrow(
-
+            () -> new CustomException(ErrorCode.HUB_NOT_EXIST)
         );
 
         return HubGetResponse.toDTO(hub);
