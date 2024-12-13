@@ -1,6 +1,6 @@
 package com.sparta.msa_exam.auth.auth_service.user.entity;
 
-public enum UserRole {
+public enum UserRoleEnum {
     VENDOR_MANAGER("VENDOR_MANAGER"),
     HUB_DELIVERY("HUB_DELIVERY"),
     COMPANY_DELIVERY("COMPANY_DELIVERY"),
@@ -8,11 +8,11 @@ public enum UserRole {
     MASTER("MASTER");
     private final String role;
 
-    UserRole(String role) {
+    UserRoleEnum(String role) {
         this.role = role;
     }
 
-    public String getRole() {
+    public String getAuthority() {
         return this.role;
     }
 
