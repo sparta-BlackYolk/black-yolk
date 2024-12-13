@@ -4,37 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5c36263-2a60-427b-b245-b9c0ab6c0732" name="Changes" comment="user 엔티티생성">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/config/PasswordConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/config/QueryDslConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/config/WebSecurityConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/jwt/JwtAuthenticationFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/jwt/JwtAuthorizationFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/jwt/JwtUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/security/UserDetailsImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/security/UserDetailsServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/controller/UserController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/dto/CustomPageResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/dto/DeleteResponseDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/dto/LoginRequestDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/dto/LoginResponseDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/dto/RoleRequestDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/dto/RoleUpdateResponseDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/dto/UserResponseDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/dto/UserSignUpRequestDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/repository/UserRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/repository/UserRepositoryCustom.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/repository/UserRepositoryCustomImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+    <list default="true" id="d5c36263-2a60-427b-b245-b9c0ab6c0732" name="Changes" comment="user crud, jwt, 시큐리티 적용">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/entity/UserRole.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/msa_exam/auth/auth_service/user/entity/UserRoleEnum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/sparta/blackyolk/gateway/GatewayApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/com/sparta/blackyolk/gateway/GatewayApplication.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -227,7 +198,7 @@
       <workItem from="1733798761254" duration="596000" />
       <workItem from="1733966773564" duration="175000" />
       <workItem from="1733966980977" duration="24978000" />
-      <workItem from="1734055284233" duration="5430000" />
+      <workItem from="1734055284233" duration="6971000" />
     </task>
     <task id="LOCAL-00001" summary="project init">
       <option name="closed" value="true" />
@@ -277,7 +248,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734013562418</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="user crud, jwt, 시큐리티 적용">
+      <option name="closed" value="true" />
+      <created>1734061577763</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1734061577763</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -299,6 +278,7 @@
     <MESSAGE value="멀티 모듈 프로젝트 구조 생성" />
     <MESSAGE value="폴더 구조 생성" />
     <MESSAGE value="user 엔티티생성" />
-    <option name="LAST_COMMIT_MESSAGE" value="user 엔티티생성" />
+    <MESSAGE value="user crud, jwt, 시큐리티 적용" />
+    <option name="LAST_COMMIT_MESSAGE" value="user crud, jwt, 시큐리티 적용" />
   </component>
 </project>
