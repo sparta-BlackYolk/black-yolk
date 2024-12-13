@@ -5,6 +5,7 @@ public record HubRouteForCreate(
     String role,
     String departureHubId,
     String arrivalHubId,
+    String targetHubCenter,
     String timeSlot,
     double timeSlotWeight
 ) {
