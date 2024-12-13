@@ -4,7 +4,6 @@ import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.data.HubEntity;
 import com.sparta.blackyolk.logistic_service.hub.framework.repository.HubRepository;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRoute;
-import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForCreate;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForDelete;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForUpdate;
 import com.sparta.blackyolk.logistic_service.hubroute.application.port.HubRoutePersistencePort;
@@ -30,17 +29,16 @@ public class HubRoutePersistenceAdapter implements HubRoutePersistencePort {
     }
 
     @Override
-    public HubRoute createHubRoute(HubRouteForCreate hubRouteForCreate, BigDecimal distance, Integer duration) {
+    public HubRoute createHubRoute(Long userId, HubRoute hubRoute) {
 
-        HubEntity departureHubEntity = hubRepository.findByHubIdAndIsDeletedFalse(hubRouteForCreate.departureHubId()).get();
-        HubEntity arrivalHubEntity = hubRepository.findByHubIdAndIsDeletedFalse(hubRouteForCreate.arrivalHubId()).get();
+        HubEntity departureHubEntity = hubRepository.findByHubIdAndIsDeletedFalse(hubRoute.getDepartureHub().getHubId()).get();
+        HubEntity arrivalHubEntity = hubRepository.findByHubIdAndIsDeletedFalse(hubRoute.getArrivalHub().getHubId()).get();
 
         return hubRouteRepository.save(HubRouteEntity.toEntity(
-            hubRouteForCreate,
+            userId,
             departureHubEntity,
             arrivalHubEntity,
-            distance,
-            duration
+            hubRoute
         )).toDomain();
     }
 
