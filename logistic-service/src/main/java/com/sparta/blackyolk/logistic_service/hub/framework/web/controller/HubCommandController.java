@@ -5,8 +5,6 @@ import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForCreate
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForDelete;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForUpdate;
 import com.sparta.blackyolk.logistic_service.hub.application.usecase.HubUseCase;
-import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubAddressCreateRequest;
-import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubAddressUpdateRequest;
 import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubCreateRequest;
 import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubCreateResponse;
 import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubDeleteResponse;
@@ -43,7 +41,7 @@ public class HubCommandController {
         @Valid @RequestBody HubCreateRequest hubCreateRequest
     ) {
         // TODO : user token, user role 받기
-        HubForCreate hubForCreate = HubAddressCreateRequest.toDomain(
+        HubForCreate hubForCreate = HubCreateRequest.toDomain(
             TEST_USER,
             TEST_ROLE,
             hubCreateRequest
