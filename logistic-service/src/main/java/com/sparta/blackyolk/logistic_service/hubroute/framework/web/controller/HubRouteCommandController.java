@@ -2,16 +2,19 @@ package com.sparta.blackyolk.logistic_service.hubroute.framework.web.controller;
 
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRoute;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForCreate;
+import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForDelete;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForUpdate;
 import com.sparta.blackyolk.logistic_service.hubroute.application.usecase.HubRouteUseCase;
 import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRouteCreateRequest;
 import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRouteCreateResponse;
+import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRouteDeleteResponse;
 import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRouteUpdateRequest;
 import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRouteUpdateResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -67,6 +70,23 @@ public class HubRouteCommandController {
         HubRoute hubRoute = hubRouteUseCase.updateHubRoute(hubRouteForUpdate);
 
         return HubRouteUpdateResponse.toDTO(hubRoute);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/{hubRouteId}")
+    public HubRouteDeleteResponse deleteResponse(
+        @PathVariable(value = "hubId") String hubId,
+        @PathVariable(value = "hubRouteId") String hubRouteId
+    ) {
+        // TODO : user token, user role 받기
+        HubRouteForDelete hubRouteForDelete = new HubRouteForDelete(
+            TEST_USER,
+            hubId,
+            hubRouteId
+        );
+        HubRoute hubRoute = hubRouteUseCase.deleteHubRoute(hubRouteForDelete);
+
+        return HubRouteDeleteResponse.toDomain(hubRoute);
     }
 
 }
