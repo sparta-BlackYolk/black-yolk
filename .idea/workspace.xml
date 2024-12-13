@@ -4,8 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5c36263-2a60-427b-b245-b9c0ab6c0732" name="Changes" comment="user crud, jwt, 시큐리티 적용">
+
+    <list default="true" id="d5c36263-2a60-427b-b245-b9c0ab6c0732" name="Changes" comment="멀티 모듈 프로젝트 구조 생성">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logistic-service/src/main/java/com/sparta/blackyolk/logistic_service/LogisticServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/logistic-service/src/main/java/com/sparta/blackyolk/logistic_service/LogisticServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logistic-service/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/logistic-service/src/main/resources/application-dev.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,10 +27,11 @@
     <projectState path="$PROJECT_DIR$/company-service">
       <ProjectState />
     </projectState>
-    <projectState path="$PROJECT_DIR$/eureka-server">
+
+    <projectState path="$PROJECT_DIR$/gateway">
       <ProjectState />
     </projectState>
-    <projectState path="$PROJECT_DIR$/gateway">
+    <projectState path="$PROJECT_DIR$/logistic-service">
       <ProjectState />
     </projectState>
   </component>
@@ -92,20 +98,17 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Gradle.Build auth-service.executor": "Run",
-    "Gradle.Build eureka-server.executor": "Run",
-    "Gradle.Build gateway.executor": "Run",
+
+    "Gradle.Build logistic-service.executor": "Run",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
     "RequestMappingsPanelWidth0": "75",
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Spring Boot.AuthServiceApplication.executor": "Run",
-    "Spring Boot.EurekaServerApplication.executor": "Run",
-    "Spring Boot.GatewayApplication.executor": "Run",
+
+    "Spring Boot.LogisticServiceApplication.executor": "Run",
     "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "auth",
+    "git-widget-placeholder": "company",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/dudwn/scIntellij/spring-auth",
     "node.js.detected.package.eslint": "true",
@@ -149,7 +152,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.AuthServiceApplication">
+  <component name="RunManager" selected="Spring Boot.LogisticServiceApplication">
     <configuration name="AuthServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="auth-service.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.sparta.msa_exam.auth.auth_service.AuthServiceApplication" />
@@ -171,6 +174,45 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="LogisticServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="logistic-service.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sparta.blackyolk.logistic_service.LogisticServiceApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.sparta.blackyolk.logistic_service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrderServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="blackyolk.order-service.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sparta.msa_exam.order.order_service.OrderServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ProductServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="blackyolk.logistic.product-service.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sparta.blackyolk.product_service.ProductServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="blackyolk.user-service.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sparta.blackyolk.user_service.UserServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.LogisticServiceApplication" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
