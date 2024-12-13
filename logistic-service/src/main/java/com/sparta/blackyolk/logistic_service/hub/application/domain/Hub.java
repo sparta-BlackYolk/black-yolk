@@ -11,6 +11,7 @@ import lombok.Getter;
 public class Hub {
     private String hubId;
     private String hubName;
+    private String hubCenter;
     private HubStatus hubStatus;
     private HubCoordinate hubCoordinate;
     private HubAddress hubAddress;

@@ -5,6 +5,7 @@ public record HubForCreate(
     String role,
     Long hubManagerId,
     String name,
+    String center,
     String sido,
     String sigungu,
     String eupmyun,

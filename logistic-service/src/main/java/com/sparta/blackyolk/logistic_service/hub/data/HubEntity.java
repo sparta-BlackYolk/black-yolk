@@ -38,6 +38,9 @@ public class HubEntity extends BaseEntity {
     @Column(name = "hub_name", unique = true, nullable = false)
     private String hubName;
 
+    @Column(name = "hub_center", nullable = false)
+    private String hubCenter;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "hub_status", nullable = false)
     private HubStatus status = HubStatus.ACTIVE;
@@ -63,12 +66,14 @@ public class HubEntity extends BaseEntity {
         Long userId,
         Long hubManagerId,
         String hubName,
+        String hubCenter,
         HubCoordinateEmbeddable hubCoordinate,
         HubAddressEmbeddable hubAddress
     ) {
         super(userId, userId);
         this.hubManagerId = hubManagerId;
         this.hubName = hubName;
+        this.hubCenter = hubCenter;
         this.hubCoordinate = hubCoordinate;
         this.hubAddress = hubAddress;
     }
@@ -81,6 +86,7 @@ public class HubEntity extends BaseEntity {
         return HubEntity.builder()
             .userId(hubForCreate.userId())
             .hubName(hubForCreate.name())
+            .hubCenter(hubForCreate.center())
             .hubCoordinate(new HubCoordinateEmbeddable(axisX, axisY))
             .hubAddress(HubAddressEmbeddable.builder()
                 .sido(hubForCreate.sido())
@@ -99,6 +105,7 @@ public class HubEntity extends BaseEntity {
         return new Hub(
             this.hubId,
             this.hubName,
+            this.hubCenter,
             this.status,
             this.hubCoordinate.toDomain(),
             this.hubAddress.toDomain(),
