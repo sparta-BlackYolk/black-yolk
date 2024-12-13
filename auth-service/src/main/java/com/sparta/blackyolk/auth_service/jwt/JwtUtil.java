@@ -57,7 +57,8 @@ public class JwtUtil {
 
         String token =  Jwts.builder()
                 .setSubject(username) // 사용자 식별자값(ID)
-                .claim(AUTHORIZATION_KEY, role) // 사용자 권한
+//                .claim(AUTHORIZATION_KEY, role.name()) // 사용자 권한
+                .claim("role", role.name())
                 .setExpiration(expiration) // 만료 시간
                 .setIssuedAt(date) // 발급일
                 .signWith(key, signatureAlgorithm) // 암호화 알고리즘

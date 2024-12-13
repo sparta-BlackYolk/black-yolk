@@ -91,7 +91,8 @@ public class LocalJwtAuthenticationFilter implements GlobalFilter {
             // 헤더에 사용자 정보 추가
             exchange.getRequest().mutate()
                     .header("X-User-Id", claims.getSubject()) // 'sub' 필드 사용
-                    .header("X-Role", claims.get("auth").toString()) // 'auth' 필드 사용
+                    .header("X-Role", claims.get("role").toString()) // 역할(Role)을 새로운 헤더에 추가
+//                    .header("X-Role", claims.get("auth").toString()) // 'auth' 필드 사용
                     .build();
 
             return true; // 검증 성공
