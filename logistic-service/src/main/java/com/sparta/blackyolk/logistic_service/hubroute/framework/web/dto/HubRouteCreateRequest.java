@@ -15,11 +15,13 @@ public record HubRouteCreateRequest(
 
     public static HubRouteForCreate toDomain(
         Long userId,
+        String role,
         String hubId,
         HubRouteCreateRequest hubRouteCreateRequest
     ) {
         return new HubRouteForCreate(
             userId,
+            role,
             hubId,
             hubRouteCreateRequest.targetHubId,
             hubRouteCreateRequest.timeSlot,

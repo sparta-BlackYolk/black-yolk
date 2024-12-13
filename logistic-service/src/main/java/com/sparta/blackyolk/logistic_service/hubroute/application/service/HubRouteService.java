@@ -1,5 +1,7 @@
 package com.sparta.blackyolk.logistic_service.hubroute.application.service;
 
+import com.sparta.blackyolk.logistic_service.common.exception.CustomException;
+import com.sparta.blackyolk.logistic_service.common.exception.ErrorCode;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.application.port.HubPersistencePort;
 import com.sparta.blackyolk.logistic_service.hub.application.service.HubService;
@@ -32,36 +34,33 @@ public class HubRouteService implements HubRouteUseCase {
     public HubRoute getHubRoute(HubRouteForRead hubRouteForRead) {
 
         HubRoute hubRoute = validateHubRoute(hubRouteForRead.hubRouteId());
+        validateDepartureHubInRoute(hubRoute, hubRouteForRead.departureHubId());
 
-        // TODO : 예외처리 하기
-        if (!hubRoute.isDepartureHubBelongToHubRoute(hubRouteForRead.departureHubId())) {
-
-        }
-
-        // TODO : 예외처리하기
         return hubRoute;
     }
 
     @Override
     public HubRoute createHubRoute(HubRouteForCreate hubRouteForCreate) {
 
-        // TODO : 사용자 권한 확인
+        validateMaster(hubRouteForCreate.role());
 
         List<Hub> hubs = hubPersistencePort.findHubsByIds(
             List.of(hubRouteForCreate.departureHubId(), hubRouteForCreate.arrivalHubId())
         );
 
-        // TODO : 예외처리 추가하기
         Hub departureHub = hubs.stream()
             .filter(hub -> hub.getHubId().equals(hubRouteForCreate.departureHubId()))
             .findFirst()
-            .orElseThrow();
+            .orElseThrow(
+                () -> new CustomException(ErrorCode.HUB_NOT_EXIST)
+            );
 
-        // TODO : 예외처리 추가하기
         Hub arrivalHub = hubs.stream()
             .filter(hub -> hub.getHubId().equals(hubRouteForCreate.arrivalHubId()))
             .findFirst()
-            .orElseThrow();
+            .orElseThrow(
+                () -> new CustomException(ErrorCode.HUB_NOT_EXIST)
+            );
 
         HubRoute hubRoute = new HubRoute(
             departureHub,
@@ -70,21 +69,15 @@ public class HubRouteService implements HubRouteUseCase {
             hubRouteForCreate.timeSlotWeight()
         );
 
-        // TODO : 예외처리 추가하기
         return hubRoutePersistencePort.createHubRoute(hubRouteForCreate.userId(), hubRoute);
     }
 
     @Override
     public HubRoute updateHubRoute(HubRouteForUpdate hubRouteForUpdate) {
 
-        // TODO : 사용자 권한 확인
-
+        validateMaster(hubRouteForUpdate.role());
         HubRoute hubRoute = validateHubRoute(hubRouteForUpdate.hubRouteId());
-
-        // TODO : 예외처리 하기
-        if (!hubRoute.isDepartureHubBelongToHubRoute(hubRouteForUpdate.departureHubId())) {
-
-        }
+        validateDepartureHubInRoute(hubRoute, hubRouteForUpdate.departureHubId());
 
         Hub arrivalHub = Optional.ofNullable(hubRouteForUpdate.arrivalHubId())
             .map(hubService::validateHub)
@@ -112,21 +105,28 @@ public class HubRouteService implements HubRouteUseCase {
     @Override
     public HubRoute deleteHubRoute(HubRouteForDelete hubRouteForDelete) {
 
-        // TODO : 사용자 권한 확인
+        validateMaster(hubRouteForDelete.role());
         HubRoute hubRoute = validateHubRoute(hubRouteForDelete.hubRouteId());
-
-        // TODO : 예외처리 하기
-        if (!hubRoute.isDepartureHubBelongToHubRoute(hubRouteForDelete.departureHubId())) {
-
-        }
+        validateDepartureHubInRoute(hubRoute, hubRouteForDelete.departureHubId());
 
         return hubRoutePersistencePort.deleteHubRoute(hubRouteForDelete);
     }
 
     public HubRoute validateHubRoute(String hubRouteId) {
-        // TODO : 예외처리하기
         return hubRoutePersistencePort.findByHubRouteId(hubRouteId).orElseThrow(
-
+            () -> new CustomException(ErrorCode.HUB_ROUTE_NOT_EXIST)
         );
+    }
+
+    private void validateMaster(String role) {
+        if (!"MASTER".equals(role)) {
+            throw new CustomException(ErrorCode.ACCESS_DENIED);
+        }
+    }
+
+    private void validateDepartureHubInRoute(HubRoute hubRoute, String departureHubId) {
+        if (!hubRoute.isDepartureHubBelongToHubRoute(departureHubId)) {
+            throw new CustomException(ErrorCode.HUB_ROUTE_BAD_REQUEST);
+        }
     }
 }
