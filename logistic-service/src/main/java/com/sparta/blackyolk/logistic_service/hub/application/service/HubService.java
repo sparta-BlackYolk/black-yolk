@@ -83,4 +83,11 @@ public class HubService implements HubUseCase {
 
         return hubPersistencePort.deleteHub(hubForDelete);
     }
+
+    public Hub validateHub(String hubId) {
+        // TODO : 예외처리하기
+        return hubPersistencePort.findByHubId(hubId).orElseThrow(
+
+        );
+    }
 }
