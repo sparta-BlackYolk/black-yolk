@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-
-      <module fileurl="file://$PROJECT_DIR$/.idea/black-yolk.iml" filepath="$PROJECT_DIR$/.idea/black-yolk.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/logistic-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/logistic-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/auth-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/auth-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/gateway.main.iml" filepath="$PROJECT_DIR$/.idea/modules/gateway.main.iml" />
     </modules>
   </component>
 </project>
