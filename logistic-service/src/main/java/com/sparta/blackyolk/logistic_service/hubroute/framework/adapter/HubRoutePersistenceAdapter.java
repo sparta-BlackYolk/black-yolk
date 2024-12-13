@@ -69,13 +69,10 @@ public class HubRoutePersistenceAdapter implements HubRoutePersistencePort {
 
     @Transactional
     @Override
-    public HubRoute updateHubRoute(HubRouteForUpdate hubRouteForUpdate, Hub arrivalHub, BigDecimal distance, Integer duration) {
+    public HubRoute updateHubRoute(HubRouteForUpdate hubRouteForUpdate) {
 
         HubRouteEntity hubRouteEntity = hubRouteReadOnlyRepository.findByHubRouteIdAndIsDeletedFalse(hubRouteForUpdate.hubRouteId()).get();
-        HubEntity arrivalHubEntity = arrivalHub != null ?
-        hubReadOnlyRepository.findByHubIdAndIsDeletedFalse(hubRouteForUpdate.arrivalHubId()).get() : null;
-
-        hubRouteEntity.update(hubRouteForUpdate, arrivalHubEntity, distance, duration);
+        hubRouteEntity.update(hubRouteForUpdate);
 
         return hubRouteEntity.toDomain();
     }

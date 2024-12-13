@@ -6,8 +6,6 @@ import com.sparta.blackyolk.logistic_service.hubroute.data.vo.HubRouteStatus;
 import com.sparta.blackyolk.logistic_service.hubroute.framework.web.validation.ValidTimeSlot;
 
 public record HubRouteUpdateRequest(
-    String targetHubId,
-
     @ValidTimeSlot
     String timeSlot,
 
@@ -29,7 +27,6 @@ public record HubRouteUpdateRequest(
             role,
             hubRouteId,
             departureHubId,
-            hubRouteUpdateRequest.targetHubId,
             hubRouteUpdateRequest.timeSlot,
             weight,
             hubRouteUpdateRequest.status
