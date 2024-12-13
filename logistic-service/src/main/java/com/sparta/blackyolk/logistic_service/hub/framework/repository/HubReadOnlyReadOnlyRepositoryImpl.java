@@ -68,7 +68,15 @@ public class HubReadOnlyReadOnlyRepositoryImpl implements HubReadOnlyRepository 
     select h
     from HubEntity h
     where h.isDeleted = false
-      and (h.hubName like concat('%', :keyword, '%') or :keyword is null)
+      and (
+          lower(h.hubName) like concat('%', :keyword, '%') or
+          lower(h.hubAddress.sido) like concat('%', :keyword, '%') or
+          lower(h.hubAddress.sigungu) like concat('%', :keyword, '%') or
+          lower(h.hubAddress.eupmyun) like concat('%', :keyword, '%') or
+          lower(h.hubAddress.roadName) like concat('%', :keyword, '%') or
+          lower(h.hubAddress.buildingNumber) like concat('%', :keyword, '%') or
+          lower(h.hubAddress.zipCode) like concat('%', :keyword, '%')
+      )
     order by h.createdAt desc
 
     select count(h)
