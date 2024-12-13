@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class HubRouteCalculatorImpl implements HubRouteCalculator {
 
-    // TODO : 허브 간 이동 외부 API 연결 -> Impl 코드 완성하기
+    // TODO : Impl 코드 완성하기 - 미리 계산해놓은 것 반영시키는 코드로 작성하기
     @Override
     public BigDecimal getDistance(Hub departureHub, Hub arrivalHub) {
         return new BigDecimal("50.5");
     }
 
-    // TODO : 허브 간 이동 외부 API 연결 -> Impl 코드 완성하기
+    // TODO : Impl 코드 완성하기 - 미리 계산해놓은 것 반영시키는 코드로 작성하기
     @Override
     public Integer getDuration(BigDecimal distance) {
         return 40;
