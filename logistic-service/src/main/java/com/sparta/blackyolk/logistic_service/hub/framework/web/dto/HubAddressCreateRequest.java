@@ -27,10 +27,12 @@ public record HubAddressCreateRequest(
 
     public static HubForCreate toDomain(
         Long userId,
+        String role,
         HubCreateRequest hubCreateRequest
     ) {
         return new HubForCreate(
             userId,
+            role,
             hubCreateRequest.hubManagerId(),
             hubCreateRequest.name(),
             hubCreateRequest.address().sido,

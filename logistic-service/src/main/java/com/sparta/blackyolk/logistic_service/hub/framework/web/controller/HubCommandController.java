@@ -35,8 +35,7 @@ public class HubCommandController {
 
     // TODO : 지우기
     private final Long TEST_USER = 1L;
-
-    // TODO : validated 어노테이션 사용해보기
+    private final String TEST_ROLE = "MASTER";
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
@@ -46,6 +45,7 @@ public class HubCommandController {
         // TODO : user token, user role 받기
         HubForCreate hubForCreate = HubAddressCreateRequest.toDomain(
             TEST_USER,
+            TEST_ROLE,
             hubCreateRequest
         );
         Hub hub = hubUseCase.createHub(hubForCreate);
@@ -62,6 +62,7 @@ public class HubCommandController {
         // TODO : user token, user role 받기
         HubForUpdate hubForUpdate = HubUpdateRequest.toDomain(
             TEST_USER,
+            TEST_ROLE,
             hubId,
             hubUpdateRequest
         );
@@ -78,6 +79,7 @@ public class HubCommandController {
         // TODO : user token, user role 받기
         HubForDelete hubForDelete = new HubForDelete(
             TEST_USER,
+            TEST_ROLE,
             hubId
         );
         Hub hub = hubUseCase.deleteHub(hubForDelete);
