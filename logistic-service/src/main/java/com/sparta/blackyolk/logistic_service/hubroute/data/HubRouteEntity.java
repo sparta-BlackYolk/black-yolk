@@ -86,20 +86,19 @@ public class HubRouteEntity extends BaseEntity {
     }
 
     public static HubRouteEntity toEntity(
-        HubRouteForCreate hubRouteForCreate,
+        Long userId,
         HubEntity departureHubEntity,
         HubEntity arrivalHubEntity,
-        BigDecimal distance,
-        Integer duration
+        HubRoute hubRoute
     ) {
         return new HubRouteEntity(
-            hubRouteForCreate.userId(),
+            userId,
             departureHubEntity,
             arrivalHubEntity,
-            duration,
-            distance,
-            hubRouteForCreate.timeSlot(),
-            hubRouteForCreate.timeSlotWeight()
+            hubRoute.getDuration(),
+            hubRoute.getDistance(),
+            hubRoute.getTimeSlot(),
+            hubRoute.getTimeSlotWeight()
         );
     }
 

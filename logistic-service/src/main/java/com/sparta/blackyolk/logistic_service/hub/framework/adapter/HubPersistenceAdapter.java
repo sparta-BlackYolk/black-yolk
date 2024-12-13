@@ -8,7 +8,9 @@ import com.sparta.blackyolk.logistic_service.hub.application.port.HubPersistence
 import com.sparta.blackyolk.logistic_service.hub.framework.repository.HubRepository;
 import com.sparta.blackyolk.logistic_service.hub.data.HubEntity;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,13 @@ public class HubPersistenceAdapter implements HubPersistencePort {
         return hubRepository.findByHubIdAndIsDeletedFalse(hubId)
             .map(HubEntity::toDomain)
             .or(Optional::empty);
+    }
+
+    public List<Hub> findHubsByIds(List<String> hubIds) {
+        return hubRepository.findByHubIdsAndIsDeletedFalse(hubIds)
+            .stream()
+            .map(HubEntity::toDomain)
+            .collect(Collectors.toList());
     }
 
     @Override

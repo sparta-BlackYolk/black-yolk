@@ -1,6 +1,7 @@
 package com.sparta.blackyolk.logistic_service.hubroute.application.service;
 
 import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
+import com.sparta.blackyolk.logistic_service.hub.application.port.HubPersistencePort;
 import com.sparta.blackyolk.logistic_service.hub.application.service.HubService;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRoute;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForCreate;
@@ -11,6 +12,7 @@ import com.sparta.blackyolk.logistic_service.hubroute.application.port.HubRouteC
 import com.sparta.blackyolk.logistic_service.hubroute.application.port.HubRoutePersistencePort;
 import com.sparta.blackyolk.logistic_service.hubroute.application.usecase.HubRouteUseCase;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 public class HubRouteService implements HubRouteUseCase {
 
     private final HubRoutePersistencePort hubRoutePersistencePort;
+    private final HubPersistencePort hubPersistencePort;
     private final HubService hubService;
     private final HubRouteCalculator hubRouteCalculator;
 
@@ -44,15 +47,31 @@ public class HubRouteService implements HubRouteUseCase {
 
         // TODO : 사용자 권한 확인
 
-        Hub departureHub = hubService.validateHub(hubRouteForCreate.departureHubId());
-        Hub arrivalHub = hubService.validateHub(hubRouteForCreate.arrivalHubId());
-
-        // TODO : service 로직 말고 더 좋은 곳에 있을 수 있는가?
-        BigDecimal distance = hubRouteCalculator.getDistance(departureHub, arrivalHub);
-        Integer duration = hubRouteCalculator.getDuration(distance);
+        List<Hub> hubs = hubPersistencePort.findHubsByIds(
+            List.of(hubRouteForCreate.departureHubId(), hubRouteForCreate.arrivalHubId())
+        );
 
         // TODO : 예외처리 추가하기
-        return hubRoutePersistencePort.createHubRoute(hubRouteForCreate, distance, duration);
+        Hub departureHub = hubs.stream()
+            .filter(hub -> hub.getHubId().equals(hubRouteForCreate.departureHubId()))
+            .findFirst()
+            .orElseThrow();
+
+        // TODO : 예외처리 추가하기
+        Hub arrivalHub = hubs.stream()
+            .filter(hub -> hub.getHubId().equals(hubRouteForCreate.arrivalHubId()))
+            .findFirst()
+            .orElseThrow();
+
+        HubRoute hubRoute = new HubRoute(
+            departureHub,
+            arrivalHub,
+            hubRouteForCreate.timeSlot(),
+            hubRouteForCreate.timeSlotWeight()
+        );
+
+        // TODO : 예외처리 추가하기
+        return hubRoutePersistencePort.createHubRoute(hubRouteForCreate.userId(), hubRoute);
     }
 
     @Override

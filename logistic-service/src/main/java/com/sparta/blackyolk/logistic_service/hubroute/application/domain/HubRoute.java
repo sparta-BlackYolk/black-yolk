@@ -19,7 +19,31 @@ public class HubRoute {
     private BigDecimal distance;
     private double timeSlotWeight;
 
+    public HubRoute(
+        Hub departureHub,
+        Hub arrivalHub,
+        String timeSlot,
+        double timeSlotWeight
+    ) {
+        this.departureHub = departureHub;
+        this.arrivalHub = arrivalHub;
+        this.timeSlot = timeSlot;
+        this.timeSlotWeight = timeSlotWeight;
+        this.distance = calculateDistance();
+        this.duration = calculateDuration();
+    }
+
     public boolean isDepartureHubBelongToHubRoute(String departureHubId) {
         return departureHubId.equals(departureHub.getHubId());
+    }
+
+    // TODO : 코드 완성하기 - 미리 계산해놓은 것 반영시키는 코드로 작성하기
+    public BigDecimal calculateDistance() {
+        return new BigDecimal("50.5");
+    }
+
+    // TODO : 코드 완성하기 - 미리 계산해놓은 것 반영시키는 코드로 작성하기
+    public Integer calculateDuration() {
+        return 40;
     }
 }
