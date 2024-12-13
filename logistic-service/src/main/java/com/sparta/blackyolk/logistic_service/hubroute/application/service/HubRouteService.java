@@ -4,6 +4,7 @@ import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.application.service.HubService;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRoute;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForCreate;
+import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForDelete;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForUpdate;
 import com.sparta.blackyolk.logistic_service.hubroute.application.port.HubRouteCalculator;
 import com.sparta.blackyolk.logistic_service.hubroute.application.port.HubRoutePersistencePort;
@@ -72,6 +73,20 @@ public class HubRouteService implements HubRouteUseCase {
             : null;
 
         return hubRoutePersistencePort.updateHubRoute(hubRouteForUpdate, arrivalHub, distance, duration);
+    }
+
+    @Override
+    public HubRoute deleteHubRoute(HubRouteForDelete hubRouteForDelete) {
+
+        // TODO : 사용자 권한 확인
+        HubRoute hubRoute = validateHubRoute(hubRouteForDelete.hubRouteId());
+
+        // TODO : 예외처리 하기
+        if (!hubRoute.isDepartureHubBelongToHubRoute(hubRouteForDelete.departureHubId())) {
+
+        }
+
+        return hubRoutePersistencePort.deleteHubRoute(hubRouteForDelete);
     }
 
     public HubRoute validateHubRoute(String hubRouteId) {
