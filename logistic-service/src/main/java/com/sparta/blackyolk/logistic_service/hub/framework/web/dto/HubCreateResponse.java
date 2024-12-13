@@ -7,6 +7,7 @@ public record HubCreateResponse(
     String id,
     Long hubManagerId,
     String name,
+    String center,
     HubStatus status,
     HubCoordinateResponse coordinate,
     HubAddressResponse address
@@ -17,6 +18,7 @@ public record HubCreateResponse(
             hub.getHubId(),
             hub.getHubManagerId(),
             hub.getHubName(),
+            hub.getHubCenter(),
             hub.getHubStatus(),
             HubCoordinateResponse.fromDomain(hub.getHubCoordinate()),
             HubAddressResponse.fromDomain(hub.getHubAddress())
