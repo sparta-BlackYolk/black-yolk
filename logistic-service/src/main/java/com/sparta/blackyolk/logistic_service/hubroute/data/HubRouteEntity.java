@@ -116,13 +116,10 @@ public class HubRouteEntity extends BaseEntity {
         );
     }
 
-    public void update(HubRouteForUpdate hubRouteForUpdate, HubEntity arrivalHubEntity, BigDecimal distance, Integer duration) {
+    public void update(HubRouteForUpdate hubRouteForUpdate) {
         super.updateFrom(hubRouteForUpdate.userId());
-        Optional.ofNullable(arrivalHubEntity).ifPresent(value -> this.arrivalHub = value);
         Optional.ofNullable(hubRouteForUpdate.timeSlot()).ifPresent(value -> this.timeSlot = value);
         Optional.ofNullable(hubRouteForUpdate.timeSlotWeight()).ifPresent(value -> this.timeSlotWeight = value);
-        Optional.ofNullable(distance).ifPresent(value -> this.distance = value);
-        Optional.ofNullable(duration).ifPresent(value -> this.duration = value);
         Optional.ofNullable(hubRouteForUpdate.status()).ifPresent(value -> this.status = value);
     }
 

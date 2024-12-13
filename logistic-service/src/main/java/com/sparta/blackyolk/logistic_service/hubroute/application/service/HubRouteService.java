@@ -86,27 +86,7 @@ public class HubRouteService implements HubRouteUseCase {
         HubRoute hubRoute = validateHubRoute(hubRouteForUpdate.hubRouteId());
         validateDepartureHubInRoute(hubRoute, departureHub);
 
-        Hub arrivalHub = Optional.ofNullable(hubRouteForUpdate.arrivalHubId())
-            .map(hubService::validateHub)
-            .orElse(null);
-
-        // TODO : 실제 로직으로 대체하기
-//        BigDecimal distance = arrivalHub != null
-//            ? hubRouteCalculator.getDistance(hubRoute.getDepartureHub(), arrivalHub)
-//            : null;
-//
-//        Integer duration = distance != null
-//            ? hubRouteCalculator.getDuration(distance)
-//            : null;
-        BigDecimal distance = arrivalHub != null
-            ? new BigDecimal("20.5")
-            : null;
-
-        Integer duration = distance != null
-            ? 30
-            : null;
-
-        return hubRoutePersistencePort.updateHubRoute(hubRouteForUpdate, arrivalHub, distance, duration);
+        return hubRoutePersistencePort.updateHubRoute(hubRouteForUpdate);
     }
 
     @Override
