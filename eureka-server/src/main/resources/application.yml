@@ -1,0 +1,16 @@
+server:
+  port: 19090 # Eureka Server가 실행될 포트
+
+spring:
+  application:
+    name: eureka-server # 애플리케이션 이름 (Eureka Server 식별용)
+
+
+eureka:
+  client:
+    register-with-eureka: false # 다른 Eureka Server에 등록하지 않음 (단독 서버)
+    fetch-registry: false # 다른 Eureka 서버로부터 레지스트리를 가져오지 않음
+    service-url:
+      defaultZone: http://localhost:19090/eureka/ # Eureka 클라이언트의 서비스 URL
+  instance:
+    hostname: localhost # Eureka Server의 호스트 이름
