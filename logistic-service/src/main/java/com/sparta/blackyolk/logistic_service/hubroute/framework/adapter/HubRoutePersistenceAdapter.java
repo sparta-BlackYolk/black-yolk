@@ -10,6 +10,7 @@ import com.sparta.blackyolk.logistic_service.hubroute.application.port.HubRouteP
 import com.sparta.blackyolk.logistic_service.hubroute.data.HubRouteEntity;
 import com.sparta.blackyolk.logistic_service.hubroute.framework.repository.HubRouteRepository;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -28,11 +29,21 @@ public class HubRoutePersistenceAdapter implements HubRoutePersistencePort {
             .or(Optional::empty);
     }
 
+    @Transactional
     @Override
     public HubRoute createHubRoute(Long userId, HubRoute hubRoute) {
 
-        HubEntity departureHubEntity = hubRepository.findByHubIdAndIsDeletedFalse(hubRoute.getDepartureHub().getHubId()).get();
-        HubEntity arrivalHubEntity = hubRepository.findByHubIdAndIsDeletedFalse(hubRoute.getArrivalHub().getHubId()).get();
+        List<HubEntity> hubEntities = hubRepository.findByHubIdsAndIsDeletedFalse(
+            List.of(hubRoute.getDepartureHub().getHubId(), hubRoute.getArrivalHub().getHubId())
+        );
+
+        HubEntity departureHubEntity = hubEntities.stream()
+            .filter(hubEntity -> hubEntity.getHubId().equals(hubRoute.getDepartureHub().getHubId()))
+            .findFirst().get();
+
+        HubEntity arrivalHubEntity = hubEntities.stream()
+            .filter(hubEntity -> hubEntity.getHubId().equals(hubRoute.getArrivalHub().getHubId()))
+            .findFirst().get();
 
         return hubRouteRepository.save(HubRouteEntity.toEntity(
             userId,
