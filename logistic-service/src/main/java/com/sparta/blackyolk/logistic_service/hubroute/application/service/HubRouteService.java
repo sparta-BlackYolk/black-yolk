@@ -4,10 +4,12 @@ import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.application.service.HubService;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRoute;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForCreate;
+import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForUpdate;
 import com.sparta.blackyolk.logistic_service.hubroute.application.port.HubRouteCalculator;
 import com.sparta.blackyolk.logistic_service.hubroute.application.port.HubRoutePersistencePort;
 import com.sparta.blackyolk.logistic_service.hubroute.application.usecase.HubRouteUseCase;
 import java.math.BigDecimal;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,23 +31,53 @@ public class HubRouteService implements HubRouteUseCase {
         Hub departureHub = hubService.validateHub(hubRouteForCreate.departureHubId());
         Hub arrivalHub = hubService.validateHub(hubRouteForCreate.arrivalHubId());
 
-        // TODO : 허브 간 이동 외부 API 연결 -> Impl 코드 완성하기, 궁금한 거 - 도메인 이나 도메인 서비스로 따로 분리할 수 있을까?
-        BigDecimal distance = hubRouteCalculator.getDistance(
-            departureHub,
-            arrivalHub
-        );
+        // TODO : service 로직 말고 더 좋은 곳에 있을 수 있는가?
+        BigDecimal distance = hubRouteCalculator.getDistance(departureHub, arrivalHub);
         Integer duration = hubRouteCalculator.getDuration(distance);
 
-        HubRoute hubRoute = new HubRoute(
-            departureHub,
-            arrivalHub,
-            hubRouteForCreate.timeSlot(),
-            duration,
-            distance,
-            hubRouteForCreate.timeSlotWeight()
-        );
-
         // TODO : 예외처리 추가하기
-        return hubRoutePersistencePort.createHubRoute(hubRouteForCreate.userId(), hubRoute);
+        return hubRoutePersistencePort.createHubRoute(hubRouteForCreate, distance, duration);
+    }
+
+    @Override
+    public HubRoute updateHubRoute(HubRouteForUpdate hubRouteForUpdate) {
+
+        // TODO : 사용자 권한 확인
+
+        HubRoute hubRoute = validateHubRoute(hubRouteForUpdate.hubRouteId());
+
+        // TODO : 예외처리 하기
+        if (!hubRoute.isDepartureHubBelongToHubRoute(hubRouteForUpdate.departureHubId())) {
+
+        }
+
+        Hub arrivalHub = Optional.ofNullable(hubRouteForUpdate.arrivalHubId())
+            .map(hubService::validateHub)
+            .orElse(null);
+
+        // TODO : 실제 로직으로 대체하기
+//        BigDecimal distance = arrivalHub != null
+//            ? hubRouteCalculator.getDistance(hubRoute.getDepartureHub(), arrivalHub)
+//            : null;
+//
+//        Integer duration = distance != null
+//            ? hubRouteCalculator.getDuration(distance)
+//            : null;
+        BigDecimal distance = arrivalHub != null
+            ? new BigDecimal("20.5")
+            : null;
+
+        Integer duration = distance != null
+            ? 30
+            : null;
+
+        return hubRoutePersistencePort.updateHubRoute(hubRouteForUpdate, arrivalHub, distance, duration);
+    }
+
+    public HubRoute validateHubRoute(String hubRouteId) {
+        // TODO : 예외처리하기
+        return hubRoutePersistencePort.findByHubRouteId(hubRouteId).orElseThrow(
+
+        );
     }
 }

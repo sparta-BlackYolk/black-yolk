@@ -3,6 +3,8 @@ package com.sparta.blackyolk.logistic_service.hubroute.data;
 import com.sparta.blackyolk.logistic_service.common.BaseEntity;
 import com.sparta.blackyolk.logistic_service.hub.data.HubEntity;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRoute;
+import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForCreate;
+import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForUpdate;
 import com.sparta.blackyolk.logistic_service.hubroute.data.vo.HubRouteStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +17,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -82,19 +85,20 @@ public class HubRouteEntity extends BaseEntity {
     }
 
     public static HubRouteEntity toEntity(
-        Long userId,
-        HubRoute hubRoute,
+        HubRouteForCreate hubRouteForCreate,
         HubEntity departureHubEntity,
-        HubEntity arrivalHubEntity
+        HubEntity arrivalHubEntity,
+        BigDecimal distance,
+        Integer duration
     ) {
         return new HubRouteEntity(
-            userId,
+            hubRouteForCreate.userId(),
             departureHubEntity,
             arrivalHubEntity,
-            hubRoute.getDuration(),
-            hubRoute.getDistance(),
-            hubRoute.getTimeSlot(),
-            hubRoute.getTimeSlotWeight()
+            duration,
+            distance,
+            hubRouteForCreate.timeSlot(),
+            hubRouteForCreate.timeSlotWeight()
         );
     }
 
@@ -110,5 +114,15 @@ public class HubRouteEntity extends BaseEntity {
             this.distance,
             this.timeSlotWeight
         );
+    }
+
+    public void update(HubRouteForUpdate hubRouteForUpdate, HubEntity arrivalHubEntity, BigDecimal distance, Integer duration) {
+        super.updateFrom(hubRouteForUpdate.userId());
+        Optional.ofNullable(arrivalHubEntity).ifPresent(value -> this.arrivalHub = value);
+        Optional.ofNullable(hubRouteForUpdate.timeSlot()).ifPresent(value -> this.timeSlot = value);
+        Optional.ofNullable(hubRouteForUpdate.timeSlotWeight()).ifPresent(value -> this.timeSlotWeight = value);
+        Optional.ofNullable(distance).ifPresent(value -> this.distance = value);
+        Optional.ofNullable(duration).ifPresent(value -> this.duration = value);
+        Optional.ofNullable(hubRouteForUpdate.status()).ifPresent(value -> this.status = value);
     }
 }

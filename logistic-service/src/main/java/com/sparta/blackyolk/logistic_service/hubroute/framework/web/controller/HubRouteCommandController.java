@@ -2,15 +2,19 @@ package com.sparta.blackyolk.logistic_service.hubroute.framework.web.controller;
 
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRoute;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForCreate;
+import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForUpdate;
 import com.sparta.blackyolk.logistic_service.hubroute.application.usecase.HubRouteUseCase;
 import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRouteCreateRequest;
 import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRouteCreateResponse;
+import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRouteUpdateRequest;
+import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRouteUpdateResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -44,6 +48,25 @@ public class HubRouteCommandController {
         HubRoute hubRoute = hubRouteUseCase.createHubRoute(hubRouteForCreate);
 
         return HubRouteCreateResponse.toDTO(hubRoute);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{hubRouteId}")
+    public HubRouteUpdateResponse updateHubRoute(
+        @PathVariable(value = "hubId") String hubId,
+        @PathVariable(value = "hubRouteId") String hubRouteId,
+        @Valid @RequestBody HubRouteUpdateRequest hubRouteUpdateRequest
+    ) {
+        // TODO : user token, user role 받기
+        HubRouteForUpdate hubRouteForUpdate = HubRouteUpdateRequest.toDomain(
+            TEST_USER,
+            hubId,
+            hubRouteId,
+            hubRouteUpdateRequest
+        );
+        HubRoute hubRoute = hubRouteUseCase.updateHubRoute(hubRouteForUpdate);
+
+        return HubRouteUpdateResponse.toDTO(hubRoute);
     }
 
 }
