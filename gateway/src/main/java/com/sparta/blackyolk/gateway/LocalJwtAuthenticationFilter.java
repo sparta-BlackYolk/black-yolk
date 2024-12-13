@@ -31,27 +31,40 @@ public class LocalJwtAuthenticationFilter implements GlobalFilter {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         // 요청 URI 경로를 가져옴
         String path = exchange.getRequest().getURI().getPath();
-        // 특정 경로에 대해 필터를 건너뜀 (예: /auth/signIn, /auth/signUp)
+        log.info("Incoming request path: {}", path); // 요청 경로 로그 출력
+
+        // 특정 경로에 대해 필터를 건너뜀 (예: /auth/signup, /auth/login)
         if (path.equals("/api/auth/users/signup") || path.equals("/api/auth/users/login")) {
-            return chain.filter(exchange);  // /signIn 및 /signUp 경로는 필터 적용하지 않음
+            log.info("Path {} is excluded from authentication", path); // 인증 제외 경로 로그 출력
+            return chain.filter(exchange);
         }
 
         // Authorization 헤더에서 토큰 추출
         String token = extractToken(exchange);
+        log.info("Extracted token: {}", token); // 추출된 토큰 로그 출력
 
         // 토큰이 없거나 유효하지 않을 경우 401 (Unauthorized) 응답
-        if (token == null || !validateToken(token, exchange)) {
-            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED); // 401 상태 코드 설정
-            return exchange.getResponse().setComplete(); // 요청 종료
+        if (token == null) {
+            log.warn("Token is missing in the request"); // 토큰이 없는 경우 경고 로그 출력
+            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+            return exchange.getResponse().setComplete();
         }
 
-        // 필터 체인을 통해 다음 필터로 요청을 전달
-        return chain.filter(exchange);
+        // JWT 토큰 검증
+        if (!validateToken(token, exchange)) {
+            log.warn("Token validation failed for token: {}", token); // 검증 실패 시 경고 로그 출력
+            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+            return exchange.getResponse().setComplete();
+        }
+
+        log.info("Token validation succeeded"); // 검증 성공 로그 출력
+        return chain.filter(exchange); // 필터 체인을 통해 요청 전달
     }
 
     // Authorization 헤더에서 Bearer 토큰을 추출하는 메서드
     private String extractToken(ServerWebExchange exchange) {
         String authHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
+        log.info("Authorization header: {}", authHeader); // Authorization 헤더 로그 출력
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             return authHeader.substring(7); // "Bearer " 제거 후 토큰 반환
         }
@@ -63,25 +76,29 @@ public class LocalJwtAuthenticationFilter implements GlobalFilter {
         try {
             // Secret Key를 기반으로 HMAC-SHA 키 생성
             SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey));
+            log.info("Decoded secret key: {}", key);
 
             // 토큰을 파싱하고 검증
             Jws<Claims> claimsJws = Jwts.parser()
                     .verifyWith(key) // Secret Key로 서명 검증
-                    .build().parseSignedClaims(token); // 서명된 Claims를 파싱
-            log.info("#####payload :: " + claimsJws.getPayload().toString()); // Payload 로그 출력
+                    .build().parseSignedClaims(token);
+            log.info("JWT payload: {}", claimsJws.getPayload());
 
-            // 파싱된 Claims에서 사용자 ID와 역할(Role) 추출
+            // 파싱된 Claims에서 사용자 정보 추출
             Claims claims = claimsJws.getBody();
+            log.info("Extracted Claims: {}", claims);
+
+            // 헤더에 사용자 정보 추가
             exchange.getRequest().mutate()
-                    .header("X-User-Id", claims.get("user_id").toString()) // 사용자 ID를 새로운 헤더에 추가
-                    .header("X-Role", claims.get("role").toString()) // 역할(Role)을 새로운 헤더에 추가
+                    .header("X-User-Id", claims.getSubject()) // 'sub' 필드 사용
+                    .header("X-Role", claims.get("auth").toString()) // 'auth' 필드 사용
                     .build();
 
-            // 추가 검증 로직(예: 토큰 만료 여부 확인) 삽입 가능
-            return true; // 검증 성공 시 true 반환
+            return true; // 검증 성공
         } catch (Exception e) {
-            // 검증 실패 시 false 반환
-            return false;
+            log.error("JWT validation error: {}", e.getMessage(), e);
+            return false; // 검증 실패
         }
     }
+
 }

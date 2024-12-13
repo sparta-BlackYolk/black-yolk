@@ -10,7 +10,7 @@ spring:
         - id: auth-service  # 인증 서비스 라우트
           uri: lb://auth-service
           predicates:
-            - Path=/auth/**  # /auth/** 경로 매칭
+            - Path=/api/auth/**  # /api/auth/** 경로 매칭
         - id: order-service  # 주문 서비스 라우트
           uri: lb://order-service  # Load Balancer로 전달
           predicates:
