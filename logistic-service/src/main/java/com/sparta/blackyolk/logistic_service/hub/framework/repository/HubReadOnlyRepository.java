@@ -11,4 +11,5 @@ public interface HubReadOnlyRepository {
     Optional<HubEntity> findByHubIdAndIsDeletedFalse(String hubId);
     List<HubEntity> findByHubIdsAndIsDeletedFalse(List<String> hubIds);
     Page<HubEntity> findAllHubsAndIsDeletedFalseWithKeyword(String keyword, Pageable pageable);
+    Optional<HubEntity> findByHubCenterIsDeletedFalse(String hubCenter);
 }
