@@ -1,0 +1,67 @@
+server:
+  port: 19092
+
+spring:
+  application:
+    name: order-service
+  config:
+    import: classpath:application-key.yml
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    driver-class-name: org.postgresql.Driver
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      pool-name: hikari-pool
+      maximum-pool-size: 10
+      minimumIdle: 5
+      idleTimeout: 600000
+      maxLifetime: 1800000
+      auto-commit: true
+      connection-test-query: SELECT 1
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show-sql: true
+        format-sql: true
+        jdbc.batch_size: 20
+        order-inserts: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:19090/eureka/
+  instance:
+    initial-status: UP
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+feign:
+  hystrix:
+    enabled: true
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    com.zaxxer.hikari.HikariDataSource: error
+  file:
+    path: /logs
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  metrics:
+    export:
+      prometheus:
+        enabled: true
