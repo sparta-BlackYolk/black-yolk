@@ -57,7 +57,7 @@ public class HubQueryController {
         // TODO : user token, user role 받아야 하나?
         log.info("[Hub search 조회 pageable] : {}", pageable);
 
-        Page<HubEntity> hubPage = hubPersistenceAdapter.findAllHubs(keyword, pageable);
+        Page<HubEntity> hubPage = hubPersistenceAdapter.findAllHubsWithKeyword(keyword, pageable);
 
         return new HubPageResponse(hubPage);
     }
