@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5c36263-2a60-427b-b245-b9c0ab6c0732" name="Changes" comment="user crud, jwt, 시큐리티 적용">
+    <list default="true" id="d5c36263-2a60-427b-b245-b9c0ab6c0732" name="Changes" comment=".">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -198,7 +198,7 @@
       <workItem from="1733798761254" duration="596000" />
       <workItem from="1733966773564" duration="175000" />
       <workItem from="1733966980977" duration="24978000" />
-      <workItem from="1734055284233" duration="6971000" />
+      <workItem from="1734055284233" duration="7594000" />
     </task>
     <task id="LOCAL-00001" summary="project init">
       <option name="closed" value="true" />
@@ -256,7 +256,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734061577763</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary=".">
+      <option name="closed" value="true" />
+      <created>1734066471590</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1734066471590</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -279,6 +287,7 @@
     <MESSAGE value="폴더 구조 생성" />
     <MESSAGE value="user 엔티티생성" />
     <MESSAGE value="user crud, jwt, 시큐리티 적용" />
-    <option name="LAST_COMMIT_MESSAGE" value="user crud, jwt, 시큐리티 적용" />
+    <MESSAGE value="." />
+    <option name="LAST_COMMIT_MESSAGE" value="." />
   </component>
 </project>
