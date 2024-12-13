@@ -16,6 +16,7 @@ public record HubRouteUpdateRequest(
 
     public static HubRouteForUpdate toDomain(
         Long userId,
+        String role,
         String departureHubId,
         String hubRouteId,
         HubRouteUpdateRequest hubRouteUpdateRequest
@@ -25,6 +26,7 @@ public record HubRouteUpdateRequest(
 
         return new HubRouteForUpdate(
             userId,
+            role,
             hubRouteId,
             departureHubId,
             hubRouteUpdateRequest.targetHubId,

@@ -29,18 +29,14 @@ public class HubRouteQueryController {
     private final HubRouteUseCase hubRouteUseCase;
     private final HubRoutePersistenceAdapter hubRoutePersistenceAdapter;
 
-    // TODO : 지우기
-    private final Long TEST_USER = 1L;
-
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{hubRouteId}")
     public HubRouteGetResponse getHubRoute(
         @PathVariable(value = "hubId") String hubId,
         @PathVariable(value = "hubRouteId") String hubRouteId
     ) {
-        // TODO : user token, user role 받기
+        // TODO : user token, user role 받아야 하나?
         HubRouteForRead hubRouteForRead = new HubRouteForRead(
-            TEST_USER,
             hubId,
             hubRouteId
         );

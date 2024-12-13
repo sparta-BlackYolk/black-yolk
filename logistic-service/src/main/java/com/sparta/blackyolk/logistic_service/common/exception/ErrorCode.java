@@ -16,6 +16,7 @@ public enum ErrorCode {
     HUB_ALREADY_EXIST(409, "HUB_ALREADY_EXIST", "이미 존재하는 허브입니다."),
 
     // HubRoute
+    HUB_ROUTE_BAD_REQUEST(400, "HUB_ROUTE_BAD_REQUEST", "잘못된 허브 경로 요청입니다."),
     HUB_ROUTE_NOT_EXIST(404, "HUB_ROUTE_NOT_EXIST", "존재하지 않는 허브 경로입니다."),
     HUB_ROUTE_ALREADY_EXIST(409, "HUB_ROUTE_ALREADY_EXIST", "이미 존재하는 허브 경로입니다."),
 
