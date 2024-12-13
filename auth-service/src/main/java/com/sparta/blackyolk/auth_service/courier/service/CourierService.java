@@ -1,5 +1,6 @@
 package com.sparta.blackyolk.auth_service.courier.service;
 
+import com.sparta.blackyolk.auth_service.client.LogisticServiceClient;
 import com.sparta.blackyolk.auth_service.courier.dto.CourierRequestDto;
 import com.sparta.blackyolk.auth_service.courier.dto.CourierResponseDto;
 import com.sparta.blackyolk.auth_service.courier.dto.CourierUpdateRequestDto;
@@ -24,6 +25,7 @@ public class CourierService {
 
     private final CourierRepository courierRepository;
     private final UserRepository userRepository;
+    private final LogisticServiceClient logisticServiceClient;
 
     // 배송 담당자 등록
     @Transactional
@@ -33,8 +35,17 @@ public class CourierService {
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다. userId: " + requestDto.getUserId()));
 
         // 2. 허브 ID 검증 (업체 배송 담당자일 경우)
-        if (user.getRole() == UserRoleEnum.COMPANY_DELIVERY && requestDto.getHubId() == null) {
-            throw new IllegalArgumentException("COMPANY_DELIVERY 역할에는 hubId가 필수입니다.");
+        if (user.getRole() == UserRoleEnum.COMPANY_DELIVERY) {
+            if (requestDto.getHubId() == null) {
+                throw new IllegalArgumentException("COMPANY_DELIVERY 역할에는 hubId가 필수입니다.");
+            }
+
+            // FeignClient를 통해 logistic-service에서 hubId 검증
+            try {
+                logisticServiceClient.getHubById(requestDto.getHubId().toString());
+            } catch (Exception e) {
+                throw new IllegalArgumentException("유효하지 않은 hubId입니다: " + requestDto.getHubId());
+            }
         }
 
         // 3. 전체 순번 조회 및 새로운 순번 생성
@@ -107,26 +118,41 @@ public class CourierService {
 
 
     // 배송 담당자 수정
+    // 배송 담당자 수정
     @Transactional
     public CourierResponseDto updateCourier(UUID courierId, CourierUpdateRequestDto updateRequestDto) {
         // 1. 배송 담당자 정보 조회
         Courier courier = courierRepository.findById(courierId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 배송 담당자를 찾을 수 없습니다. courierId: " + courierId));
 
-        // 2. 슬랙 아이디 업데이트
+        // 2. 사용자 정보 조회
+        User user = userRepository.findById(courier.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자 정보를 찾을 수 없습니다. userId: " + courier.getUserId()));
+
+        // 3. 역할에 따라 허브 ID 검증
+        if (user.getRole() == UserRoleEnum.COMPANY_DELIVERY) {
+            if (updateRequestDto.getHubId() != null) {
+                // FeignClient를 통해 logistic-service에서 hubId 검증
+                try {
+                    logisticServiceClient.getHubById(updateRequestDto.getHubId().toString());
+                } catch (Exception e) {
+                    throw new IllegalArgumentException("유효하지 않은 hubId입니다: " + updateRequestDto.getHubId());
+                }
+                courier.setHubId(updateRequestDto.getHubId());
+            } else {
+                throw new IllegalArgumentException("COMPANY_DELIVERY 역할에는 hubId가 필수입니다.");
+            }
+        }
+
+        // 4. 슬랙 아이디 업데이트
         if (updateRequestDto.getSlackId() != null) {
             courier.setSlackId(updateRequestDto.getSlackId());
         }
 
-        // 3. 허브 아이디 업데이트
-        if (updateRequestDto.getHubId() != null) {
-            courier.setHubId(updateRequestDto.getHubId());
-        }
-
-        // 4. 수정된 배송 담당자 저장
+        // 5. 수정된 배송 담당자 저장
         courierRepository.save(courier);
 
-        // 5. 응답 DTO 생성 및 반환
+        // 6. 응답 DTO 생성 및 반환
         return CourierResponseDto.builder()
                 .courierId(courier.getCourierId())
                 .userId(courier.getUserId())
@@ -136,6 +162,7 @@ public class CourierService {
                 .updatedAt(courier.getUpdatedAt())
                 .build();
     }
+
 
     // 배송 담당자 삭제
     public CourierResponseDto deleteCourier(UUID courierId) {

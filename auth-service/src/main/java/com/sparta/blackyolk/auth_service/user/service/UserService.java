@@ -1,5 +1,7 @@
 package com.sparta.blackyolk.auth_service.user.service;
 
+import com.sparta.blackyolk.auth_service.courier.entity.Courier;
+import com.sparta.blackyolk.auth_service.courier.repository.CourierRepository;
 import com.sparta.blackyolk.auth_service.jwt.JwtUtil;
 import com.sparta.blackyolk.auth_service.user.dto.*;
 import com.sparta.blackyolk.auth_service.user.entity.User;
@@ -24,6 +26,7 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final CourierRepository courierRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
@@ -158,20 +161,31 @@ public class UserService {
 
     // 사용자 삭제
     public DeleteResponseDto deleteUser(Long userId) {
-        // 사용자 조회
+        // 1. 사용자 조회
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다. userId: " + userId));
 
-        // 삭제 처리
+        // 2. 해당 사용자가 배송 담당자인 경우 Courier 소프트 삭제
+        Courier courier = courierRepository.findByUserId(userId)
+                .orElse(null);
+        if (courier != null) {
+            courier.setIsDeleted(true);
+            courier.setDeletedAt(LocalDateTime.now());
+            courier.setDeletedBy("System"); // 혹은 현재 로그인된 사용자 정보
+            courierRepository.save(courier);
+        }
+
+        // 3. 사용자 소프트 삭제
         user.setIsDeleted(true);
         user.setDeletedAt(LocalDateTime.now());
         userRepository.save(user);
 
-        // 삭제 응답 DTO 반환
+        // 4. 삭제 응답 DTO 반환
         return DeleteResponseDto.builder()
                 .userId(user.getId())
                 .isDeleted(user.getIsDeleted())
                 .deletedAt(user.getDeletedAt())
                 .build();
     }
+
 }

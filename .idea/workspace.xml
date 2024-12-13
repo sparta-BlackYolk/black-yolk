@@ -4,7 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d5c36263-2a60-427b-b245-b9c0ab6c0732" name="Changes" comment="courier crud 개발(hub_id 조회는 미완성)" />
+    <list default="true" id="d5c36263-2a60-427b-b245-b9c0ab6c0732" name="Changes" comment="/api/hubs 게이트웨이 추가">
+      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/client/LogisticServiceClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/AuthServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/AuthServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/courier/repository/CourierRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/courier/repository/CourierRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/courier/service/CourierService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/courier/service/CourierService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/user/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sparta/blackyolk/auth_service/user/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logistic-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/logistic-service/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logistic-service/src/main/java/com/sparta/blackyolk/logistic_service/LogisticServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/logistic-service/src/main/java/com/sparta/blackyolk/logistic_service/LogisticServiceApplication.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,6 +34,9 @@
       <ProjectState />
     </projectState>
     <projectState path="$PROJECT_DIR$/gateway">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/logistic-service">
       <ProjectState />
     </projectState>
   </component>
@@ -176,6 +189,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="LogisticServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="logistic-service.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sparta.blackyolk.logistic_service.LogisticServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Spring Boot.AuthServiceApplication" />
@@ -274,7 +294,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734086896354</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="/api/hubs 게이트웨이 추가">
+      <option name="closed" value="true" />
+      <created>1734088190553</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1734088190553</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -298,6 +326,7 @@
     <MESSAGE value="user 엔티티생성" />
     <MESSAGE value="user crud, jwt, 시큐리티 적용" />
     <MESSAGE value="courier crud 개발(hub_id 조회는 미완성)" />
-    <option name="LAST_COMMIT_MESSAGE" value="courier crud 개발(hub_id 조회는 미완성)" />
+    <MESSAGE value="/api/hubs 게이트웨이 추가" />
+    <option name="LAST_COMMIT_MESSAGE" value="/api/hubs 게이트웨이 추가" />
   </component>
 </project>

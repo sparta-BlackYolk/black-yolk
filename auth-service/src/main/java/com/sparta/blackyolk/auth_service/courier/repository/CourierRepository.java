@@ -14,6 +14,7 @@ import java.util.UUID;
 
 public interface CourierRepository extends JpaRepository<Courier, UUID> {
     Optional<Courier> findByCourierId(UUID courierId);
+    Optional<Courier> findByUserId(Long userId);
     // 특정 허브의 배송 담당자 조회
     @Query("SELECT c FROM Courier c WHERE c.hubId = :hubId AND c.isDeleted = false")
     List<Courier> findAllByHubId(@Param("hubId") UUID hubId);
