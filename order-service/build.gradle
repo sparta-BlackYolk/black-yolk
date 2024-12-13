@@ -23,12 +23,26 @@ ext {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// Eureka & OpenFeign
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-	runtimeOnly 'com.h2database:h2'
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
+	// PostgreSQL
+	runtimeOnly 'org.postgresql:postgresql'
+
+	// Lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// QueryDSL
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jakarta'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 dependencyManagement {
@@ -37,6 +51,28 @@ dependencyManagement {
 	}
 }
 
+// QueryDSL Q Class 생성 경로 지정
+def generated = project.layout.buildDirectory.dir('generated/sources/annotationProcessor/java/main')
+
+// QueryDSL Q Class 생성 위치 지정
+tasks.withType(JavaCompile) {
+	options.getGeneratedSourceOutputDirectory().set(generated.get().asFile)
+}
+
+// Java 소스 디렉터리에 QueryDSL Q Class 디렉터리 추가
+sourceSets {
+	main.java.srcDirs += [generated.get().asFile]
+}
+
+// gradle clean 시, Q Class 디렉터리 삭제
+clean {
+	delete generated.get().asFile
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+bootJar {
+	archiveFileName = 'order-service.jar'
 }

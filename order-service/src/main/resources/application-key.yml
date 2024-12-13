@@ -1,0 +1,10 @@
+SPRING_DATASOURCE_URL : jdbc:postgresql://localhost:5432/order?characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Seoul
+SPRING_DATASOURCE_USERNAME : root
+SPRING_DATASOURCE_PASSWORD :
+REDIS_HOST : localhost
+REDIS_PORT : 6379
+REDIS_USERNAME : default
+REDIS_PASSWORD : systempass
+EUREKA_NAME : localhost
+EUREKA_HOST : eureka
+EUREKA_PORT : 19090
