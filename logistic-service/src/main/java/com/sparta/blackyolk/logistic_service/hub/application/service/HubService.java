@@ -43,10 +43,7 @@ public class HubService implements HubUseCase {
         // TODO : hubManagerId 있으면 hubManagerId 검증하는 로직 필요
         validateMaster(hubForUpdate.role());
 
-        // TODO : 예외 처리 하기
-        Hub hub = hubPersistencePort.findByHubId(hubForUpdate.hubId()).orElseThrow(
-
-        );
+        Hub hub = validateHub(hubForUpdate.hubId());
 
         BigDecimal axisX = hub.getHubCoordinate().getAxisX();
         BigDecimal axisY = hub.getHubCoordinate().getAxisY();
@@ -65,19 +62,14 @@ public class HubService implements HubUseCase {
     public Hub deleteHub(HubForDelete hubForDelete) {
 
         validateMaster(hubForDelete.role());
-
-        // TODO : 예외 처리 하기
-        Hub hub = hubPersistencePort.findByHubId(hubForDelete.hubId()).orElseThrow(
-
-        );
+        validateHub(hubForDelete.hubId());
 
         return hubPersistencePort.deleteHub(hubForDelete);
     }
 
     public Hub validateHub(String hubId) {
-        // TODO : 예외처리하기
         return hubPersistencePort.findByHubId(hubId).orElseThrow(
-
+            () -> new CustomException(ErrorCode.HUB_NOT_EXIST)
         );
     }
 
