@@ -41,6 +41,13 @@ public class HubPersistenceAdapter implements HubPersistencePort {
     }
 
     @Transactional(readOnly = true)
+    public Optional<Hub> findByHubCenter(String hubCenter) {
+        return hubReadOnlyRepository.findByHubCenterIsDeletedFalse(hubCenter)
+            .map(HubEntity::toDomain)
+            .or(Optional::empty);
+    }
+
+    @Transactional(readOnly = true)
     public Page<HubEntity> findAllHubsWithKeyword(String keyword, Pageable pageable) {
         return hubReadOnlyRepository.findAllHubsAndIsDeletedFalseWithKeyword(keyword, pageable);
     }

@@ -9,6 +9,7 @@ import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForUpdate
 import com.sparta.blackyolk.logistic_service.hub.application.port.HubPersistencePort;
 import com.sparta.blackyolk.logistic_service.hub.application.usecase.HubUseCase;
 import java.math.BigDecimal;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,7 @@ public class HubService implements HubUseCase {
 
         // TODO : hubManagerId 있으면 hubManagerId 검증하는 로직 필요
         validateMaster(hubForCreate.role());
+        validateHubCenter(hubForCreate.center());
 
         // TODO: 좌표 조회하는 로직
         String url = URL + ADDRESS;
@@ -76,6 +78,13 @@ public class HubService implements HubUseCase {
     private void validateMaster(String role) {
         if (!"MASTER".equals(role)) {
             throw new CustomException(ErrorCode.ACCESS_DENIED);
+        }
+    }
+
+    private void validateHubCenter(String center) {
+        Optional<Hub> hub = hubPersistencePort.findByHubCenter(center);
+        if (hub.isPresent()) {
+            throw new CustomException(ErrorCode.HUB_ALREADY_EXIST);
         }
     }
 }

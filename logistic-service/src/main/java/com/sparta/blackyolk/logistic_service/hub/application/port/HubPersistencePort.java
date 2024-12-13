@@ -14,4 +14,5 @@ public interface HubPersistencePort {
     List<Hub> findHubsByIds(List<String> hubIds);
     Hub updateHub(HubForUpdate hubForUpdate, BigDecimal axisX, BigDecimal axisY);
     Hub deleteHub(HubForDelete hubForDelete);
+    Optional<Hub> findByHubCenter(String hubCenter);
 }

@@ -65,6 +65,22 @@ public class HubReadOnlyReadOnlyRepositoryImpl implements HubReadOnlyRepository 
     }
 
     /*
+    select h from HubEntity h where h.hubCenter = :hubCenter and h.isDeleted = false
+    */
+    @Override
+    public Optional<HubEntity> findByHubCenterIsDeletedFalse(String hubCenter) {
+
+        BooleanExpression isHubCenterEquals = hubEntity.hubCenter.eq(hubCenter);
+        BooleanExpression isNotDeleted = hubEntity.isDeleted.isFalse();
+
+        HubEntity result = jpaQueryFactory.selectFrom(hubEntity)
+            .where(isHubCenterEquals.and(isNotDeleted))
+            .fetchOne();
+
+        return Optional.ofNullable(result);
+    }
+
+    /*
     select h
     from HubEntity h
     where h.isDeleted = false
