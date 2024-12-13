@@ -2,6 +2,7 @@ package com.sparta.blackyolk.logistic_service.hubroute.framework.adapter;
 
 import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.data.HubEntity;
+import com.sparta.blackyolk.logistic_service.hub.framework.repository.HubReadOnlyRepository;
 import com.sparta.blackyolk.logistic_service.hub.framework.repository.HubRepository;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRoute;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForDelete;
@@ -22,6 +23,7 @@ public class HubRoutePersistenceAdapter implements HubRoutePersistencePort {
 
     private final HubRouteRepository hubRouteRepository;
     private final HubRepository hubRepository;
+    private final HubReadOnlyRepository hubReadOnlyRepository;
 
     public Optional<HubRoute> findByHubRouteId(String hubRouteId) {
         return hubRouteRepository.findByHubRouteIdAndIsDeletedFalse(hubRouteId)
@@ -33,7 +35,7 @@ public class HubRoutePersistenceAdapter implements HubRoutePersistencePort {
     @Override
     public HubRoute createHubRoute(Long userId, HubRoute hubRoute) {
 
-        List<HubEntity> hubEntities = hubRepository.findByHubIdsAndIsDeletedFalse(
+        List<HubEntity> hubEntities = hubReadOnlyRepository.findByHubIdsAndIsDeletedFalse(
             List.of(hubRoute.getDepartureHub().getHubId(), hubRoute.getArrivalHub().getHubId())
         );
 
@@ -59,7 +61,7 @@ public class HubRoutePersistenceAdapter implements HubRoutePersistencePort {
 
         HubRouteEntity hubRouteEntity = hubRouteRepository.findByHubRouteIdAndIsDeletedFalse(hubRouteForUpdate.hubRouteId()).get();
         HubEntity arrivalHubEntity = arrivalHub != null ?
-        hubRepository.findByHubIdAndIsDeletedFalse(hubRouteForUpdate.arrivalHubId()).get() : null;
+        hubReadOnlyRepository.findByHubIdAndIsDeletedFalse(hubRouteForUpdate.arrivalHubId()).get() : null;
 
         hubRouteEntity.update(hubRouteForUpdate, arrivalHubEntity, distance, duration);
 
