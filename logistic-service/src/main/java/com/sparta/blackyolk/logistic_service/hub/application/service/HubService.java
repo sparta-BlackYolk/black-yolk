@@ -34,11 +34,10 @@ public class HubService implements HubUseCase {
         BigDecimal axisX = new BigDecimal("126.851675");
         BigDecimal axisY = new BigDecimal("37.54815556");
 
-        // TODO : 허브 이름이나 좌표 혹은 주소 가지고 중복된 허브인지 확인하는 로직 추가 -> domain으로 넘길 수 있을까?
-
         return hubPersistencePort.saveHub(hubForCreate, axisX, axisY);
     }
 
+    // TODO: 불필요한 쿼리가 날아가지 않는가? 확인
     @Override
     public Hub updateHub(HubForUpdate hubForUpdate) {
 
