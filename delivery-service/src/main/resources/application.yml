@@ -1,0 +1,92 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:19090/eureka/
+
+server:
+  port: 19099
+
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    driver-class-name: org.postgresql.Driver
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      pool-name: hikari-pool
+      maximum-pool-size: 9
+      minimum-idle: 5
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      connection-test-query: SELECT 1
+      auto-commit: true
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: Asia/Seoul
+          batch_size: 20
+        order_inserts: true
+        show-sql: true
+        format_sql: true
+        globally_quoted_identifiers: true
+        globally_quoted_identifiers_skip_column_definitions: true
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      username: ${REDIS_USERNAME}
+      password: ${REDIS_PASSWORD}
+  config:
+    import: classpath:application-key.yml
+  sql:
+    init:
+      mode: never
+  application:
+    name: delivery-service
+
+---
+springdoc:
+  use-fqn: true
+  cache:
+    disabled: true
+  api-docs:
+    path: /api-docs
+    groups:
+      enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+    groups-order: asc
+    display-request-duration: true
+    doc-expansion: none
+    disable-swagger-default-url: true
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+
+---
+
+logging:
+  level:
+    org.hibernate:
+      SQL: debug
+      type: error
+    com.zaxxer.hikari.HikariDataSource: error
+
+---
+
+eureka:
+  instance:
+    initial-status: up
+    prefer-ip-address: false
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    service-url:
+      defaultZone: http://${EUREKA_NAME}:${EUREKA_PORT}/${EUREKA_HOST}/
+    region: ap-northeast-2
