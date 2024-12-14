@@ -1,11 +1,12 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:19090/eureka/
+
 server:
-  port: 19092
+  port: 19093
 
 spring:
-  application:
-    name: order-service
-  config:
-    import: classpath:application-key.yml
   datasource:
     url: ${SPRING_DATASOURCE_URL}
     driver-class-name: org.postgresql.Driver
@@ -14,54 +15,88 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
       pool-name: hikari-pool
-      maximum-pool-size: 10
-      minimumIdle: 5
-      idleTimeout: 600000
-      maxLifetime: 1800000
-      auto-commit: true
+      maximum-pool-size: 9
+      data-source-properties:
+        idleTimeout: 600000
+        maxLifetime: 1800000
+        minimumIdle: 5
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
       connection-test-query: SELECT 1
+      auto-commit: true
+
   jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
+        jdbc:
+          time_zone: Asia/Seoul
+          batch_size: 20
+        order_insert: true
         show-sql: true
-        format-sql: true
-        jdbc.batch_size: 20
-        order-inserts: true
+        format_sql: true
+        globally_quoted_identifiers: true
+        globally_quoted_identifiers_skip_column_definitions: true
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:19090/eureka/
-  instance:
-    initial-status: UP
-    prefer-ip-address: true
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      username: ${REDIS_USERNAME}
+      password: ${REDIS_PASSWORD}
 
-feign:
-  hystrix:
-    enabled: true
+  config:
+    import: classpath:application-key.yml
 
+  sql:
+    init:
+      mode: never
+
+  application:
+    name: order-service
+
+---
 springdoc:
+  use-fqn: true
+  cache:
+    disabled: true
   api-docs:
     path: /api-docs
+    groups:
+      enabled: true
   swagger-ui:
     path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+    groups-order: asc
+    display-request-duration: true
+    doc-expansion: none
+    disable-swagger-default-url: true
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+
+---
 
 logging:
   level:
-    org.hibernate.SQL: debug
+    org.hibernate:
+      SQL: debug
+      type: error
     com.zaxxer.hikari.HikariDataSource: error
-  file:
-    path: /logs
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  metrics:
-    export:
-      prometheus:
-        enabled: true
+---
+
+eureka:
+  instance:
+    initial-status: up
+    prefer-ip-address: false
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    service-url:
+      defaultZone: http://${EUREKA_NAME}:${EUREKA_PORT}/${EUREKA_HOST}/
+    region: ap-northeast-2

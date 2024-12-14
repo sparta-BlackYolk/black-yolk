@@ -13,6 +13,6 @@ import java.util.UUID;
 public class JpaConfig {
     @Bean
     public AuditorAware<UUID> auditorAware() {
-        return () -> Optional.of(UUID.fromString("b067c637-2c80-41fb-9f2e-8b671b5abfd0"));
+        return () -> Optional.of(UUID.fromString("636d6964-dd9d-41c8-a6e7-b8837ec5be73"));
     }
 }

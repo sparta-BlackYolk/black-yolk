@@ -5,6 +5,6 @@ import java.util.UUID;
 public record ProductInfoResponseDto(
         UUID productId,
         String productName,
-        UUID requestCompanyId
+        UUID supplyCompanyId
 ) {
 }
