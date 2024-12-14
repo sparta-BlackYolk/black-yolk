@@ -3,72 +3,56 @@ package com.sparta.blackyolk.delivery_service.domain.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
 
+@Entity
 @Getter
 @NoArgsConstructor
-@Entity
-@Table(name = "p_delivery")
+@Table(name = "p_deliveries")
 public class Delivery extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "delivery_id", updatable = false, nullable = false)
-    private UUID deliveryId;
+    @UuidGenerator(style = UuidGenerator.Style.TIME)
+    private UUID id;
 
-    @Column(name = "order_id", nullable = false)
+    @Column(nullable = false)
     private UUID orderId;
 
-    @Column(name = "request_company_id", nullable = false)
-    private UUID requestCompanyId;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private DeliveryStatus currentStatus;
 
-    @Column(name = "supply_company_id", nullable = false)
-    private UUID supplyCompanyId;
+    @Column(nullable = false)
+    private Double actualDistance;
 
-    @Column(name = "hub_id", nullable = false)
-    private UUID hubId;
+    @Column(nullable = false)
+    private String deliveryAddress;
 
-    @Column(name = "receiver_name", nullable = false, length = 100)
+    @Column(nullable = false)
     private String receiverName;
 
-    @Column(name = "receiver_address", nullable = false, length = 255)
-    private String receiverAddress;
-
-    @Column(name = "receiver_slack_id", nullable = false, length = 100)
+    @Column()
     private String receiverSlackId;
 
-    @Column(name = "remarks", columnDefinition = "TEXT")
-    private String remarks;
+    @Column(nullable = false)
+    private Double actualTime;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "current_status", nullable = false)
-    private CurrentStatus currentStatus = CurrentStatus.HUB_WAITING;
+    @Column(nullable = false)
+    private UUID deliveryPersonId;
 
-    @Column(name = "is_deleted", nullable = false)
-    private Boolean isDeleted = false;
+    @Column(nullable = false)
+    private UUID originHubId;
 
-    public static Delivery create(UUID orderId, UUID requestCompanyId, UUID supplyCompanyId, UUID hubId,
-                                  String receiverName, String receiverAddress, String receiverSlackId, String remarks) {
-        Delivery delivery = new Delivery();
-        delivery.orderId = orderId;
-        delivery.requestCompanyId = requestCompanyId;
-        delivery.supplyCompanyId = supplyCompanyId;
-        delivery.hubId = hubId;
-        delivery.receiverName = receiverName;
-        delivery.receiverAddress = receiverAddress;
-        delivery.receiverSlackId = receiverSlackId;
-        delivery.remarks = remarks;
-        delivery.currentStatus = CurrentStatus.HUB_WAITING;
-        delivery.isDeleted = false;
-        return delivery;
+    @Column(nullable = false)
+    private UUID destinationHubId;
+
+    public void updateDelivery(DeliveryStatus status) {
+        this.currentStatus =status;
     }
 
-    public void updateStatus(CurrentStatus status) {
-        this.currentStatus = status;
-    }
-
-    public void delete() {
-        this.isDeleted = true;
+    public void deleteDelivery(UUID deletedBy) {
+        super.delete(deletedBy);
     }
 }
