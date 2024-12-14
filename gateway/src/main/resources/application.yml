@@ -38,7 +38,7 @@ spring:
         - id: slack-service  # 배송 서비스 라우트
           uri: lb://slack-service
           predicates:
-            - Path=/slack/**  # /delivery/** 경로 매칭
+            - Path=/api/slack/**  # /delivery/** 경로 매칭
 
       discovery:
         locator:

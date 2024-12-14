@@ -37,7 +37,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();
         // 회원가입 및 로그인 경로는 JWT 검증 제외
-        return path.equals("/api/auth/users/signup") || path.equals("/api/auth/users/login");
+        return path.equals("/api/auth/users/signup") || path.equals("/api/auth/users/login") || path.equals("/api/slack/send");
     }
 
     @Override
