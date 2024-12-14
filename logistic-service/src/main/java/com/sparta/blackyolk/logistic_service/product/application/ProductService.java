@@ -22,5 +22,12 @@ public class ProductService {
         return ProductResponseDto.toDto(product);
     }
 
+    public ProductResponseDto getProduct(UUID productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("상품 정보가 없습니다."));
+
+        return ProductResponseDto.toDto(product);
+    }
+
 
 }
