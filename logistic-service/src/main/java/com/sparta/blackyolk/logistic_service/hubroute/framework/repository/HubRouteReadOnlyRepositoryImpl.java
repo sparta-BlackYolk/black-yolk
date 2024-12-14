@@ -4,9 +4,12 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.sparta.blackyolk.logistic_service.common.exception.CustomException;
+import com.sparta.blackyolk.logistic_service.common.exception.ErrorCode;
 import com.sparta.blackyolk.logistic_service.hub.data.QHubEntity;
 import com.sparta.blackyolk.logistic_service.hubroute.data.HubRouteEntity;
 import com.sparta.blackyolk.logistic_service.hubroute.data.QHubRouteEntity;
+import com.sparta.blackyolk.logistic_service.hubroute.data.vo.HubRouteStatus;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -49,6 +52,99 @@ public class HubRouteReadOnlyRepositoryImpl implements HubRouteReadOnlyRepositor
             .fetchOne();
 
         return Optional.ofNullable(result);
+    }
+
+    /*
+    select
+        h.*
+    from
+        hub_route_entity h
+    join
+        hub_entity d on h.departure_hub_id = d.hub_id
+    join
+        hub_entity a on h.arrival_hub_id = a.hub_id
+    where
+        d.hub_id = :departureHubId
+        and a.hub_id = :arrivalHubId
+        and h.is_deleted = false
+        and h.status = 'ACTIVE'
+    limit 1;
+    */
+    @Override
+    public Optional<HubRouteEntity> findByDepartureHubIdAndArrivalHubId(String departureHubId, String arrivalHubId) {
+
+        BooleanExpression isDepartureHub = hubRouteEntity.departureHub.hubId.eq(departureHubId);
+        BooleanExpression isArrivalHub = hubRouteEntity.arrivalHub.hubId.eq(arrivalHubId);
+        BooleanExpression isDeleted = hubRouteEntity.isDeleted.eq(false);
+        BooleanExpression isActive = hubRouteEntity.status.eq(HubRouteStatus.ACTIVE);
+
+        HubRouteEntity result = jpaQueryFactory.selectFrom(hubRouteEntity)
+            .where(
+                isDepartureHub,
+                isArrivalHub,
+                isDeleted,
+                isActive
+            ).fetchOne();
+
+        return Optional.ofNullable(result);
+    }
+
+    /*
+    select
+        h.*
+    from
+        hub_route_entity h
+    where
+        h.is_deleted = false
+        and h.status = 'ACTIVE';
+    */
+    @Override
+    public List<HubRouteEntity> findAllHubRoutesAndIsDeletedFalseAndActive() {
+
+        BooleanExpression isDeleted = hubRouteEntity.isDeleted.eq(false);
+        BooleanExpression isActive = hubRouteEntity.status.eq(HubRouteStatus.ACTIVE);
+
+        return jpaQueryFactory.selectFrom(hubRouteEntity)
+            .where(isDeleted, isActive)
+            .fetch();
+    }
+
+    /*
+    select hr.*
+    from hubRouteEntity hr
+    join hubEntity departureHubAlias on hr.departureHubId = departureHubAlias.hubId
+    join hubEntity arrivalHubAlias on hr.arrivalHubId = arrivalHubAlias.hubId
+    where hr.isDeleted = false
+      and hr.status = 'ACTIVE'
+      and (hr.departureHubId = :hubId or hr.arrivalHubId = :hubId);
+    */
+    @Override
+    public List<HubRouteEntity> findAllByHubIdAndIsDeletedFalseAndActive(String hubId) {
+
+        log.info("[허브 경로 조회] hubId: {}", hubId);
+
+        BooleanExpression isNotDeleted = hubRouteEntity.isDeleted.eq(false);
+        BooleanExpression isActive = hubRouteEntity.status.eq(HubRouteStatus.ACTIVE);
+        BooleanExpression matchesHubId = hubRouteEntity.departureHub.hubId.eq(hubId)
+            .or(hubRouteEntity.arrivalHub.hubId.eq(hubId));
+
+        QHubEntity departureHubAlias = new QHubEntity("departureHubAlias");
+        QHubEntity arrivalHubAlias = new QHubEntity("arrivalHubAlias");
+
+        try {
+            List<HubRouteEntity> results = jpaQueryFactory.selectFrom(hubRouteEntity)
+                .join(hubRouteEntity.departureHub, departureHubAlias).fetchJoin()
+                .join(hubRouteEntity.arrivalHub, arrivalHubAlias).fetchJoin()
+                .where(isNotDeleted, isActive, matchesHubId)
+                .fetch();
+
+            log.info("[허브 경로 조회] 결과 개수: {}", results.size());
+
+            return results;
+        } catch (Exception e) {
+            log.error("[허브 경로 조회] 쿼리 실행 중 예외 발생: {}", e.getMessage(), e);
+            throw new CustomException(ErrorCode.HUB_ROUTE_BAD_REQUEST);
+        }
     }
 
     /*
