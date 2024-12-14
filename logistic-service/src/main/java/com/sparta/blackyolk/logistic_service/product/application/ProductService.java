@@ -29,5 +29,16 @@ public class ProductService {
         return ProductResponseDto.toDto(product);
     }
 
+    @Transactional
+    public ProductResponseDto updateProduct(UUID productId, ProductRequestDto requestDto) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("상품 정보가 없습니다."));
+
+        product.update(requestDto);
+        return ProductResponseDto.toDto(product);
+    }
+
+
+
 
 }
