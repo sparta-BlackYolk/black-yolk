@@ -1,6 +1,6 @@
 package com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto;
 
-import com.sparta.blackyolk.logistic_service.hubroute.data.HubRouteEntity;
+import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRoute;
 import com.sparta.blackyolk.logistic_service.hubroute.data.vo.HubRouteStatus;
 import java.math.BigDecimal;
 import java.util.List;
@@ -12,7 +12,7 @@ public record HubRoutePageResponse(
 ) {
 
     public HubRoutePageResponse(
-        Page<HubRouteEntity> hubRoutePage
+        Page<HubRoute> hubRoutePage
     ) {
         this(
             new PageInfo(
@@ -33,20 +33,20 @@ public record HubRoutePageResponse(
         BigDecimal distance,
         Integer duration
     ) {
-        public static List<HubRouteResponse> toDTO(List<HubRouteEntity> hubRouteEntityList) {
+        public static List<HubRouteResponse> toDTO(List<HubRoute> hubRouteEntityList) {
             return hubRouteEntityList.stream()
                 .map(HubRouteResponse::toDTO)
                 .toList();
         }
 
-        public static HubRouteResponse toDTO(HubRouteEntity hubRouteEntity) {
+        public static HubRouteResponse toDTO(HubRoute hubRoute) {
             return new HubRouteResponse(
-                hubRouteEntity.getHubRouteId(),
-                hubRouteEntity.getDepartureHub().getHubName(),
-                hubRouteEntity.getArrivalHub().getHubName(),
-                hubRouteEntity.getStatus(),
-                hubRouteEntity.getDistance(),
-                hubRouteEntity.getDuration()
+                hubRoute.getHubRouteId(),
+                hubRoute.getDepartureHub().getHubName(),
+                hubRoute.getArrivalHub().getHubName(),
+                hubRoute.getStatus(),
+                hubRoute.getDistance(),
+                hubRoute.getDuration()
             );
         }
     }
