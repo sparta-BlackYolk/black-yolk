@@ -5,8 +5,6 @@ import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForCreate
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForDelete;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForUpdate;
 import com.sparta.blackyolk.logistic_service.hub.application.usecase.HubUseCase;
-import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubAddressCreateRequest;
-import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubAddressUpdateRequest;
 import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubCreateRequest;
 import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubCreateResponse;
 import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubDeleteResponse;
@@ -35,8 +33,7 @@ public class HubCommandController {
 
     // TODO : 지우기
     private final Long TEST_USER = 1L;
-
-    // TODO : validated 어노테이션 사용해보기
+    private final String TEST_ROLE = "MASTER";
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
@@ -44,8 +41,9 @@ public class HubCommandController {
         @Valid @RequestBody HubCreateRequest hubCreateRequest
     ) {
         // TODO : user token, user role 받기
-        HubForCreate hubForCreate = HubAddressCreateRequest.toDomain(
+        HubForCreate hubForCreate = HubCreateRequest.toDomain(
             TEST_USER,
+            TEST_ROLE,
             hubCreateRequest
         );
         Hub hub = hubUseCase.createHub(hubForCreate);
@@ -60,8 +58,9 @@ public class HubCommandController {
         @RequestBody HubUpdateRequest hubUpdateRequest
     ) {
         // TODO : user token, user role 받기
-        HubForUpdate hubForUpdate = HubAddressUpdateRequest.toDomain(
+        HubForUpdate hubForUpdate = HubUpdateRequest.toDomain(
             TEST_USER,
+            TEST_ROLE,
             hubId,
             hubUpdateRequest
         );
@@ -78,6 +77,7 @@ public class HubCommandController {
         // TODO : user token, user role 받기
         HubForDelete hubForDelete = new HubForDelete(
             TEST_USER,
+            TEST_ROLE,
             hubId
         );
         Hub hub = hubUseCase.deleteHub(hubForDelete);

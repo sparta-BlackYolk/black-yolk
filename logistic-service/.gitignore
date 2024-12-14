@@ -17,6 +17,8 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
+src/main/resources/env.properties
+env.properties
 ### IntelliJ IDEA ###
 .idea
 *.iws
@@ -36,3 +38,6 @@ out/
 ### VS Code ###
 .vscode/
 .env
+
+hubv1.sql
+hubv2.sql
