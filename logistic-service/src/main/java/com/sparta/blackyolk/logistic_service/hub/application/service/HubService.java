@@ -60,17 +60,24 @@ public class HubService implements HubUseCase {
         return hubPersistencePort.updateHub(hubForUpdate, axisX, axisY);
     }
 
+    // TODO: 불필요한 쿼리가 날아가지 않는가? 확인
     @Override
     public Hub deleteHub(HubForDelete hubForDelete) {
 
         validateMaster(hubForDelete.role());
-        validateHub(hubForDelete.hubId());
+        validateHubWithHubRoutes(hubForDelete.hubId());
 
         return hubPersistencePort.deleteHub(hubForDelete);
     }
 
     public Hub validateHub(String hubId) {
         return hubPersistencePort.findByHubId(hubId).orElseThrow(
+            () -> new CustomException(ErrorCode.HUB_NOT_EXIST)
+        );
+    }
+
+    public Hub validateHubWithHubRoutes(String hubId) {
+        return hubPersistencePort.findByHubIdWithHubRoutes(hubId).orElseThrow(
             () -> new CustomException(ErrorCode.HUB_NOT_EXIST)
         );
     }

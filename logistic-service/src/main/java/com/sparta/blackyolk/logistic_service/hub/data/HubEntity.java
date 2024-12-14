@@ -140,8 +140,8 @@ public class HubEntity extends BaseEntity {
         }
     }
 
-    public void deleteHub(HubForDelete hubForDelete) {
+    public void deleteHub(Long userId) {
         this.status = HubStatus.INACTIVE; // TODO : Domain 으로 넘길 수 있을까?
-        super.deleteFrom(hubForDelete.userId());
+        super.deleteFrom(userId);
     }
 }

@@ -123,8 +123,8 @@ public class HubRouteEntity extends BaseEntity {
         Optional.ofNullable(hubRouteForUpdate.status()).ifPresent(value -> this.status = value);
     }
 
-    public void delete(HubRouteForDelete hubRouteForDelete) {
+    public void delete(Long userId) {
         this.status = HubRouteStatus.INACTIVE; // TODO : domain으로 옮길 수 있지 않을까?
-        super.deleteFrom(hubRouteForDelete.userId());
+        super.deleteFrom(userId);
     }
 }
