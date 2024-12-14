@@ -13,10 +13,8 @@ import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRout
 import com.sparta.blackyolk.logistic_service.hubroute.application.port.HubRouteCalculator;
 import com.sparta.blackyolk.logistic_service.hubroute.application.port.HubRoutePersistencePort;
 import com.sparta.blackyolk.logistic_service.hubroute.application.usecase.HubRouteUseCase;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,6 +29,7 @@ public class HubRouteService implements HubRouteUseCase {
     private final HubRouteCalculator hubRouteCalculator;
 
     // TODO : 쿼리 몇번 날아가는 지 확인, 불필요한 쿼리가 날아가지 않은가?
+    // TODO : 캐싱 사용하기
 
     @Override
     public HubRoute getHubRoute(HubRouteForRead hubRouteForRead) {
@@ -70,9 +69,7 @@ public class HubRouteService implements HubRouteUseCase {
 
         HubRoute hubRoute = new HubRoute(
             departureHub,
-            arrivalHub,
-            hubRouteForCreate.timeSlot(),
-            hubRouteForCreate.timeSlotWeight()
+            arrivalHub
         );
 
         return hubRoutePersistencePort.createHubRoute(hubRouteForCreate.userId(), hubRoute);

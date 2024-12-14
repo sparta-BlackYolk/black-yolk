@@ -31,8 +31,7 @@ public record HubRoutePageResponse(
         String arrivalHubName,
         HubRouteStatus hubRouteStatus,
         BigDecimal distance,
-        Integer duration,
-        String timeSlot
+        Integer duration
     ) {
         public static List<HubRouteResponse> toDTO(List<HubRouteEntity> hubRouteEntityList) {
             return hubRouteEntityList.stream()
@@ -47,8 +46,7 @@ public record HubRoutePageResponse(
                 hubRouteEntity.getArrivalHub().getHubName(),
                 hubRouteEntity.getStatus(),
                 hubRouteEntity.getDistance(),
-                hubRouteEntity.getDuration(),
-                hubRouteEntity.getTimeSlot()
+                hubRouteEntity.getDuration()
             );
         }
     }

@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class TimeSlotWeightMapper {
 
-    private static final Map<String, Double> TIME_SLOT_WEIGHTS = Map.of(
+    public static final Map<String, Double> TIME_SLOT_WEIGHTS = Map.of(
         "22:00-05:00", 1.0,
         "05:00-07:00", 1.2,
         "07:00-09:00", 2.0,

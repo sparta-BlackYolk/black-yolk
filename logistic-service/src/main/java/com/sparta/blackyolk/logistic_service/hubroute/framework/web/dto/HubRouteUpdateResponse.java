@@ -10,8 +10,7 @@ public record HubRouteUpdateResponse(
     String arrivalHubName,
     HubRouteStatus hubRouteStatus,
     BigDecimal distance,
-    Integer duration,
-    String timeSlot
+    Integer duration
 ) {
     public static HubRouteUpdateResponse toDTO(
         HubRoute hubRoute
@@ -22,8 +21,7 @@ public record HubRouteUpdateResponse(
             hubRoute.getArrivalHub().getHubName(),
             hubRoute.getStatus(),
             hubRoute.getDistance(),
-            hubRoute.getDuration(),
-            hubRoute.getTimeSlot()
+            hubRoute.getDuration()
         );
     }
 }

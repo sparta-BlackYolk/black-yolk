@@ -14,21 +14,15 @@ public class HubRoute {
     private Hub departureHub;
     private Hub arrivalHub;
     private HubRouteStatus status;
-    private String timeSlot;
     private Integer duration;
     private BigDecimal distance;
-    private double timeSlotWeight;
 
     public HubRoute(
         Hub departureHub,
-        Hub arrivalHub,
-        String timeSlot,
-        double timeSlotWeight
+        Hub arrivalHub
     ) {
         this.departureHub = departureHub;
         this.arrivalHub = arrivalHub;
-        this.timeSlot = timeSlot;
-        this.timeSlotWeight = timeSlotWeight;
         this.distance = calculateDistance();
         this.duration = calculateDuration();
     }
