@@ -15,10 +15,14 @@ spring:
           uri: lb://order-service  # Load Balancer로 전달
           predicates:
             - Path=/orders/**  # /orders/** 경로 매칭
-        - id: logistic-service  # Logistic(Hub, Product, Company) 서비스 라우트
+        - id: hubs     # Logistic(Hub, Product, Company) 서비스 라우트
           uri: lb://logistic-service
           predicates:
             - Path=/api/hubs/**  # /Logistic/** 경로 매칭
+        - id: hub-routes      # Logistic(Hub, Product, Company) 서비스 라우트
+          uri: lb://logistic-service
+          predicates:
+            - Path=/api/hub-routes/**  # /Logistic/** 경로 매칭
         - id: delivery-service  # 배송 서비스 라우트
           uri: lb://delivery-service
           predicates:
