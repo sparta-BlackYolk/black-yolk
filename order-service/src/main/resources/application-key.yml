@@ -1,6 +1,6 @@
-SPRING_DATASOURCE_URL : jdbc:postgresql://localhost:5432/order?characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Seoul
-SPRING_DATASOURCE_USERNAME : root
-SPRING_DATASOURCE_PASSWORD :
+SPRING_DATASOURCE_URL : jdbc:postgresql://localhost:5432/order_service
+SPRING_DATASOURCE_USERNAME : postgres
+SPRING_DATASOURCE_PASSWORD : 1234
 REDIS_HOST : localhost
 REDIS_PORT : 6379
 REDIS_USERNAME : default

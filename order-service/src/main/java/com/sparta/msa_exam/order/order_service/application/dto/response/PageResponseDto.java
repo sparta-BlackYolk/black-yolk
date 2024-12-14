@@ -13,6 +13,7 @@ public record PageResponseDto<T>(
         boolean first,
         boolean last
 ) {
+
     public static <T> PageResponseDto<T> of(Page<T> page) {
         return new PageResponseDto<>(
                 page.getContent(),
@@ -24,4 +25,5 @@ public record PageResponseDto<T>(
                 page.isLast()
         );
     }
+
 }
