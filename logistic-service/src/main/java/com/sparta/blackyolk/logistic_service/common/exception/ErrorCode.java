@@ -21,6 +21,8 @@ public enum ErrorCode {
     HUB_ROUTE_NOT_EXIST(404, "HUB_ROUTE_NOT_EXIST", "존재하지 않는 허브 경로입니다."),
     HUB_ROUTE_ALREADY_EXIST(409, "HUB_ROUTE_ALREADY_EXIST", "이미 존재하는 허브 경로입니다."),
 
+    // Path
+    PATH_NOT_EXIST(404, "PATH_NOT_EXIST", "존재하지 경로입니다."),
 
     // example
     INVALID_PARAMETER(400, "INVALID_PARAMETER", "클라이언트에서 요청한 파라미터의 형식이나 내용에 오류가 있는 경우"),
