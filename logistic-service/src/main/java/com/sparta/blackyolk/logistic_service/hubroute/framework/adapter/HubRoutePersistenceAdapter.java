@@ -82,7 +82,7 @@ public class HubRoutePersistenceAdapter implements HubRoutePersistencePort {
     public HubRoute deleteHubRoute(HubRouteForDelete hubRouteForDelete) {
 
         HubRouteEntity hubRouteEntity = hubRouteReadOnlyRepository.findByHubRouteIdAndIsDeletedFalse(hubRouteForDelete.hubRouteId()).get();
-        hubRouteEntity.delete(hubRouteForDelete);
+        hubRouteEntity.delete(hubRouteForDelete.userId());
 
         return hubRouteEntity.toDomain();
     }
