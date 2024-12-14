@@ -38,6 +38,21 @@ public class ProductService {
         return ProductResponseDto.toDto(product);
     }
 
+    @Transactional
+    public ProductResponseDto decreaseStock(UUID productId, int quantity) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("상품 정보가 없습니다."));
+
+        if (product.getStockQuantity() < quantity) {
+            throw new IllegalArgumentException("재고 수량이 부족합니다.");
+        }
+
+        product.decreaseStock(quantity);
+
+        return ProductResponseDto.toDto(product);
+
+    }
+
 
 
 

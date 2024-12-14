@@ -39,6 +39,16 @@ public class ProductController {
         return ResponseEntity.ok(responseDto);
     }
 
+    @PatchMapping("/products/{product_id}/decrease-stock")
+    public ResponseEntity<ProductResponseDto> decreaseStock(
+            @PathVariable(name = "product_id") UUID product_id,
+            @RequestParam int quantity) {
+        ProductResponseDto responseDto = productService.decreaseStock(product_id, quantity);
+
+        return ResponseEntity.ok(responseDto);
+    }
+
+
 
 
 
