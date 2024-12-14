@@ -21,10 +21,12 @@ import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicUpdate
 @Entity
 @Table(name = "p_hub_route")
 public class HubRouteEntity extends BaseEntity {
