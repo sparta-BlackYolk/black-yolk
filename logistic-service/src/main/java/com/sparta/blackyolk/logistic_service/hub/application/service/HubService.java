@@ -22,6 +22,8 @@ public class HubService implements HubUseCase {
     private final String URL = "https://dapi.kakao.com/v2/local/search/address.json?query=";
     private final String ADDRESS = "제주 애월읍";
 
+    // TODO : 캐싱 사용하기
+
     @Override
     public Hub createHub(HubForCreate hubForCreate) {
 

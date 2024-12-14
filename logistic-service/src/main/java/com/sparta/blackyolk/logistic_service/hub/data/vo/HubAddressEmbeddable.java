@@ -19,7 +19,7 @@ public class HubAddressEmbeddable {
     @Column(name = "sido", nullable = false)
     private String sido;
 
-    @Column(name = "sigungu", nullable = false)
+    @Column(name = "sigungu")
     private String sigungu;
 
     @Column(name = "eupmyun")
