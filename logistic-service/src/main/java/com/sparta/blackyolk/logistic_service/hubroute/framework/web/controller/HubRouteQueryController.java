@@ -56,7 +56,7 @@ public class HubRouteQueryController {
         // TODO : user token, user role 받아야 하나?
         log.info("[HubRoute search 조회 pageable] : {}", pageable);
 
-        Page<HubRouteEntity> hubRoutePage = hubRoutePersistenceAdapter.findAllHubRoutesByHubIdWithKeyword(
+        Page<HubRoute> hubRoutePage = hubRoutePersistenceAdapter.findAllHubRoutesByHubIdWithKeyword(
             hubId,
             keyword,
             pageable

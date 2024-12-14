@@ -11,6 +11,7 @@ import com.sparta.blackyolk.logistic_service.hubroute.framework.repository.HubRo
 import com.sparta.blackyolk.logistic_service.hubroute.framework.repository.HubRouteRepository;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,12 +34,33 @@ public class HubRoutePersistenceAdapter implements HubRoutePersistencePort {
     }
 
     @Transactional(readOnly = true)
-    public Page<HubRouteEntity> findAllHubRoutesByHubIdWithKeyword(String hubId, String keyword, Pageable pageable) {
+    public Page<HubRoute> findAllHubRoutesByHubIdWithKeyword(String hubId, String keyword, Pageable pageable) {
         return hubRouteReadOnlyRepository.findAllHubRoutesByHubIdAndIsDeletedFalseWithKeyword(
             hubId,
             keyword,
             pageable
-        );
+        ).map(HubRouteEntity::toDomain);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<HubRoute> findHubRouteByDepartureHubIdAndArrivalHubId(String departureHubId, String arrivalHubId) {
+        return hubRouteReadOnlyRepository.findByDepartureHubIdAndArrivalHubId(departureHubId, arrivalHubId)
+            .map(HubRouteEntity::toDomain)
+            .or(Optional::empty);
+    }
+
+    @Override
+    public List<HubRoute> findAllHubRoutes() {
+        return hubRouteReadOnlyRepository.findAllHubRoutesAndIsDeletedFalseAndActive().stream()
+            .map(HubRouteEntity::toDomain)
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<HubRoute> findAllByHubId(String hubId) {
+        return hubRouteReadOnlyRepository.findAllByHubIdAndIsDeletedFalseAndActive(hubId).stream()
+            .map(HubRouteEntity::toDomain)
+            .collect(Collectors.toList());
     }
 
     @Transactional
