@@ -53,7 +53,12 @@ public class ProductService {
 
     }
 
+    @Transactional
+    public void deleteProduct(UUID productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("상품 정보가 없습니다."));
 
-
+        product.delete();
+    }
 
 }

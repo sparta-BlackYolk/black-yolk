@@ -48,9 +48,11 @@ public class ProductController {
         return ResponseEntity.ok(responseDto);
     }
 
+    @DeleteMapping("/products/{product_id}")
+    public ResponseEntity<String> deleteProduct(@PathVariable(name = "product_id") UUID product_id) {
+        productService.deleteProduct(product_id);
 
-
-
-
+        return ResponseEntity.status(HttpStatus.OK).body("삭제 완료");
+    }
 
 }
