@@ -1,11 +1,9 @@
-package com.sparta.blackyolk.slack_service.slack.service;
+package com.sparta.blackyolk.slack_service.application.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.blackyolk.slack_service.slack.entity.SlackMessage;
-import com.sparta.blackyolk.slack_service.slack.repository.SlackMessageRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import com.sparta.blackyolk.slack_service.domain.entity.SlackMessage;
+import com.sparta.blackyolk.slack_service.domain.repository.SlackMessageRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
