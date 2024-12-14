@@ -34,3 +34,9 @@ spring:
 logging:
   level:
     org.hibernate: WARN
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:19090/eureka/ # Eureka URL
