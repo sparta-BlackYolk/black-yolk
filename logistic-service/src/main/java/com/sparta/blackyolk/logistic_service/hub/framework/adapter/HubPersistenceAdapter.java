@@ -5,11 +5,14 @@ import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForCreate
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForDelete;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForUpdate;
 import com.sparta.blackyolk.logistic_service.hub.application.port.HubPersistencePort;
+import com.sparta.blackyolk.logistic_service.hub.data.vo.HubStatus;
 import com.sparta.blackyolk.logistic_service.hub.framework.repository.HubReadOnlyRepository;
 import com.sparta.blackyolk.logistic_service.hub.framework.repository.HubRepository;
 import com.sparta.blackyolk.logistic_service.hub.data.HubEntity;
 import com.sparta.blackyolk.logistic_service.hubroute.data.HubRouteEntity;
+import com.sparta.blackyolk.logistic_service.hubroute.data.vo.HubRouteStatus;
 import com.sparta.blackyolk.logistic_service.hubroute.framework.repository.HubRouteReadOnlyRepository;
+import com.sparta.blackyolk.logistic_service.hubroute.framework.repository.HubRouteRepository;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class HubPersistenceAdapter implements HubPersistencePort {
 
     private final HubRepository hubRepository;
+    private final HubRouteRepository hubRouteRepository;
     private final HubReadOnlyRepository hubReadOnlyRepository;
     private final HubRouteReadOnlyRepository hubRouteReadOnlyRepository;
 
@@ -72,7 +76,12 @@ public class HubPersistenceAdapter implements HubPersistencePort {
     public Hub updateHub(HubForUpdate hubForUpdate, BigDecimal axisX, BigDecimal axisY) {
 
         HubEntity hubEntity = hubReadOnlyRepository.findByHubIdAndIsDeletedFalse(hubForUpdate.hubId()).get();
+
         hubEntity.updateHub(hubForUpdate, axisX, axisY);
+        if (hubForUpdate.status() != null) {
+            hubRouteRepository.updateStatusByHubId(hubForUpdate.hubId(),
+                hubForUpdate.status() == HubStatus.ACTIVE ? HubRouteStatus.ACTIVE : HubRouteStatus.INACTIVE);
+        }
 
         return hubEntity.toDomain();
     }
