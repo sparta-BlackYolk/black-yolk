@@ -129,11 +129,12 @@ public class CourierService {
         User user = userRepository.findById(courier.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자 정보를 찾을 수 없습니다. userId: " + courier.getUserId()));
 
-        // 3. 역할에 따라 허브 ID 검증
+        // 3. 역할에 따라 처리
         if (user.getRole() == UserRoleEnum.COMPANY_DELIVERY) {
+            // 허브 ID 검증 및 저장
             if (updateRequestDto.getHubId() != null) {
-                // FeignClient를 통해 logistic-service에서 hubId 검증
                 try {
+                    // FeignClient를 통해 logistic-service에서 hubId 검증
                     logisticServiceClient.getHubById(updateRequestDto.getHubId().toString());
                 } catch (Exception e) {
                     throw new IllegalArgumentException("유효하지 않은 hubId입니다: " + updateRequestDto.getHubId());
@@ -142,6 +143,14 @@ public class CourierService {
             } else {
                 throw new IllegalArgumentException("COMPANY_DELIVERY 역할에는 hubId가 필수입니다.");
             }
+        } else if (user.getRole() == UserRoleEnum.HUB_DELIVERY) {
+            // HUB_DELIVERY 역할일 경우 허브 ID를 저장하지 않음
+            if (updateRequestDto.getHubId() != null) {
+                throw new IllegalArgumentException("HUB_DELIVERY 역할에서는 hubId를 설정할 수 없습니다.");
+            }
+            courier.setHubId(null); // 기존 허브 ID를 초기화 (필요 시)
+        } else {
+            throw new IllegalArgumentException("유효하지 않은 역할입니다. role: " + user.getRole());
         }
 
         // 4. 슬랙 아이디 업데이트
@@ -162,6 +171,7 @@ public class CourierService {
                 .updatedAt(courier.getUpdatedAt())
                 .build();
     }
+
 
 
     // 배송 담당자 삭제
