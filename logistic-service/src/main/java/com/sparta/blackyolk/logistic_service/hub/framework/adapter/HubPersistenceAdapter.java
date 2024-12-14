@@ -8,6 +8,8 @@ import com.sparta.blackyolk.logistic_service.hub.application.port.HubPersistence
 import com.sparta.blackyolk.logistic_service.hub.framework.repository.HubReadOnlyRepository;
 import com.sparta.blackyolk.logistic_service.hub.framework.repository.HubRepository;
 import com.sparta.blackyolk.logistic_service.hub.data.HubEntity;
+import com.sparta.blackyolk.logistic_service.hubroute.data.HubRouteEntity;
+import com.sparta.blackyolk.logistic_service.hubroute.framework.repository.HubRouteReadOnlyRepository;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +26,7 @@ public class HubPersistenceAdapter implements HubPersistencePort {
 
     private final HubRepository hubRepository;
     private final HubReadOnlyRepository hubReadOnlyRepository;
+    private final HubRouteReadOnlyRepository hubRouteReadOnlyRepository;
 
     @Transactional(readOnly = true)
     public Optional<Hub> findByHubId(String hubId) {
@@ -43,6 +46,13 @@ public class HubPersistenceAdapter implements HubPersistencePort {
     @Transactional(readOnly = true)
     public Optional<Hub> findByHubCenter(String hubCenter) {
         return hubReadOnlyRepository.findByHubCenterIsDeletedFalse(hubCenter)
+            .map(HubEntity::toDomain)
+            .or(Optional::empty);
+    }
+
+    @Override
+    public Optional<Hub> findByHubIdWithHubRoutes(String hubId) {
+        return hubReadOnlyRepository.findByHubIdAndIsDeletedFalseWithHubRoutes(hubId)
             .map(HubEntity::toDomain)
             .or(Optional::empty);
     }
@@ -71,8 +81,11 @@ public class HubPersistenceAdapter implements HubPersistencePort {
     @Override
     public Hub deleteHub(HubForDelete hubForDelete) {
 
-        HubEntity hubEntity = hubReadOnlyRepository.findByHubIdAndIsDeletedFalse(hubForDelete.hubId()).get();
-        hubEntity.deleteHub(hubForDelete);
+        HubEntity hubEntity = hubReadOnlyRepository.findByHubIdAndIsDeletedFalseWithHubRoutes(hubForDelete.hubId()).get();
+        List<HubRouteEntity> hubRouteEntityList = hubRouteReadOnlyRepository.findAllHubRoutesByHubIdAndIsDeletedFalse(hubForDelete.hubId());
+
+        hubEntity.deleteHub(hubForDelete.userId());
+        hubRouteEntityList.forEach(hubRoute -> hubRoute.delete(hubForDelete.userId()));
 
         return hubEntity.toDomain();
     }

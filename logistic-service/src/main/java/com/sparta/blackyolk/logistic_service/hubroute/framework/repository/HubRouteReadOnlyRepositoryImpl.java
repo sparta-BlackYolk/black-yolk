@@ -108,6 +108,38 @@ public class HubRouteReadOnlyRepositoryImpl implements HubRouteReadOnlyRepositor
         return new PageImpl<>(results, pageable, total);
     }
 
+    /*
+    select
+        hr.*
+    from
+        hub_route_entity hr
+    join
+        hub_entity h1 on hr.departure_hub_id = h1.hub_id
+    join
+        hub_entity h2 on hr.arrival_hub_id = h2.hub_id
+    where
+        hr.is_deleted = false
+        and (h1.hub_id = :hubId or h2.hub_id = :hubId)
+    */
+    @Override
+    public List<HubRouteEntity> findAllHubRoutesByHubIdAndIsDeletedFalse(String hubId) {
+
+        QHubEntity departureHub =  new QHubEntity("departureHub");
+        QHubEntity arrivalHub = new QHubEntity("arrivalHub");
+
+        BooleanExpression isHubRouteNotDeleted = hubRouteEntity.isDeleted.isFalse();
+        BooleanExpression isDepartureHub = hubRouteEntity.departureHub.hubId.eq(hubId);
+        BooleanExpression isArrivalHub = hubRouteEntity.arrivalHub.hubId.eq(hubId);
+
+        return jpaQueryFactory.selectFrom(hubRouteEntity)
+            .join(hubRouteEntity.departureHub, departureHub) // departureHub와 명시적 조인
+            .join(hubRouteEntity.arrivalHub, arrivalHub)
+            .where(
+                isHubRouteNotDeleted.and(isDepartureHub.or(isArrivalHub))
+            )
+            .fetch();
+    }
+
     private BooleanBuilder buildKeywordSearchConditions(String hubId, String keyword) {
 
         BooleanExpression isHubIdEquals = hubRouteEntity.departureHub.hubId.eq(hubId);

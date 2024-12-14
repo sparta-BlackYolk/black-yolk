@@ -6,9 +6,11 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sparta.blackyolk.logistic_service.hub.data.HubEntity;
 import com.sparta.blackyolk.logistic_service.hub.data.QHubEntity;
+import com.sparta.blackyolk.logistic_service.hubroute.data.QHubRouteEntity;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -75,6 +77,36 @@ public class HubReadOnlyReadOnlyRepositoryImpl implements HubReadOnlyRepository 
 
         HubEntity result = jpaQueryFactory.selectFrom(hubEntity)
             .where(isHubCenterEquals.and(isNotDeleted))
+            .fetchOne();
+
+        return Optional.ofNullable(result);
+    }
+
+    /*
+    select distinct h.*
+    from hub h
+    join hub_route hr
+      on hr.isDeleted = false
+         and (hr.departureHubId = :hubId or hr.arrivalHubId = :hubId)
+    where h.hubId = :hubId
+      and h.isDeleted = false;
+    */
+    @Override
+    public Optional<HubEntity> findByHubIdAndIsDeletedFalseWithHubRoutes(String hubId) {
+
+        QHubRouteEntity hubRouteEntity = QHubRouteEntity.hubRouteEntity;
+
+        BooleanExpression isHubRouteNotDeleted = hubRouteEntity.isDeleted.isFalse();
+        BooleanExpression isDepartureHub = hubRouteEntity.departureHub.hubId.eq(hubId);
+        BooleanExpression isArrivalHub = hubRouteEntity.arrivalHub.hubId.eq(hubId);
+        BooleanExpression isHubIdEquals = hubEntity.hubId.eq(hubId);
+        BooleanExpression isHubNotDeleted = hubEntity.isDeleted.isFalse();
+
+        BooleanExpression isDepartureOrArrivalHub = isDepartureHub.or(isArrivalHub);
+
+        HubEntity result = jpaQueryFactory.selectFrom(hubEntity).distinct()
+            .join(hubRouteEntity).on(isHubRouteNotDeleted.and(isDepartureOrArrivalHub)).fetchJoin()
+            .where(isHubIdEquals.and(isHubNotDeleted))
             .fetchOne();
 
         return Optional.ofNullable(result);
