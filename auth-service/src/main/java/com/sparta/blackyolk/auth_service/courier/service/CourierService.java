@@ -34,7 +34,12 @@ public class CourierService {
         User user = userRepository.findById(requestDto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다. userId: " + requestDto.getUserId()));
 
-        // 2. 허브 ID 검증 (업체 배송 담당자일 경우)
+        // 2. 배송 담당자 중복 여부 검증
+        if (courierRepository.existsByUserId(requestDto.getUserId())) {
+            throw new IllegalArgumentException("해당 사용자(userId: " + requestDto.getUserId() + ")는 이미 배송 담당자로 등록되어 있습니다.");
+        }
+
+        // 3. 허브 ID 검증 (업체 배송 담당자일 경우)
         if (user.getRole() == UserRoleEnum.COMPANY_DELIVERY) {
             if (requestDto.getHubId() == null) {
                 throw new IllegalArgumentException("COMPANY_DELIVERY 역할에는 hubId가 필수입니다.");
@@ -48,11 +53,11 @@ public class CourierService {
             }
         }
 
-        // 3. 전체 순번 조회 및 새로운 순번 생성
+        // 4. 전체 순번 조회 및 새로운 순번 생성
         Optional<Integer> maxDeliveryNum = courierRepository.findMaxDeliveryNumWithLock();
         String newDeliveryNum = String.format("%03d", maxDeliveryNum.orElse(0) + 1);
 
-        // 4. 배송 담당자 생성
+        // 5. 배송 담당자 생성
         Courier courier = Courier.builder()
                 .userId(requestDto.getUserId())
                 .hubId(requestDto.getHubId()) // null일 수도 있음 (HUB_DELIVERY일 경우)
@@ -62,10 +67,10 @@ public class CourierService {
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        // 5. 배송 담당자 저장
+        // 6. 배송 담당자 저장
         courierRepository.save(courier);
 
-        // 6. 응답 DTO 생성 및 반환
+        // 7. 응답 DTO 생성 및 반환
         return CourierResponseDto.builder()
                 .courierId(courier.getCourierId())
                 .userId(courier.getUserId())
@@ -74,6 +79,7 @@ public class CourierService {
                 .createdAt(courier.getCreatedAt())
                 .build();
     }
+
 
 
 

@@ -23,4 +23,5 @@ public interface CourierRepository extends JpaRepository<Courier, UUID> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<Integer> findMaxDeliveryNumWithLock();
 
+    boolean existsByUserId(Long userId);
 }
