@@ -12,6 +12,7 @@ public enum ErrorCode {
     FORBIDDEN(403, "USER_FORBIDDEN", "접근 권한이 없습니다."),
 
     // Hub
+    HUB_BAD_REQUEST(400, "HUB_BAD_REQUEST", "잘못된 허브 요청입니다."),
     HUB_NOT_EXIST(404, "HUB_NOT_EXIST", "존재하지 않는 허브입니다."),
     HUB_ALREADY_EXIST(409, "HUB_ALREADY_EXIST", "이미 존재하는 허브입니다."),
 
