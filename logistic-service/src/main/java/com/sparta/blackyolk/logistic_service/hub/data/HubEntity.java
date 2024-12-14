@@ -3,7 +3,6 @@ package com.sparta.blackyolk.logistic_service.hub.data;
 import com.sparta.blackyolk.logistic_service.common.BaseEntity;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForCreate;
-import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForDelete;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForUpdate;
 import com.sparta.blackyolk.logistic_service.hub.data.vo.HubAddressEmbeddable;
 import com.sparta.blackyolk.logistic_service.hub.data.vo.HubCoordinateEmbeddable;
@@ -114,7 +113,6 @@ public class HubEntity extends BaseEntity {
         );
     }
 
-    // TODO : update 하는 시점에 updateAt 변경 되는지 확인 하기
     public void updateHub(
         HubForUpdate hubForUpdate,
         BigDecimal axisX,
@@ -141,7 +139,7 @@ public class HubEntity extends BaseEntity {
     }
 
     public void deleteHub(Long userId) {
-        this.status = HubStatus.INACTIVE; // TODO : Domain 으로 넘길 수 있을까?
+        this.status = HubStatus.INACTIVE;
         super.deleteFrom(userId);
     }
 }

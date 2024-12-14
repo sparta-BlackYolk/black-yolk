@@ -3,8 +3,6 @@ package com.sparta.blackyolk.logistic_service.hubroute.data;
 import com.sparta.blackyolk.logistic_service.common.BaseEntity;
 import com.sparta.blackyolk.logistic_service.hub.data.HubEntity;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRoute;
-import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForCreate;
-import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForDelete;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForUpdate;
 import com.sparta.blackyolk.logistic_service.hubroute.data.vo.HubRouteStatus;
 import jakarta.persistence.Column;
@@ -124,7 +122,7 @@ public class HubRouteEntity extends BaseEntity {
     }
 
     public void delete(Long userId) {
-        this.status = HubRouteStatus.INACTIVE; // TODO : domain으로 옮길 수 있지 않을까?
+        this.status = HubRouteStatus.INACTIVE;
         super.deleteFrom(userId);
     }
 }
