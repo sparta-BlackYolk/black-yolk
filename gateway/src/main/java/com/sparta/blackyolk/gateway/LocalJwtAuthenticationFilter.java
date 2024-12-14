@@ -34,7 +34,7 @@ public class LocalJwtAuthenticationFilter implements GlobalFilter {
         log.info("Incoming request path: {}", path); // 요청 경로 로그 출력
 
         // 특정 경로에 대해 필터를 건너뜀 (예: /auth/signup, /auth/login)
-        if (path.equals("/api/auth/users/signup") || path.equals("/api/auth/users/login")) {
+        if (path.equals("/api/auth/users/signup") || path.equals("/api/auth/users/login") || path.equals("/api/slack/send")) {
             log.info("Path {} is excluded from authentication", path); // 인증 제외 경로 로그 출력
             return chain.filter(exchange);
         }
