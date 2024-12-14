@@ -8,14 +8,14 @@ public record HubRoutePathResponse(
     String departureHub,
     String arrivalHub,
     BigDecimal totalDistance,
-    int totalDuration,
+    double totalDuration,
     List<PathResponse> paths
 ) {
     public record PathResponse(
         String from,
         String to,
         BigDecimal distance,
-        int duration
+        double duration
     ) {
 
     }
@@ -23,14 +23,15 @@ public record HubRoutePathResponse(
     public static HubRoutePathResponse toDTO(
         String departureHub,
         String arrivalHub,
-        List<HubRoute> hubRouteList
+        List<HubRoute> hubRouteList,
+        double timeSlotWeight
     ) {
         List<PathResponse> paths = hubRouteList.stream()
             .map(route -> new PathResponse(
                 route.getDepartureHub().getHubName(),
                 route.getArrivalHub().getHubName(),
                 route.getDistance(),
-                route.getDuration()
+                route.getDuration()*timeSlotWeight
             ))
             .toList();
 
@@ -38,8 +39,8 @@ public record HubRoutePathResponse(
             .map(HubRoute::getDistance)
             .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        int totalDuration = hubRouteList.stream()
-            .mapToInt(HubRoute::getDuration)
+        double totalDuration = hubRouteList.stream()
+            .mapToDouble(route -> route.getDuration() * timeSlotWeight)
             .sum();
 
         return new HubRoutePathResponse(
