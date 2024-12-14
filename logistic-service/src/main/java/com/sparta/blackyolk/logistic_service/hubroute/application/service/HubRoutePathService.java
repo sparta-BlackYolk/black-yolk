@@ -10,7 +10,6 @@ import com.sparta.blackyolk.logistic_service.hubroute.application.port.HubRouteP
 import com.sparta.blackyolk.logistic_service.hubroute.application.usecase.HubRoutePathUseCase;
 import com.sparta.blackyolk.logistic_service.hubroute.application.util.TimeSlotWeightMapper;
 import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRoutePathResponse;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -29,6 +28,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class HubRoutePathService implements HubRoutePathUseCase {
 
+    // 평균 속도 가정
+    private static final double AVERAGE_SPEED_KMH = 60.0; // km/h
+
     private final HubRoutePersistencePort hubRoutePersistencePort;
     private final HubService hubService;
     private final TimeSlotWeightMapper timeSlotWeightMapper;
@@ -37,8 +39,9 @@ public class HubRoutePathService implements HubRoutePathUseCase {
     public HubRoutePathResponse getShortestPath(String departure, String arrival) {
         LocalDateTime now = LocalDateTime.now();
         String currentTimeSlot = getCurrentTimeSlot(now);
+        double timeSlotWeight = timeSlotWeightMapper.getWeight(currentTimeSlot);
 
-        log.info("[최단 경로 탐색] 현재 시간대 : {}", currentTimeSlot);
+        log.info("[최단 경로 탐색] 현재 시간대 : {}, 가중치: {}", currentTimeSlot, timeSlotWeight);
 
         Hub departureHub = hubService.validateHub(departure);
         Hub arrivalHub = hubService.validateHub(arrival);
@@ -46,14 +49,15 @@ public class HubRoutePathService implements HubRoutePathUseCase {
 
         log.info("[최단 경로 탐색] {} 에서 {} 로의 최단 경로, 시간대: {}", departureHub.getHubName(), arrivalHub.getHubName(), currentTimeSlot);
 
-        List<HubRoute> shortestPath = findShortestPath(currentTimeSlot, departureHub, arrivalHub);
+        List<HubRoute> shortestPath = findShortestPath(currentTimeSlot, timeSlotWeight, departureHub, arrivalHub);
 
         log.info("[최단 경로 탐색] 최단 경로 : {}", shortestPath);
 
         return HubRoutePathResponse.toDTO(
             departureHub.getHubName(),
             arrivalHub.getHubName(),
-            shortestPath
+            shortestPath,
+            timeSlotWeight
         );
     }
 
@@ -81,7 +85,7 @@ public class HubRoutePathService implements HubRoutePathUseCase {
         return endTime.compareTo(startTime) < 0;
     }
 
-    private List<HubRoute> findShortestPath(String currentTimeSlot, Hub departureHub, Hub arrivalHub) {
+    private List<HubRoute> findShortestPath(String currentTimeSlot, double timeSlotWeight, Hub departureHub, Hub arrivalHub) {
         PriorityQueue<Node> candidateNodes = initializeCandidateNodes(departureHub, arrivalHub);
         Map<Hub, Double> costFromStart = initializeCostFromStart(departureHub);
         Map<Hub, Node> previousNodes = new HashMap<>();
@@ -112,7 +116,8 @@ public class HubRoutePathService implements HubRoutePathUseCase {
                 candidateNodes,
                 costFromStart,
                 previousNodes,
-                currentTimeSlot
+                currentTimeSlot,
+                timeSlotWeight
             );
         }
 
@@ -140,7 +145,8 @@ public class HubRoutePathService implements HubRoutePathUseCase {
         PriorityQueue<Node> candidateNodes,
         Map<Hub, Double> costFromStart,
         Map<Hub, Node> previousNodes,
-        String currentTimeSlot
+        String currentTimeSlot,
+        double timeSlotWeight
     ) {
         log.info("[최단 경로 탐색] 현재 경로: {}, Hub ID: {}", currentNode.getHub().getHubName(), currentNode.getHub().getHubId());
 
@@ -153,7 +159,6 @@ public class HubRoutePathService implements HubRoutePathUseCase {
         }
 
         for (HubRoute route : neighbors) {
-            double timeSlotWeight = timeSlotWeightMapper.getWeight(currentTimeSlot);
             log.info("[최단 경로 탐색] 시간대 {}의 가중치: {}", currentTimeSlot, timeSlotWeight);
 
             double expectedCost = calculateExpectedCost(currentNode, route, timeSlotWeight, costFromStart);
@@ -166,10 +171,16 @@ public class HubRoutePathService implements HubRoutePathUseCase {
     }
 
     private double calculateExpectedCost(Node currentNode, HubRoute route, double timeSlotWeight, Map<Hub, Double> costFromStart) {
-        double cost = costFromStart.getOrDefault(currentNode.getHub(), Double.MAX_VALUE)
-            + route.getDistance().doubleValue() * timeSlotWeight;
-        log.info("[최단 경로 탐색] 예상 경로 비용 {} -> {}: {}",
-                  currentNode.getHub().getHubName(), route.getArrivalHub().getHubName(), cost);
+        // 현재 노드까지의 비용
+        double currentCost = costFromStart.getOrDefault(currentNode.getHub(), Double.MAX_VALUE);
+
+        // 소요 시간 기반 비용 계산
+        double travelTimeInMinutes = route.getDuration(); // 소요 시간(분 단위)
+        double cost = currentCost + travelTimeInMinutes * timeSlotWeight;
+
+        log.info("[최단 경로 탐색] 예상 경로 비용 {} -> {}: {} (소요 시간: {}분, 가중치: {})",
+                 currentNode.getHub().getHubName(), route.getArrivalHub().getHubName(), cost, travelTimeInMinutes, timeSlotWeight);
+
         return cost;
     }
 
@@ -217,12 +228,36 @@ public class HubRoutePathService implements HubRoutePathUseCase {
     }
 
     private double heuristic(Hub current, Hub goal) {
-        BigDecimal dx = current.getHubCoordinate().getAxisX().subtract(goal.getHubCoordinate().getAxisX());
-        BigDecimal dy = current.getHubCoordinate().getAxisY().subtract(goal.getHubCoordinate().getAxisY());
 
-        double distance = Math.sqrt(dx.pow(2).add(dy.pow(2)).doubleValue());
-        log.info("[최단 경로 탐색] heuristic distance 계산 {} -> {}: {}", current.getHubName(), goal.getHubName(), distance);
-        return distance;
+        // 현재 허브에서 목표 허브까지의 예상 직선 거리 계산
+        double distance = calculateHaversineDistance(current, goal);
+
+        double estimatedTravelTime = (distance / AVERAGE_SPEED_KMH) * 60; // 예상 소요 시간(분 단위)
+
+        log.info("[최단 경로 탐색] heuristic 계산 {} -> {}: 거리={}, 예상 소요 시간={}분",
+                 current.getHubName(), goal.getHubName(), distance, estimatedTravelTime);
+
+        return estimatedTravelTime;
+    }
+
+    private double calculateHaversineDistance(Hub current, Hub goal) {
+        final double R = 6371; // 지구 반지름 (단위: km)
+
+        // 위도와 경도를 라디안으로 변환
+        double lat1 = Math.toRadians(current.getHubCoordinate().getAxisX().doubleValue());
+        double lon1 = Math.toRadians(current.getHubCoordinate().getAxisY().doubleValue());
+        double lat2 = Math.toRadians(goal.getHubCoordinate().getAxisX().doubleValue());
+        double lon2 = Math.toRadians(goal.getHubCoordinate().getAxisY().doubleValue());
+
+        // 위도와 경도의 차이
+        double deltaLat = lat2 - lat1;
+        double deltaLon = lon2 - lon1;
+
+        // Haversine 공식
+        double a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) + Math.cos(lat1) * Math.cos(lat2) * Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        // 거리 계산
+        return R * c; // 결과 거리 (단위: km)
     }
 }
-
