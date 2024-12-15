@@ -10,7 +10,9 @@ import com.sparta.blackyolk.logistic_service.hubroute.framework.adapter.HubRoute
 import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRouteCreateResponse;
 import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRouteGetResponse;
 import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRoutePageResponse;
+import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRoutePathResponse;
 import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRouteUpdateResponse;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
@@ -54,7 +56,7 @@ public class HubRouteCacheService {
         return new HubRoutePageResponse(hubRoutePage);
     }
 
-    @CacheEvict(cacheNames = "hub_route_page_cache", allEntries = true)
+    @CacheEvict(cacheNames = {"hub_route_page_cache", "hub_route_path_cache"}, allEntries = true)
     public HubRouteCreateResponse createHubRoute(Long userId, HubRoute hubRoute) {
 
         log.info("[HubRoute 생성]: {}", hubRoute);
@@ -66,13 +68,13 @@ public class HubRouteCacheService {
         return HubRouteCreateResponse.toDTO(hubroute);
     }
 
-    @CacheEvict(cacheNames = {"hub_route_cache", "hub_route_page_cache"}, allEntries = true)
+    @CacheEvict(cacheNames = {"hub_route_cache", "hub_route_page_cache", "hub_route_path_cache"}, allEntries = true)
     public HubRouteUpdateResponse updateHubRoute(HubRouteForUpdate hubRouteForUpdate) {
         HubRoute hubroute = hubRoutePersistencePort.updateHubRoute(hubRouteForUpdate);
         return HubRouteUpdateResponse.toDTO(hubroute);
     }
 
-    @CacheEvict(cacheNames = {"hub_route_cache", "hub_route_page_cache"}, allEntries = true)
+    @CacheEvict(cacheNames = {"hub_route_cache", "hub_route_page_cache", "hub_route_path_cache"}, allEntries = true)
     public HubRoute deleteHubRoute(HubRouteForDelete hubRouteForDelete) {
         return hubRoutePersistencePort.deleteHubRoute(hubRouteForDelete);
     }
