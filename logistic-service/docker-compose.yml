@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  redis-stack:
+    image: redis/redis-stack
+    container_name: caching_redis
+    restart: always
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    ports:
+      - 6380:6379
+      - 8002:8001
+    networks:
+      - redis_network
+
+networks:
+  redis_network:
+    driver: bridge
