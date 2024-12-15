@@ -94,9 +94,13 @@ public class HubRouteReadOnlyRepositoryImpl implements HubRouteReadOnlyRepositor
         h.*
     from
         hub_route_entity h
+    left join
+        hub_entity departure on h.departure_hub_id = departure.hub_id
+    left join
+        hub_entity arrival on h.arrival_hub_id = arrival.hub_id
     where
         h.is_deleted = false
-        and h.status = 'ACTIVE';
+        and h.status = 'active';
     */
     @Override
     public List<HubRouteEntity> findAllHubRoutesAndIsDeletedFalseAndActive() {
@@ -104,7 +108,12 @@ public class HubRouteReadOnlyRepositoryImpl implements HubRouteReadOnlyRepositor
         BooleanExpression isDeleted = hubRouteEntity.isDeleted.eq(false);
         BooleanExpression isActive = hubRouteEntity.status.eq(HubRouteStatus.ACTIVE);
 
+        QHubEntity departureHubAlias = new QHubEntity("departureHubAlias");
+        QHubEntity arrivalHubAlias = new QHubEntity("arrivalHubAlias");
+
         return jpaQueryFactory.selectFrom(hubRouteEntity)
+            .join(hubRouteEntity.departureHub, departureHubAlias).fetchJoin()
+            .join(hubRouteEntity.arrivalHub, arrivalHubAlias).fetchJoin()
             .where(isDeleted, isActive)
             .fetch();
     }
