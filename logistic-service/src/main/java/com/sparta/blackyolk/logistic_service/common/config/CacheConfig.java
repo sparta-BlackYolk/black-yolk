@@ -1,4 +1,4 @@
-package com.sparta.blackyolk.logistic_service.hub.config;
+package com.sparta.blackyolk.logistic_service.common.config;
 
 import java.time.Duration;
 import java.util.Map;
@@ -30,9 +30,12 @@ public class CacheConfig {
                 )
             );
 
+        // 적용 하고 싶은 캐싱을 선언 합니다.
         Map<String, RedisCacheConfiguration> cacheConfigurations = Map.of(
-            "hub_page_cache", configuration.entryTtl(Duration.ofHours(5)), // 1시간 TTL
-            "hub_cache", configuration.entryTtl(Duration.ofHours(10)) // 2시간 TTL
+            "hub_page_cache", configuration.entryTtl(Duration.ofMinutes(5)), // 5분 TTL
+            "hub_cache", configuration.entryTtl(Duration.ofMinutes(10)), // 10분 TTL
+            "hub_route_page_cache", configuration.entryTtl(Duration.ofMinutes(5)), // 5분 TTL
+            "hub_route_cache", configuration.entryTtl(Duration.ofMinutes(10))  // 10분 TTL
         );
 
         return RedisCacheManager
