@@ -37,7 +37,8 @@ public class HubCommandController {
     public HubCreateResponse createHub(
         @Valid @RequestBody HubCreateRequest hubCreateRequest,
         @RequestHeader(value = "X-User-Id", required = true) String userId,
-        @RequestHeader(value = "X-Role", required = true) String role
+        @RequestHeader(value = "X-Role", required = true) String role,
+        @RequestHeader(value = "Authorization", required = true) String authorization
     ) {
         log.info("[Hub 생성] header 확인: {}", userId);
         log.info("[Hub 생성] header 확인: {}", role);
@@ -45,7 +46,8 @@ public class HubCommandController {
         HubForCreate hubForCreate = HubCreateRequest.toDomain(
             userId,
             role,
-            hubCreateRequest
+            hubCreateRequest,
+            authorization
         );
 
         return hubUseCase.createHub(hubForCreate);
@@ -57,13 +59,15 @@ public class HubCommandController {
         @PathVariable(value = "hubId") String hubId,
         @Valid @RequestBody HubUpdateRequest hubUpdateRequest,
         @RequestHeader(value = "X-User-Id", required = true) String userId,
-        @RequestHeader(value = "X-Role", required = true) String role
+        @RequestHeader(value = "X-Role", required = true) String role,
+        @RequestHeader(value = "Authorization", required = true) String authorization
     ) {
         HubForUpdate hubForUpdate = HubUpdateRequest.toDomain(
             userId,
             role,
             hubId,
-            hubUpdateRequest
+            hubUpdateRequest,
+            authorization
         );
 
         return hubUseCase.updateHub(hubForUpdate);
