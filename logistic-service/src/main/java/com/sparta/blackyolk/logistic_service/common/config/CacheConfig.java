@@ -32,10 +32,11 @@ public class CacheConfig {
 
         // 적용 하고 싶은 캐싱을 선언 합니다.
         Map<String, RedisCacheConfiguration> cacheConfigurations = Map.of(
-            "hub_page_cache", configuration.entryTtl(Duration.ofMinutes(5)), // 5분 TTL
-            "hub_cache", configuration.entryTtl(Duration.ofMinutes(10)), // 10분 TTL
-            "hub_route_page_cache", configuration.entryTtl(Duration.ofMinutes(5)), // 5분 TTL
-            "hub_route_cache", configuration.entryTtl(Duration.ofMinutes(10))  // 10분 TTL
+            "hub_page_cache", configuration.entryTtl(Duration.ofMinutes(60)), // 60분 TTL
+            "hub_cache", configuration.entryTtl(Duration.ofMinutes(90)), // 90분 TTL
+            "hub_route_page_cache", configuration.entryTtl(Duration.ofMinutes(60)), // 60분 TTL
+            "hub_route_cache", configuration.entryTtl(Duration.ofMinutes(60)), // 60분 TTL
+            "hub_route_path_cache", configuration.entryTtl(Duration.ofMinutes(10))  // 10분 TTL
         );
 
         return RedisCacheManager
