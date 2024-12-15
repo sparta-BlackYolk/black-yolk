@@ -1,4 +1,4 @@
-package com.sparta.blackyolk.logistic_service.common.service;
+package com.sparta.blackyolk.logistic_service.hub.application.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,13 +21,13 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class GeoService {
+public class CoordinateService {
 
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
-    @Value("${naver.url}")
-    private String API_URL;
+    @Value("${naver.coordinate-url}")
+    private String COORDINATE_API_URL;
 
     @Value("${naver.rest-api-key-id}")
     private String API_KEY_ID;
@@ -37,15 +37,15 @@ public class GeoService {
 
     public HubCoordinate getCoordinatesByAddress(String address) {
 
-        log.info("[GeoService 좌표 조회] 주소 : {}", address);
+        log.info("[CoordinateService 좌표 조회] 주소 : {}", address);
 
         try {
 
             String encodedAddress = URLEncoder.encode(address, StandardCharsets.UTF_8);
 
-            log.info("[GeoService 좌표 조회] 주소 : {}", encodedAddress);
+            log.info("[CoordinateService 좌표 조회] 주소 : {}", encodedAddress);
 
-            URI uri = new URI(API_URL + "?query=" + encodedAddress);
+            URI uri = new URI(COORDINATE_API_URL + "?query=" + encodedAddress);
 
             log.info("[GeoService 좌표 조회] 요청 주소 : {}", uri);
 
@@ -71,7 +71,7 @@ public class GeoService {
 
             JsonNode rootNode = objectMapper.readTree(body);
 
-            log.info("[GeoService 좌표 조회] JSON 내용 : {}", rootNode.toString());
+            log.info("[CoordinateService 좌표 조회] JSON 내용 : {}", rootNode.toString());
 
             JsonNode addressNode = rootNode.path("addresses").get(0);
 
