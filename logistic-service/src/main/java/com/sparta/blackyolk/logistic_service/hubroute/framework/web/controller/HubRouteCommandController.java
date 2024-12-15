@@ -48,9 +48,8 @@ public class HubRouteCommandController {
             hubId,
             hubRouteCreateRequest
         );
-        HubRoute hubRoute = hubRouteUseCase.createHubRoute(hubRouteForCreate);
 
-        return HubRouteCreateResponse.toDTO(hubRoute);
+        return hubRouteUseCase.createHubRoute(hubRouteForCreate);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -68,9 +67,8 @@ public class HubRouteCommandController {
             hubRouteId,
             hubRouteUpdateRequest
         );
-        HubRoute hubRoute = hubRouteUseCase.updateHubRoute(hubRouteForUpdate);
 
-        return HubRouteUpdateResponse.toDTO(hubRoute);
+        return hubRouteUseCase.updateHubRoute(hubRouteForUpdate);
     }
 
     @ResponseStatus(HttpStatus.OK)
