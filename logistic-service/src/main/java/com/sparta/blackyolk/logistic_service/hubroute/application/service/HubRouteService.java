@@ -5,6 +5,7 @@ import com.sparta.blackyolk.logistic_service.common.exception.ErrorCode;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.application.port.HubPersistencePort;
 import com.sparta.blackyolk.logistic_service.hub.application.service.HubCacheService;
+import com.sparta.blackyolk.logistic_service.hubroute.application.domain.DriveInfo;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRoute;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForCreate;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForDelete;
@@ -27,6 +28,7 @@ public class HubRouteService implements HubRouteUseCase {
     private final HubPersistencePort hubPersistencePort;
     private final HubCacheService hubCacheService;
     private final HubRouteCacheService hubRouteCacheService;
+    private final DriveService driveService;
 
     // TODO : 쿼리 몇번 날아가는 지 확인, 불필요한 쿼리가 날아가지 않은가?
 
@@ -66,9 +68,13 @@ public class HubRouteService implements HubRouteUseCase {
         validateArrivalHubCenter(arrivalHub, hubRouteForCreate.targetHubCenter());
         validateConnection(departureHub, arrivalHub);
 
+        DriveInfo driveInfo = driveService.getDriveInfo(departureHub, arrivalHub);
+
         HubRoute hubRoute = new HubRoute(
             departureHub,
-            arrivalHub
+            arrivalHub,
+            driveInfo.distance(),
+            driveInfo.duration()
         );
 
         return hubRouteCacheService.createHubRoute(hubRouteForCreate.userId(), hubRoute);

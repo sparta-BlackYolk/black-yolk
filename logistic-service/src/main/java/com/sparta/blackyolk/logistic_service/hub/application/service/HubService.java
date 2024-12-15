@@ -2,7 +2,6 @@ package com.sparta.blackyolk.logistic_service.hub.application.service;
 
 import com.sparta.blackyolk.logistic_service.common.exception.CustomException;
 import com.sparta.blackyolk.logistic_service.common.exception.ErrorCode;
-import com.sparta.blackyolk.logistic_service.common.service.GeoService;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForCreate;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForDelete;
@@ -26,7 +25,7 @@ public class HubService implements HubUseCase {
 
     private final HubPersistencePort hubPersistencePort;
     private final HubCacheService hubCacheService;
-    private final GeoService geoService;
+    private final CoordinateService coordinateService;
 
     @Override
     public HubCreateResponse createHub(HubForCreate hubForCreate) {
@@ -42,7 +41,7 @@ public class HubService implements HubUseCase {
             hubForCreate.roadName(),
             hubForCreate.buildingNumber()
         );
-        HubCoordinate coordinates = geoService.getCoordinatesByAddress(hubAddress);
+        HubCoordinate coordinates = coordinateService.getCoordinatesByAddress(hubAddress);
 
         return hubCacheService.createHub(hubForCreate, coordinates.getAxisX(), coordinates.getAxisY());
     }
@@ -67,7 +66,7 @@ public class HubService implements HubUseCase {
                 hubForUpdate.address().roadName(),
                 hubForUpdate.address().buildingNumber()
             );
-            HubCoordinate coordinates = geoService.getCoordinatesByAddress(hubAddress);
+            HubCoordinate coordinates = coordinateService.getCoordinatesByAddress(hubAddress);
             axisX = coordinates.getAxisX();
             axisY = coordinates.getAxisY();
         }
