@@ -246,4 +246,10 @@ public class HubRoutePathService implements HubRoutePathUseCase {
         // 거리 계산
         return R * c; // 결과 거리 (단위: m)
     }
+
+    public void validateMaster(String role) {
+        if (!role.equals("MASTER")) {
+            throw new CustomException(ErrorCode.PATH_ACCESS_DENIED);
+        }
+    }
 }
