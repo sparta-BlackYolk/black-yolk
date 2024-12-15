@@ -5,7 +5,6 @@ import com.sparta.blackyolk.logistic_service.common.exception.ErrorCode;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.application.port.HubPersistencePort;
 import com.sparta.blackyolk.logistic_service.hub.application.service.HubCacheService;
-import com.sparta.blackyolk.logistic_service.hub.application.service.HubService;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRoute;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForCreate;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForDelete;
@@ -27,7 +26,6 @@ import org.springframework.stereotype.Service;
 public class HubRouteService implements HubRouteUseCase {
 
     private final HubPersistencePort hubPersistencePort;
-    private final HubService hubService;
     private final HubCacheService hubCacheService;
     private final HubRouteCacheService hubRouteCacheService;
     private final HubRouteCalculator hubRouteCalculator;
