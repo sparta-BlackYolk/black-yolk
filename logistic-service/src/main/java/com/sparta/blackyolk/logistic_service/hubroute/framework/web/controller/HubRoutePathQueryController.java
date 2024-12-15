@@ -1,7 +1,9 @@
 package com.sparta.blackyolk.logistic_service.hubroute.framework.web.controller;
 
 import com.sparta.blackyolk.logistic_service.hubroute.application.usecase.HubRoutePathUseCase;
+import com.sparta.blackyolk.logistic_service.hubroute.application.util.TimeSlotWeightMapper;
 import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRoutePathResponse;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HubRoutePathQueryController {
 
     private final HubRoutePathUseCase hubRoutePathUseCase;
+    private final TimeSlotWeightMapper timeSlotWeightMapper;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/shortest-path")
@@ -26,6 +29,9 @@ public class HubRoutePathQueryController {
         @RequestParam(value = "arrival") String arrival
 
     ) {
-        return hubRoutePathUseCase.getShortestPath(departure, arrival);
+        LocalDateTime now = LocalDateTime.now();
+        String currentTimeSlot = timeSlotWeightMapper.getCurrentTimeSlot(now);
+
+        return hubRoutePathUseCase.getShortestPath(departure, arrival, currentTimeSlot);
     }
 }

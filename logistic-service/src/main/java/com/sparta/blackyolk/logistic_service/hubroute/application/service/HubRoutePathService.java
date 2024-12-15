@@ -10,8 +10,6 @@ import com.sparta.blackyolk.logistic_service.hubroute.application.port.HubRouteP
 import com.sparta.blackyolk.logistic_service.hubroute.application.usecase.HubRoutePathUseCase;
 import com.sparta.blackyolk.logistic_service.hubroute.application.util.TimeSlotWeightMapper;
 import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRoutePathResponse;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,6 +19,7 @@ import java.util.PriorityQueue;
 import lombok.RequiredArgsConstructor;
 import java.util.Comparator;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -36,9 +35,10 @@ public class HubRoutePathService implements HubRoutePathUseCase {
     private final TimeSlotWeightMapper timeSlotWeightMapper;
 
     @Override
-    public HubRoutePathResponse getShortestPath(String departure, String arrival) {
-        LocalDateTime now = LocalDateTime.now();
-        String currentTimeSlot = getCurrentTimeSlot(now);
+    @Cacheable(cacheNames = "hub_route_path_cache",
+        key = "'path:' + #departure + ' to ' + #arrival + ' in ' + #currentTimeSlot"
+    )
+    public HubRoutePathResponse getShortestPath(String departure, String arrival, String currentTimeSlot) {
         double timeSlotWeight = timeSlotWeightMapper.getWeight(currentTimeSlot);
 
         log.info("[최단 경로 탐색] 현재 시간대 : {}, 가중치: {}", currentTimeSlot, timeSlotWeight);
@@ -59,30 +59,6 @@ public class HubRoutePathService implements HubRoutePathUseCase {
             shortestPath,
             timeSlotWeight
         );
-    }
-
-    private String getCurrentTimeSlot(LocalDateTime now) {
-        String time = now.format(DateTimeFormatter.ofPattern("HH:mm"));
-        String timeSlot = timeSlotWeightMapper.getTimeSlots().keySet().stream()
-            .filter(slot -> isTimeInSlot(slot, time))
-            .findFirst()
-            .orElse("22:00-05:00");
-
-        log.info("[최단 경로 탐색] 시간대 : {}, 현재 시각: {}", timeSlot, time);
-        return timeSlot;
-    }
-
-    private boolean isTimeInSlot(String slot, String time) {
-        String[] timeRange = slot.split("-");
-        String startTime = timeRange[0];
-        String endTime = timeRange[1];
-        return isCrossingMidnight(startTime, endTime)
-            ? time.compareTo(startTime) >= 0 || time.compareTo(endTime) < 0
-            : time.compareTo(startTime) >= 0 && time.compareTo(endTime) < 0;
-    }
-
-    private boolean isCrossingMidnight(String startTime, String endTime) {
-        return endTime.compareTo(startTime) < 0;
     }
 
     private List<HubRoute> findShortestPath(String currentTimeSlot, double timeSlotWeight, Hub departureHub, Hub arrivalHub) {

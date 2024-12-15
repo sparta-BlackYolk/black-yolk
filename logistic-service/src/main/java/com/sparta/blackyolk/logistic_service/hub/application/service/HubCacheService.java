@@ -55,7 +55,7 @@ public class HubCacheService {
         return new HubPageResponse(hubPage);
     }
 
-    @CacheEvict(cacheNames = "hub_page_cache", allEntries = true)
+    @CacheEvict(cacheNames = {"hub_page_cache", "hub_route_path_cache"}, allEntries = true)
     public HubCreateResponse createHub(HubForCreate hubForCreate, BigDecimal axisX, BigDecimal axisY) {
 
         log.info("Creating hub with data: {}", hubForCreate);
@@ -67,13 +67,13 @@ public class HubCacheService {
         return HubCreateResponse.toDTO(hub);
     }
 
-    @CacheEvict(cacheNames = {"hub_cache", "hub_page_cache"}, allEntries = true)
+    @CacheEvict(cacheNames = {"hub_cache", "hub_page_cache", "hub_route_cache", "hub_route_page_cache", "hub_route_path_cache"}, allEntries = true)
     public HubUpdateResponse updateHub(HubForUpdate hubForUpdate, BigDecimal axisX, BigDecimal axisY) {
         Hub hub = hubPersistencePort.updateHub(hubForUpdate, axisX, axisY);
         return HubUpdateResponse.toDTO(hub);
     }
 
-    @CacheEvict(cacheNames = {"hub_cache", "hub_page_cache"}, allEntries = true)
+    @CacheEvict(cacheNames = {"hub_cache", "hub_page_cache", "hub_route_cache", "hub_route_page_cache", "hub_route_path_cache"}, allEntries = true)
     public Hub deleteHub(HubForDelete hubForDelete) {
         return hubPersistencePort.deleteHub(hubForDelete);
     }
