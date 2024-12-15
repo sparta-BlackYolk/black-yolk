@@ -4,4 +4,5 @@ import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRoute
 
 public interface HubRoutePathUseCase {
     HubRoutePathResponse getShortestPath(String departure, String arrival, String currentTimeSlot);
+    void validateMaster(String role);
 }

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -25,10 +26,14 @@ public class HubRoutePathQueryController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/shortest-path")
     public HubRoutePathResponse getShortestPath(
+        @RequestHeader(value = "X-User-Id", required = true) String userId,
+        @RequestHeader(value = "X-Role", required = true) String role,
         @RequestParam(value = "departure") String departure,
         @RequestParam(value = "arrival") String arrival
 
     ) {
+        hubRoutePathUseCase.validateMaster(role);
+
         LocalDateTime now = LocalDateTime.now();
         String currentTimeSlot = timeSlotWeightMapper.getCurrentTimeSlot(now);
 

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -26,9 +27,10 @@ public class HubQueryController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{hubId}")
     public HubGetResponse getHub(
+        @RequestHeader(value = "X-User-Id", required = true) String userId,
+        @RequestHeader(value = "X-Role", required = true) String role,
         @PathVariable(value = "hubId") String hubId
     ) {
-        // TODO : user token, user role 받아야 하나?
         return hubCacheService.getHub(hubId);
     }
 
@@ -36,10 +38,11 @@ public class HubQueryController {
     @GetMapping
     @PaginationConstraint(defaultSort = "createdAt", defaultDirection = "DESC", availableSize = {10,30,50}, defaultSize = 10)
     public HubPageResponse getHubs(
+        @RequestHeader(value = "X-User-Id", required = true) String userId,
+        @RequestHeader(value = "X-Role", required = true) String role,
         Pageable pageable,
         @RequestParam(required = false) String keyword
     ) {
-        // TODO : user token, user role 받아야 하나?
         log.info("[Hub search 조회 pageable] : {}", pageable);
 
         return hubCacheService.getHubs(pageable, keyword);
