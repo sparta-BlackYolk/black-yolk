@@ -10,7 +10,6 @@ import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRout
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForDelete;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForRead;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForUpdate;
-import com.sparta.blackyolk.logistic_service.hubroute.application.port.HubRouteCalculator;
 import com.sparta.blackyolk.logistic_service.hubroute.application.usecase.HubRouteUseCase;
 import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRouteCreateResponse;
 import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRouteGetResponse;
@@ -28,7 +27,6 @@ public class HubRouteService implements HubRouteUseCase {
     private final HubPersistencePort hubPersistencePort;
     private final HubCacheService hubCacheService;
     private final HubRouteCacheService hubRouteCacheService;
-    private final HubRouteCalculator hubRouteCalculator;
 
     // TODO : 쿼리 몇번 날아가는 지 확인, 불필요한 쿼리가 날아가지 않은가?
 
