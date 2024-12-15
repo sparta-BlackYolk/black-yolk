@@ -29,6 +29,10 @@ public enum ErrorCode {
     URI_BAD_REQUEST(400, "URI_BAD_REQUEST", "잘못된 URI 요청입니다."),
     REST_API_FAIL(500, "REST_API_FAIL", "외부 API 요청 실패"),
 
+    // User
+    USER_BAD_REQUEST(400, "USER_BAD_REQUEST", "잘못된 사용자 요청입니다."),
+    USER_NOT_EXIST(404, "USER_NOT_EXIST", "존재하지 않는 사용자 입니다."),
+
 
     // example
     INVALID_PARAMETER(400, "INVALID_PARAMETER", "클라이언트에서 요청한 파라미터의 형식이나 내용에 오류가 있는 경우"),
