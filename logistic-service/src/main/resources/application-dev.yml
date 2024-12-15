@@ -31,10 +31,21 @@ spring:
         default_batch_fetch_size: 500
     open-in-view: false
 
+  cache:
+    type: redis
+
+  data:
+    redis:
+      host: localhost
+      port: 6380
+      username: default
+      password: ${REDIS_PW}
+
 logging:
   level:
     org.hibernate: WARN
-
+    org.springframework.cache: DEBUG
+    org.springframework.data.redis: DEBUG
 
 eureka:
   client:

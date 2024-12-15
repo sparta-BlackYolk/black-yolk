@@ -41,3 +41,5 @@ out/
 
 hubv1.sql
 hubv2.sql
+
+redis/redis.conf
