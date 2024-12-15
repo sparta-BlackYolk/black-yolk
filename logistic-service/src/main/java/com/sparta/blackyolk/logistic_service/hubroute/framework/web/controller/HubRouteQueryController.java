@@ -4,7 +4,6 @@ import com.sparta.blackyolk.logistic_service.common.pagenation.PaginationConstra
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForRead;
 import com.sparta.blackyolk.logistic_service.hubroute.application.service.HubRouteCacheService;
 import com.sparta.blackyolk.logistic_service.hubroute.application.usecase.HubRouteUseCase;
-import com.sparta.blackyolk.logistic_service.hubroute.framework.adapter.HubRoutePersistenceAdapter;
 import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRouteGetResponse;
 import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRoutePageResponse;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +25,6 @@ public class HubRouteQueryController {
 
     private final HubRouteUseCase hubRouteUseCase;
     private final HubRouteCacheService hubRouteCacheService;
-    private final HubRoutePersistenceAdapter hubRoutePersistenceAdapter;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{hubRouteId}")
