@@ -8,6 +8,7 @@ import com.sparta.blackyolk.auth_service.user.entity.User;
 import com.sparta.blackyolk.auth_service.user.entity.UserRoleEnum;
 import com.sparta.blackyolk.auth_service.user.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -188,4 +189,9 @@ public class UserService {
                 .build();
     }
 
+    public Optional<UserResponseDto> getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+            .map(User::toDTO)
+            .or(Optional::empty);
+    }
 }
