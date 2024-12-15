@@ -5,10 +5,13 @@ import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRout
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForDelete;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForRead;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForUpdate;
+import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRouteCreateResponse;
+import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRouteGetResponse;
+import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRouteUpdateResponse;
 
 public interface HubRouteUseCase {
-    HubRoute createHubRoute(HubRouteForCreate hubRouteForCreate);
-    HubRoute updateHubRoute(HubRouteForUpdate hubRouteForUpdate);
+    HubRouteCreateResponse createHubRoute(HubRouteForCreate hubRouteForCreate);
+    HubRouteUpdateResponse updateHubRoute(HubRouteForUpdate hubRouteForUpdate);
     HubRoute deleteHubRoute(HubRouteForDelete hubRouteForDelete);
-    HubRoute getHubRoute(HubRouteForRead hubRouteForRead);
+    HubRouteGetResponse getHubRoute(HubRouteForRead hubRouteForRead);
 }

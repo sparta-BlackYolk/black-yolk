@@ -24,6 +24,11 @@ public enum ErrorCode {
     // Path
     PATH_NOT_EXIST(404, "PATH_NOT_EXIST", "존재하지 경로입니다."),
 
+    // 외부 REST API
+    URI_BAD_REQUEST(400, "URI_BAD_REQUEST", "잘못된 URI 요청입니다."),
+    REST_API_FAIL(500, "REST_API_FAIL", "외부 API 요청 실패"),
+
+
     // example
     INVALID_PARAMETER(400, "INVALID_PARAMETER", "클라이언트에서 요청한 파라미터의 형식이나 내용에 오류가 있는 경우"),
     INVALID_RESOURCE(400, "INVALID_{RESOURCE}", "클라이언트에서 요청한 리소스의 내용에 오류가 있는 경우"),

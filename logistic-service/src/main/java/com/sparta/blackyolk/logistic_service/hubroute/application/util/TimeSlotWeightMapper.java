@@ -1,8 +1,12 @@
 package com.sparta.blackyolk.logistic_service.hubroute.application.util;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class TimeSlotWeightMapper {
 
@@ -25,5 +29,29 @@ public class TimeSlotWeightMapper {
 
     public Map<String, Double> getTimeSlots() {
         return TIME_SLOT_WEIGHTS;
+    }
+
+    public String getCurrentTimeSlot(LocalDateTime now) {
+        String time = now.format(DateTimeFormatter.ofPattern("HH:mm"));
+        String timeSlot = getTimeSlots().keySet().stream()
+            .filter(slot -> isTimeInSlot(slot, time))
+            .findFirst()
+            .orElse("22:00-05:00");
+
+        log.info("[최단 경로 탐색] 시간대 : {}, 현재 시각: {}", timeSlot, time);
+        return timeSlot;
+    }
+
+    private boolean isTimeInSlot(String slot, String time) {
+        String[] timeRange = slot.split("-");
+        String startTime = timeRange[0];
+        String endTime = timeRange[1];
+        return isCrossingMidnight(startTime, endTime)
+            ? time.compareTo(startTime) >= 0 || time.compareTo(endTime) < 0
+            : time.compareTo(startTime) >= 0 && time.compareTo(endTime) < 0;
+    }
+
+    private boolean isCrossingMidnight(String startTime, String endTime) {
+        return endTime.compareTo(startTime) < 0;
     }
 }
