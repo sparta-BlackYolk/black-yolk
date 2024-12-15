@@ -5,7 +5,7 @@ import com.sparta.blackyolk.logistic_service.hub.data.vo.HubStatus;
 
 public record HubUpdateResponse(
     String id,
-    Long hubManagerId,
+    String hubManagerId,
     String name,
     String center,
     HubStatus status,

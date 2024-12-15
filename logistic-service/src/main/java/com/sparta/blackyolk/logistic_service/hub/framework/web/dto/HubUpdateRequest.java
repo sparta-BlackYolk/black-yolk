@@ -5,14 +5,14 @@ import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForUpdate
 import com.sparta.blackyolk.logistic_service.hub.data.vo.HubStatus;
 
 public record HubUpdateRequest(
-    Long hubManagerId,
+    String hubManagerId,
     String name,
     HubStatus status,
     HubAddressUpdateRequest address
 ) {
 
     public static HubForUpdate toDomain(
-        Long userId,
+        String userId,
         String role,
         String hubId,
         HubUpdateRequest hubUpdateRequest

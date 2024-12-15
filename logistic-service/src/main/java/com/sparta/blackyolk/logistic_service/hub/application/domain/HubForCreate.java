@@ -1,9 +1,9 @@
 package com.sparta.blackyolk.logistic_service.hub.application.domain;
 
 public record HubForCreate(
-    Long userId,
+    String userId,
     String role,
-    Long hubManagerId,
+    String hubManagerId,
     String name,
     String center,
     String sido,

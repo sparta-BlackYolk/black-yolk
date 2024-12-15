@@ -19,34 +19,34 @@ public class BaseEntity {
     @CreatedDate
     @Column(nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
-    private Long createdBy;
+    private String createdBy;
 
     @LastModifiedDate
     @Column(nullable = false, columnDefinition = "TIMESTAMP")
     private LocalDateTime updatedAt;
-    private Long updatedBy;
+    private String updatedBy;
 
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime deletedAt;
-    private Long deletedBy;
+    private String deletedBy;
 
     @Column(name = "is_deleted", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
     private boolean isDeleted = false;
 
-    protected BaseEntity(Long createdBy, Long updatedBy) {
+    protected BaseEntity(String createdBy, String updatedBy) {
         this.createdBy = createdBy;
         this.updatedBy = updatedBy;
     }
 
-    protected void createFrom(Long createdUserId) {
+    protected void createFrom(String createdUserId) {
         this.createdBy = createdUserId;
     }
 
-    protected void updateFrom(Long updatedUserId) {
+    protected void updateFrom(String updatedUserId) {
         this.updatedBy = updatedUserId;
     }
 
-    protected void deleteFrom(Long deletedUserId) {
+    protected void deleteFrom(String deletedUserId) {
         this.isDeleted = true;
         this.deletedAt = LocalDateTime.now();
         this.deletedBy = deletedUserId;

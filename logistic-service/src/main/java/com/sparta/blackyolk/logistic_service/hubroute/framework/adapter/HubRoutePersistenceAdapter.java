@@ -65,7 +65,7 @@ public class HubRoutePersistenceAdapter implements HubRoutePersistencePort {
 
     @Transactional
     @Override
-    public HubRoute createHubRoute(Long userId, HubRoute hubRoute) {
+    public HubRoute createHubRoute(String userId, HubRoute hubRoute) {
 
         List<HubEntity> hubEntities = hubReadOnlyRepository.findByHubIdsAndIsDeletedFalse(
             List.of(hubRoute.getDepartureHub().getHubId(), hubRoute.getArrivalHub().getHubId())
