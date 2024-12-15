@@ -51,3 +51,8 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:19090/eureka/ # Eureka URL
+
+naver:
+  url: https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode
+  rest-api-key-id: ${X-NCP-APIGW-API-KEY-ID}
+  rest-api-key: ${X-NCP-APIGW-API-KEY}
