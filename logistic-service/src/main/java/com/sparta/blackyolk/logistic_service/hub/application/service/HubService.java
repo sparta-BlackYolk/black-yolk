@@ -1,7 +1,10 @@
 package com.sparta.blackyolk.logistic_service.hub.application.service;
 
+import com.sparta.blackyolk.logistic_service.common.domain.UserResponseDto;
+import com.sparta.blackyolk.logistic_service.common.domain.vo.UserRoleEnum;
 import com.sparta.blackyolk.logistic_service.common.exception.CustomException;
 import com.sparta.blackyolk.logistic_service.common.exception.ErrorCode;
+import com.sparta.blackyolk.logistic_service.common.service.UserService;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForCreate;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForDelete;
@@ -17,8 +20,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class HubService implements HubUseCase {
@@ -26,11 +31,15 @@ public class HubService implements HubUseCase {
     private final HubPersistencePort hubPersistencePort;
     private final HubCacheService hubCacheService;
     private final CoordinateService coordinateService;
+    private final UserService userService;
 
     @Override
     public HubCreateResponse createHub(HubForCreate hubForCreate) {
 
-        // TODO : hubManagerId 있으면 hubManagerId 검증하는 로직 필요
+        if (hubForCreate.hubManagerId() != null) {
+            validateHubManagerId(hubForCreate.hubManagerId(), hubForCreate.authorization());
+        }
+
         validateMaster(hubForCreate.role());
         validateHubCenter(hubForCreate.center());
 
@@ -50,7 +59,10 @@ public class HubService implements HubUseCase {
     @Override
     public HubUpdateResponse updateHub(HubForUpdate hubForUpdate) {
 
-        // TODO : hubManagerId 있으면 hubManagerId 검증하는 로직 필요
+        if (hubForUpdate.hubManagerId() != null) {
+            validateHubManagerId(hubForUpdate.hubManagerId(), hubForUpdate.authorization());
+        }
+
         validateMaster(hubForUpdate.role());
 
         Hub hub = hubCacheService.validateHub(hubForUpdate.hubId());
@@ -93,6 +105,20 @@ public class HubService implements HubUseCase {
     private void validateMaster(String role) {
         if (!"MASTER".equals(role)) {
             throw new CustomException(ErrorCode.ACCESS_DENIED);
+        }
+    }
+
+    private void validateHubManagerId(String hubManagerId, String authorization) {
+
+        log.info("[Hub 생성] authorization 확인: {}", authorization);
+
+        UserResponseDto user = userService.getUser(hubManagerId, authorization).orElseThrow(
+            () -> new CustomException(ErrorCode.USER_NOT_EXIST)
+        );
+
+        if (!user.getRole().equals(UserRoleEnum.HUB_ADMIN)) {
+            log.info("[Hub 생성] user role 확인: {}", user.getRole());
+            throw new CustomException(ErrorCode.USER_BAD_REQUEST, "HUB_ADMIN 권한의 사용자가 아닙니다.");
         }
     }
 

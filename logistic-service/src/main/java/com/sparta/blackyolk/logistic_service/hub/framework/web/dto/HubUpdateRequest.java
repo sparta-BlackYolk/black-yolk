@@ -15,7 +15,8 @@ public record HubUpdateRequest(
         String userId,
         String role,
         String hubId,
-        HubUpdateRequest hubUpdateRequest
+        HubUpdateRequest hubUpdateRequest,
+        String authorization
     ) {
         AddressForUpdateHub address = null;
 
@@ -32,6 +33,7 @@ public record HubUpdateRequest(
         return new HubForUpdate(
             userId,
             role,
+            authorization,
             hubId,
             hubUpdateRequest.hubManagerId(),
             hubUpdateRequest.name(),
