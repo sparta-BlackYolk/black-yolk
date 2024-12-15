@@ -1,9 +1,6 @@
-package com.sparta.blackyolk.slack_service.slack.entity;
+package com.sparta.blackyolk.slack_service.domain.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -23,6 +20,7 @@ public class SlackMessage {
 
     private String userId;  // 수신자 Slack 사용자 ID
 
+    @Column(length = 1000)
     private String message;  // 보낸 메시지
 
     private LocalDateTime sentTime;  // 메시지 발송 시간

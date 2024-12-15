@@ -1,4 +1,4 @@
-package com.sparta.blackyolk.slack_service.slack;
+package com.sparta.blackyolk.slack_service.domain;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

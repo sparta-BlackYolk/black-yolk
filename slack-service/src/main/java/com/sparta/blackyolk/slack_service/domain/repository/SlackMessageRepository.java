@@ -1,6 +1,6 @@
-package com.sparta.blackyolk.slack_service.slack.repository;
+package com.sparta.blackyolk.slack_service.domain.repository;
 
-import com.sparta.blackyolk.slack_service.slack.entity.SlackMessage;
+import com.sparta.blackyolk.slack_service.domain.entity.SlackMessage;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

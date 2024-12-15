@@ -42,5 +42,6 @@ eureka:
 slack:
   bot:
     token: ${SLACK_BOT_TOKEN}
-
+gemini:
+  token: ${GEMINI_TOKEN}
 
