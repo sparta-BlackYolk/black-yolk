@@ -2,7 +2,6 @@ package com.sparta.blackyolk.logistic_service.hub.framework.web.controller;
 
 import com.sparta.blackyolk.logistic_service.common.pagenation.PaginationConstraint;
 import com.sparta.blackyolk.logistic_service.hub.application.service.HubCacheService;
-import com.sparta.blackyolk.logistic_service.hub.framework.adapter.HubPersistenceAdapter;
 import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubGetResponse;
 import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubPageResponse;
 import lombok.RequiredArgsConstructor;

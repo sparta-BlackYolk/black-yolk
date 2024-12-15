@@ -10,9 +10,7 @@ import com.sparta.blackyolk.logistic_service.hubroute.framework.adapter.HubRoute
 import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRouteCreateResponse;
 import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRouteGetResponse;
 import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRoutePageResponse;
-import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRoutePathResponse;
 import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRouteUpdateResponse;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
