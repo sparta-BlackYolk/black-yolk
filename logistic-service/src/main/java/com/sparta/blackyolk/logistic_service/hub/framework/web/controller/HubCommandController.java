@@ -56,7 +56,7 @@ public class HubCommandController {
     @PutMapping("/{hubId}")
     public HubUpdateResponse updateHub(
         @PathVariable(value = "hubId") String hubId,
-        @RequestBody HubUpdateRequest hubUpdateRequest
+        @Valid @RequestBody HubUpdateRequest hubUpdateRequest
     ) {
         // TODO : user token, user role 받기
         HubForUpdate hubForUpdate = HubUpdateRequest.toDomain(
