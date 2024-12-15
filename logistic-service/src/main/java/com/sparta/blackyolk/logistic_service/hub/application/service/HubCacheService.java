@@ -17,9 +17,7 @@ import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -78,5 +76,12 @@ public class HubCacheService {
     @CacheEvict(cacheNames = {"hub_cache", "hub_page_cache"}, allEntries = true)
     public Hub deleteHub(HubForDelete hubForDelete) {
         return hubPersistencePort.deleteHub(hubForDelete);
+    }
+
+    @Cacheable(cacheNames = "hub_cache", key = "'valid:' +#hubId")
+    public Hub validateHub(String hubId) {
+        return hubPersistencePort.findByHubId(hubId).orElseThrow(
+            () -> new CustomException(ErrorCode.HUB_NOT_EXIST)
+        );
     }
 }
