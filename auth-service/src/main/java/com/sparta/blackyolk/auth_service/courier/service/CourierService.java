@@ -11,6 +11,7 @@ import com.sparta.blackyolk.auth_service.user.entity.UserRoleEnum;
 import com.sparta.blackyolk.auth_service.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CourierService {
@@ -29,8 +31,8 @@ public class CourierService {
 
     // 배송 담당자 등록
     @Transactional
-    public CourierResponseDto createCourier(CourierRequestDto requestDto) {
-        // 1. userId를 기반으로 사용자 정보 조회
+    public CourierResponseDto createCourier(CourierRequestDto requestDto, User loggedInUser) {
+        // 1. 등록하려는 사용자의 정보를 조회
         User user = userRepository.findById(requestDto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다. userId: " + requestDto.getUserId()));
 
@@ -39,25 +41,27 @@ public class CourierService {
             throw new IllegalArgumentException("해당 사용자(userId: " + requestDto.getUserId() + ")는 이미 배송 담당자로 등록되어 있습니다.");
         }
 
-        // 3. 허브 ID 검증 (업체 배송 담당자일 경우)
-        if (user.getRole() == UserRoleEnum.COMPANY_DELIVERY) {
-            if (requestDto.getHubId() == null) {
-                throw new IllegalArgumentException("COMPANY_DELIVERY 역할에는 hubId가 필수입니다.");
-            }
-
-            // FeignClient를 통해 logistic-service에서 hubId 검증
-            try {
-                logisticServiceClient.getHubById(requestDto.getHubId().toString());
-            } catch (Exception e) {
-                throw new IllegalArgumentException("유효하지 않은 hubId입니다: " + requestDto.getHubId());
-            }
+        // 3. 역할에 따른 로직 분기
+        if (loggedInUser.getRole() == UserRoleEnum.MASTER) {
+            // 마스터는 모든 권한을 가지고 바로 저장 가능
+            return saveCourier(requestDto, user);
+        } else if (loggedInUser.getRole() == UserRoleEnum.HUB_ADMIN) {
+            // 허브 관리자는 자신의 허브에 속한 배송 담당자만 등록 가능
+            validateHubOwnership(loggedInUser, requestDto.getHubId());
+            return saveCourier(requestDto, user);
+        } else {
+            // 그 외의 역할은 등록 권한 없음
+            throw new IllegalArgumentException("배송 담당자를 등록할 권한이 없습니다.");
         }
+    }
 
-        // 4. 전체 순번 조회 및 새로운 순번 생성
+    // 배송 담당자 저장 로직
+    private CourierResponseDto saveCourier(CourierRequestDto requestDto, User user) {
+        // 1. 새로운 순번 생성
         Optional<Integer> maxDeliveryNum = courierRepository.findMaxDeliveryNumWithLock();
         String newDeliveryNum = String.format("%03d", maxDeliveryNum.orElse(0) + 1);
 
-        // 5. 배송 담당자 생성
+        // 2. 배송 담당자 생성
         Courier courier = Courier.builder()
                 .userId(requestDto.getUserId())
                 .hubId(requestDto.getHubId()) // null일 수도 있음 (HUB_DELIVERY일 경우)
@@ -67,10 +71,10 @@ public class CourierService {
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        // 6. 배송 담당자 저장
+        // 3. 배송 담당자 저장
         courierRepository.save(courier);
 
-        // 7. 응답 DTO 생성 및 반환
+        // 4. 응답 DTO 생성 및 반환
         return CourierResponseDto.builder()
                 .courierId(courier.getCourierId())
                 .userId(courier.getUserId())
@@ -80,94 +84,91 @@ public class CourierService {
                 .build();
     }
 
-
-
-
-
-
-    // 배송 담당자 정보 조회
-    public CourierResponseDto getCourier(UUID courierId) {
+    // 특정 배송 담당자 정보 조회
+    public CourierResponseDto getCourier(UUID courierId, User loggedInUser) {
         Courier courier = courierRepository.findByCourierId(courierId)
                 .orElseThrow(() -> new IllegalArgumentException("Courier not found"));
 
-        return CourierResponseDto.builder()
-                .courierId(courier.getCourierId())
-                .userId(courier.getUserId())
-                .hubId(courier.getHubId())
-                .deliveryNum(courier.getDeliveryNum())
-                .createdAt(courier.getCreatedAt())
-                .build();
-    }
-
-    // 특정 허브의 배송 담당자 조회 또는 전체 조회
-    @Transactional
-    public List<CourierResponseDto> getCouriers(UUID hubId) {
-        List<Courier> couriers;
-
-        if (hubId != null) {
-            couriers = courierRepository.findAllByHubId(hubId);
+        // 권한 확인
+        if (loggedInUser.getRole() == UserRoleEnum.MASTER) {
+            // 마스터는 모든 정보 조회 가능
+            return convertToResponseDto(courier);
+        } else if (loggedInUser.getRole() == UserRoleEnum.HUB_ADMIN) {
+            // 허브 관리자일 경우, 허브 소유권 확인
+            validateHubOwnership(loggedInUser, courier.getHubId());
+            return convertToResponseDto(courier);
+        } else if (loggedInUser.getRole() == UserRoleEnum.HUB_DELIVERY || loggedInUser.getRole() == UserRoleEnum.COMPANY_DELIVERY) {
+            // 배송 담당자는 본인 정보만 조회 가능
+            if (!loggedInUser.getId().equals(courier.getUserId())) {
+                throw new IllegalArgumentException("권한이 없습니다.");
+            }
+            return convertToResponseDto(courier);
         } else {
-            couriers = courierRepository.findAll();
+            throw new IllegalArgumentException("권한이 없습니다.");
         }
-
-        // Entity -> DTO 변환
-        return couriers.stream()
-                .map(courier -> CourierResponseDto.builder()
-                        .courierId(courier.getCourierId())
-                        .userId(courier.getUserId())
-                        .hubId(courier.getHubId())
-                        .deliveryNum(courier.getDeliveryNum())
-                        .createdAt(courier.getCreatedAt())
-                        .build())
-                .toList();
     }
 
+    // 특정 허브 또는 전체 배송 담당자 조회
+    public List<CourierResponseDto> getCouriers(UUID hubId, User loggedInUser) {
+        if (loggedInUser.getRole() == UserRoleEnum.MASTER) {
+            // 마스터는 전체 조회 가능
+            return convertToResponseDtos(
+                    hubId != null ? courierRepository.findAllByHubId(hubId) : courierRepository.findAll()
+            );
+        } else if (loggedInUser.getRole() == UserRoleEnum.HUB_ADMIN) {
+            // 허브 관리자는 자신의 허브에 속한 배송 담당자만 조회 가능
+            validateHubOwnership(loggedInUser, hubId);
+            return convertToResponseDtos(courierRepository.findAllByHubId(hubId));
+        } else {
+            throw new IllegalArgumentException("권한이 없습니다.");
+        }
+    }
 
     // 배송 담당자 수정
-    // 배송 담당자 수정
     @Transactional
-    public CourierResponseDto updateCourier(UUID courierId, CourierUpdateRequestDto updateRequestDto) {
+    public CourierResponseDto updateCourier(UUID courierId, CourierUpdateRequestDto updateRequestDto, User loggedInUser) {
         // 1. 배송 담당자 정보 조회
-        Courier courier = courierRepository.findById(courierId)
+        Courier courier = courierRepository.findByCourierId(courierId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 배송 담당자를 찾을 수 없습니다. courierId: " + courierId));
 
-        // 2. 사용자 정보 조회
-        User user = userRepository.findById(courier.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 사용자 정보를 찾을 수 없습니다. userId: " + courier.getUserId()));
+        // 2. 권한에 따른 처리
+        if (loggedInUser.getRole() == UserRoleEnum.MASTER) {
+            // MASTER는 모든 정보 수정 가능
+            return applyUpdates(courier, updateRequestDto);
 
-        // 3. 역할에 따라 처리
-        if (user.getRole() == UserRoleEnum.COMPANY_DELIVERY) {
-            // 허브 ID 검증 및 저장
-            if (updateRequestDto.getHubId() != null) {
-                try {
-                    // FeignClient를 통해 logistic-service에서 hubId 검증
-                    logisticServiceClient.getHubById(updateRequestDto.getHubId().toString());
-                } catch (Exception e) {
-                    throw new IllegalArgumentException("유효하지 않은 hubId입니다: " + updateRequestDto.getHubId());
-                }
-                courier.setHubId(updateRequestDto.getHubId());
-            } else {
-                throw new IllegalArgumentException("COMPANY_DELIVERY 역할에는 hubId가 필수입니다.");
-            }
-        } else if (user.getRole() == UserRoleEnum.HUB_DELIVERY) {
-            // HUB_DELIVERY 역할일 경우 허브 ID를 저장하지 않음
-            if (updateRequestDto.getHubId() != null) {
-                throw new IllegalArgumentException("HUB_DELIVERY 역할에서는 hubId를 설정할 수 없습니다.");
-            }
-            courier.setHubId(null); // 기존 허브 ID를 초기화 (필요 시)
+        } else if (loggedInUser.getRole() == UserRoleEnum.HUB_ADMIN) {
+            // HUB_ADMIN은 자신이 관리하는 허브 소속의 배송 담당자만 수정 가능
+            validateHubOwnership(loggedInUser, courier.getHubId());
+            return applyUpdates(courier, updateRequestDto);
+
         } else {
-            throw new IllegalArgumentException("유효하지 않은 역할입니다. role: " + user.getRole());
+            // 다른 역할은 수정 권한 없음
+            throw new IllegalArgumentException("권한이 없습니다. 수정할 수 없습니다.");
+        }
+    }
+
+    // 공통: 수정 로직 처리
+    private CourierResponseDto applyUpdates(Courier courier, CourierUpdateRequestDto updateRequestDto) {
+        // 허브 ID 수정
+        if (updateRequestDto.getHubId() != null) {
+            try {
+                // 허브 ID 검증
+                logisticServiceClient.getHubById(updateRequestDto.getHubId().toString());
+            } catch (Exception e) {
+                throw new IllegalArgumentException("유효하지 않은 hubId입니다: " + updateRequestDto.getHubId());
+            }
+            courier.setHubId(updateRequestDto.getHubId());
         }
 
-        // 4. 슬랙 아이디 업데이트
+        // Slack ID 수정
         if (updateRequestDto.getSlackId() != null) {
             courier.setSlackId(updateRequestDto.getSlackId());
         }
 
-        // 5. 수정된 배송 담당자 저장
+        // 변경 사항 저장
         courierRepository.save(courier);
 
-        // 6. 응답 DTO 생성 및 반환
+        // 응답 DTO 반환
         return CourierResponseDto.builder()
                 .courierId(courier.getCourierId())
                 .userId(courier.getUserId())
@@ -179,19 +180,72 @@ public class CourierService {
     }
 
 
-
     // 배송 담당자 삭제
-    public CourierResponseDto deleteCourier(UUID courierId) {
+    @Transactional
+    public CourierResponseDto deleteCourier(UUID courierId, User loggedInUser) {
         Courier courier = courierRepository.findByCourierId(courierId)
                 .orElseThrow(() -> new IllegalArgumentException("Courier not found"));
 
+        if (loggedInUser.getRole() == UserRoleEnum.MASTER) {
+            // 마스터는 삭제 가능
+            return deleteCourierDetails(courier);
+        } else if (loggedInUser.getRole() == UserRoleEnum.HUB_ADMIN) {
+            // 허브 관리자는 자신의 허브에 속한 배송 담당자만 삭제 가능
+            validateHubOwnership(loggedInUser, courier.getHubId());
+            return deleteCourierDetails(courier);
+        } else {
+            throw new IllegalArgumentException("권한이 없습니다.");
+        }
+    }
+
+    // 본인 정보 조회
+    public CourierResponseDto getMyCourierDetails(User loggedInUser) {
+        Courier courier = courierRepository.findByUserId(loggedInUser.getId())
+                .orElseThrow(() -> new IllegalArgumentException("본인의 배송 담당자 정보를 찾을 수 없습니다."));
+        return convertToResponseDto(courier);
+    }
+
+    // 공통: 허브 소유권 검증 로직
+    private void validateHubOwnership(User hubAdmin, UUID hubId) {
+        if (hubId == null) {
+            throw new IllegalArgumentException("허브 ID가 필요합니다.");
+        }
+
+        boolean isOwner = logisticServiceClient.isHubAdmin(hubId.toString(), hubAdmin.getId());
+        if (!isOwner) {
+            throw new IllegalArgumentException("권한이 없습니다. 해당 허브에 속한 배송 담당자가 아닙니다.");
+        }
+    }
+
+    // 공통: 응답 DTO 변환
+    private CourierResponseDto convertToResponseDto(Courier courier) {
+        return CourierResponseDto.builder()
+                .courierId(courier.getCourierId())
+                .userId(courier.getUserId())
+                .hubId(courier.getHubId())
+                .deliveryNum(courier.getDeliveryNum())
+                .createdAt(courier.getCreatedAt())
+                .build();
+    }
+
+    private List<CourierResponseDto> convertToResponseDtos(List<Courier> couriers) {
+        return couriers.stream().map(this::convertToResponseDto).toList();
+    }
+
+    // 공통: 수정 로직
+    private CourierResponseDto updateCourierDetails(Courier courier, CourierUpdateRequestDto updateRequestDto) {
+        if (updateRequestDto.getSlackId() != null) {
+            courier.setSlackId(updateRequestDto.getSlackId());
+        }
+        courierRepository.save(courier);
+        return convertToResponseDto(courier);
+    }
+
+    // 공통: 삭제 로직
+    private CourierResponseDto deleteCourierDetails(Courier courier) {
         courier.setIsDeleted(true);
         courier.setDeletedAt(LocalDateTime.now());
-        Courier deletedCourier = courierRepository.save(courier);
-
-        return CourierResponseDto.builder()
-                .courierId(deletedCourier.getCourierId())
-                .deletedAt(deletedCourier.getDeletedAt())
-                .build();
+        courierRepository.save(courier);
+        return convertToResponseDto(courier);
     }
 }
