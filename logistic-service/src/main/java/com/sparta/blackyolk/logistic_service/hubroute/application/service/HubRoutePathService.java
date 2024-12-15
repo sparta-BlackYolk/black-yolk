@@ -4,7 +4,7 @@ import com.sparta.blackyolk.logistic_service.common.exception.CustomException;
 import com.sparta.blackyolk.logistic_service.common.exception.ErrorCode;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.model.Node;
-import com.sparta.blackyolk.logistic_service.hub.application.service.HubService;
+import com.sparta.blackyolk.logistic_service.hub.application.service.HubCacheService;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRoute;
 import com.sparta.blackyolk.logistic_service.hubroute.application.port.HubRoutePersistencePort;
 import com.sparta.blackyolk.logistic_service.hubroute.application.usecase.HubRoutePathUseCase;
@@ -32,7 +32,7 @@ public class HubRoutePathService implements HubRoutePathUseCase {
     private static final double AVERAGE_SPEED_KMH = 60.0; // km/h
 
     private final HubRoutePersistencePort hubRoutePersistencePort;
-    private final HubService hubService;
+    private final HubCacheService hubCacheService;
     private final TimeSlotWeightMapper timeSlotWeightMapper;
 
     @Override
@@ -43,8 +43,8 @@ public class HubRoutePathService implements HubRoutePathUseCase {
 
         log.info("[최단 경로 탐색] 현재 시간대 : {}, 가중치: {}", currentTimeSlot, timeSlotWeight);
 
-        Hub departureHub = hubService.validateHub(departure);
-        Hub arrivalHub = hubService.validateHub(arrival);
+        Hub departureHub = hubCacheService.validateHub(departure);
+        Hub arrivalHub = hubCacheService.validateHub(arrival);
         log.info("[최단 경로 탐색] 출발 허브: {}, 도착 허브: {}", departureHub.getHubName(), arrivalHub.getHubName());
 
         log.info("[최단 경로 탐색] {} 에서 {} 로의 최단 경로, 시간대: {}", departureHub.getHubName(), arrivalHub.getHubName(), currentTimeSlot);

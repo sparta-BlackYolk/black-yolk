@@ -4,6 +4,7 @@ import com.sparta.blackyolk.logistic_service.common.exception.CustomException;
 import com.sparta.blackyolk.logistic_service.common.exception.ErrorCode;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.application.port.HubPersistencePort;
+import com.sparta.blackyolk.logistic_service.hub.application.service.HubCacheService;
 import com.sparta.blackyolk.logistic_service.hub.application.service.HubService;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRoute;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForCreate;
@@ -11,8 +12,10 @@ import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRout
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForRead;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRouteForUpdate;
 import com.sparta.blackyolk.logistic_service.hubroute.application.port.HubRouteCalculator;
-import com.sparta.blackyolk.logistic_service.hubroute.application.port.HubRoutePersistencePort;
 import com.sparta.blackyolk.logistic_service.hubroute.application.usecase.HubRouteUseCase;
+import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRouteCreateResponse;
+import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRouteGetResponse;
+import com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto.HubRouteUpdateResponse;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,26 +26,26 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class HubRouteService implements HubRouteUseCase {
 
-    private final HubRoutePersistencePort hubRoutePersistencePort;
     private final HubPersistencePort hubPersistencePort;
     private final HubService hubService;
+    private final HubCacheService hubCacheService;
+    private final HubRouteCacheService hubRouteCacheService;
     private final HubRouteCalculator hubRouteCalculator;
 
     // TODO : 쿼리 몇번 날아가는 지 확인, 불필요한 쿼리가 날아가지 않은가?
-    // TODO : 캐싱 사용하기
 
     @Override
-    public HubRoute getHubRoute(HubRouteForRead hubRouteForRead) {
+    public HubRouteGetResponse getHubRoute(HubRouteForRead hubRouteForRead) {
 
-        Hub departureHub = hubService.validateHub(hubRouteForRead.departureHubId());
-        HubRoute hubRoute = validateHubRoute(hubRouteForRead.hubRouteId());
+        Hub departureHub = hubCacheService.validateHub(hubRouteForRead.departureHubId());
+        HubRoute hubRoute = hubRouteCacheService.validateHubRoute(hubRouteForRead.hubRouteId());
         validateDepartureHubInRoute(hubRoute, departureHub);
 
-        return hubRoute;
+        return hubRouteCacheService.getHubRoute(hubRoute);
     }
 
     @Override
-    public HubRoute createHubRoute(HubRouteForCreate hubRouteForCreate) {
+    public HubRouteCreateResponse createHubRoute(HubRouteForCreate hubRouteForCreate) {
 
         validateMaster(hubRouteForCreate.role());
 
@@ -72,35 +75,29 @@ public class HubRouteService implements HubRouteUseCase {
             arrivalHub
         );
 
-        return hubRoutePersistencePort.createHubRoute(hubRouteForCreate.userId(), hubRoute);
+        return hubRouteCacheService.createHubRoute(hubRouteForCreate.userId(), hubRoute);
     }
 
     @Override
-    public HubRoute updateHubRoute(HubRouteForUpdate hubRouteForUpdate) {
+    public HubRouteUpdateResponse updateHubRoute(HubRouteForUpdate hubRouteForUpdate) {
 
         validateMaster(hubRouteForUpdate.role());
-        Hub departureHub = hubService.validateHub(hubRouteForUpdate.departureHubId());
-        HubRoute hubRoute = validateHubRoute(hubRouteForUpdate.hubRouteId());
+        Hub departureHub = hubCacheService.validateHub(hubRouteForUpdate.departureHubId());
+        HubRoute hubRoute = hubRouteCacheService.validateHubRoute(hubRouteForUpdate.hubRouteId());
         validateDepartureHubInRoute(hubRoute, departureHub);
 
-        return hubRoutePersistencePort.updateHubRoute(hubRouteForUpdate);
+        return hubRouteCacheService.updateHubRoute(hubRouteForUpdate);
     }
 
     @Override
     public HubRoute deleteHubRoute(HubRouteForDelete hubRouteForDelete) {
 
         validateMaster(hubRouteForDelete.role());
-        Hub departureHub = hubService.validateHub(hubRouteForDelete.departureHubId());
-        HubRoute hubRoute = validateHubRoute(hubRouteForDelete.hubRouteId());
+        Hub departureHub = hubCacheService.validateHub(hubRouteForDelete.departureHubId());
+        HubRoute hubRoute = hubRouteCacheService.validateHubRoute(hubRouteForDelete.hubRouteId());
         validateDepartureHubInRoute(hubRoute, departureHub);
 
-        return hubRoutePersistencePort.deleteHubRoute(hubRouteForDelete);
-    }
-
-    public HubRoute validateHubRoute(String hubRouteId) {
-        return hubRoutePersistencePort.findByHubRouteId(hubRouteId).orElseThrow(
-            () -> new CustomException(ErrorCode.HUB_ROUTE_NOT_EXIST)
-        );
+        return hubRouteCacheService.deleteHubRoute(hubRouteForDelete);
     }
 
     private void validateMaster(String role) {
