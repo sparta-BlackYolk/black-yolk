@@ -60,7 +60,7 @@ public class HubRouteEntity extends BaseEntity {
     }
 
     public HubRouteEntity(
-        Long userId,
+        String userId,
         HubEntity departureHub,
         HubEntity arrivalHub,
         Long duration,
@@ -75,7 +75,7 @@ public class HubRouteEntity extends BaseEntity {
     }
 
     public static HubRouteEntity toEntity(
-        Long userId,
+        String userId,
         HubEntity departureHubEntity,
         HubEntity arrivalHubEntity,
         HubRoute hubRoute
@@ -106,7 +106,7 @@ public class HubRouteEntity extends BaseEntity {
         Optional.ofNullable(hubRouteForUpdate.status()).ifPresent(value -> this.status = value);
     }
 
-    public void delete(Long userId) {
+    public void delete(String userId) {
         this.status = HubRouteStatus.INACTIVE;
         super.deleteFrom(userId);
     }

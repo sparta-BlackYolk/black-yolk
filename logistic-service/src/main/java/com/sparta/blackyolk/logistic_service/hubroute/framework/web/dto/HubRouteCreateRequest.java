@@ -14,7 +14,7 @@ public record HubRouteCreateRequest(
 ) {
 
     public static HubRouteForCreate toDomain(
-        Long userId,
+        String userId,
         String role,
         String hubId,
         HubRouteCreateRequest hubRouteCreateRequest

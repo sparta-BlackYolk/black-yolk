@@ -5,7 +5,7 @@ import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 
 public record HubCreateResponse(
     String id,
-    Long hubManagerId,
+    String hubManagerId,
     String name,
     String center,
     HubStatus status,

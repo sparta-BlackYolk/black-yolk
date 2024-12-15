@@ -9,7 +9,7 @@ public record HubRouteUpdateRequest(
 ) {
 
     public static HubRouteForUpdate toDomain(
-        Long userId,
+        String userId,
         String role,
         String departureHubId,
         String hubRouteId,

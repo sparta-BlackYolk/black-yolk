@@ -26,7 +26,7 @@ public record HubPageResponse(
 
     public record HubResponse(
         String id,
-        Long hubManagerId,
+        String hubManagerId,
         String name,
         String center,
         HubStatus status,

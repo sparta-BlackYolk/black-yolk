@@ -53,7 +53,7 @@ public class HubEntity extends BaseEntity {
     private HubAddressEmbeddable hubAddress;
 
     @Column(name = "user_id", nullable = false)
-    private Long hubManagerId;
+    private String hubManagerId;
 
     @PrePersist
     private void prePersistence() {
@@ -64,8 +64,8 @@ public class HubEntity extends BaseEntity {
 
     @Builder
     private HubEntity(
-        Long userId,
-        Long hubManagerId,
+        String userId,
+        String hubManagerId,
         String hubName,
         String hubCenter,
         HubCoordinateEmbeddable hubCoordinate,
@@ -140,7 +140,7 @@ public class HubEntity extends BaseEntity {
         }
     }
 
-    public void deleteHub(Long userId) {
+    public void deleteHub(String userId) {
         this.status = HubStatus.INACTIVE;
         super.deleteFrom(userId);
     }

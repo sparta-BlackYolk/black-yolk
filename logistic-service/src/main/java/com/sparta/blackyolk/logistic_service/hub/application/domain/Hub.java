@@ -20,6 +20,6 @@ public class Hub implements Serializable {
     private HubStatus hubStatus;
     private HubCoordinate hubCoordinate;
     private HubAddress hubAddress;
-    private Long hubManagerId;
+    private String hubManagerId;
     private boolean isDeleted;
 }
