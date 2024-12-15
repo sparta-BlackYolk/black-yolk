@@ -35,6 +35,8 @@ public class HubCommandController {
     private final Long TEST_USER = 1L;
     private final String TEST_ROLE = "MASTER";
 
+    // @PreAuthorize -> 이거 사용해보기
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public HubCreateResponse createHub(
@@ -46,9 +48,8 @@ public class HubCommandController {
             TEST_ROLE,
             hubCreateRequest
         );
-        Hub hub = hubUseCase.createHub(hubForCreate);
 
-        return HubCreateResponse.toDTO(hub);
+        return hubUseCase.createHub(hubForCreate);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -64,9 +65,8 @@ public class HubCommandController {
             hubId,
             hubUpdateRequest
         );
-        Hub hub = hubUseCase.updateHub(hubForUpdate);
 
-        return HubUpdateResponse.toDTO(hub);
+        return hubUseCase.updateHub(hubForUpdate);
     }
 
     @ResponseStatus(HttpStatus.OK)

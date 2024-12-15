@@ -1,16 +1,12 @@
 package com.sparta.blackyolk.logistic_service.hub.framework.web.controller;
 
-import com.sparta.blackyolk.logistic_service.common.exception.CustomException;
-import com.sparta.blackyolk.logistic_service.common.exception.ErrorCode;
 import com.sparta.blackyolk.logistic_service.common.pagenation.PaginationConstraint;
-import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
-import com.sparta.blackyolk.logistic_service.hub.data.HubEntity;
+import com.sparta.blackyolk.logistic_service.hub.application.service.HubCacheService;
 import com.sparta.blackyolk.logistic_service.hub.framework.adapter.HubPersistenceAdapter;
 import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubGetResponse;
 import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubPageResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/hubs")
 public class HubQueryController {
 
-    private final HubPersistenceAdapter hubPersistenceAdapter;
+    private final HubCacheService hubCacheService;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{hubId}")
@@ -34,11 +30,7 @@ public class HubQueryController {
         @PathVariable(value = "hubId") String hubId
     ) {
         // TODO : user token, user role 받아야 하나?
-        Hub hub = hubPersistenceAdapter.findByHubId(hubId).orElseThrow(
-            () -> new CustomException(ErrorCode.HUB_NOT_EXIST)
-        );
-
-        return HubGetResponse.toDTO(hub);
+        return hubCacheService.getHub(hubId);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -51,8 +43,6 @@ public class HubQueryController {
         // TODO : user token, user role 받아야 하나?
         log.info("[Hub search 조회 pageable] : {}", pageable);
 
-        Page<HubEntity> hubPage = hubPersistenceAdapter.findAllHubsWithKeyword(keyword, pageable);
-
-        return new HubPageResponse(hubPage);
+        return hubCacheService.getHubs(pageable, keyword);
     }
 }

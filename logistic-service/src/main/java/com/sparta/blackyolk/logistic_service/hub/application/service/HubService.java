@@ -9,6 +9,8 @@ import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForUpdate
 import com.sparta.blackyolk.logistic_service.hub.application.domain.model.HubCoordinate;
 import com.sparta.blackyolk.logistic_service.hub.application.port.HubPersistencePort;
 import com.sparta.blackyolk.logistic_service.hub.application.usecase.HubUseCase;
+import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubCreateResponse;
+import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubUpdateResponse;
 import java.math.BigDecimal;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -19,13 +21,13 @@ import org.springframework.stereotype.Service;
 public class HubService implements HubUseCase {
 
     private final HubPersistencePort hubPersistencePort;
+    private final HubCacheService hubCacheService;
+
     private final String URL = "https://dapi.kakao.com/v2/local/search/address.json?query=";
     private final String ADDRESS = "제주 애월읍";
 
-    // TODO : 캐싱 사용하기
-
     @Override
-    public Hub createHub(HubForCreate hubForCreate) {
+    public HubCreateResponse createHub(HubForCreate hubForCreate) {
 
         // TODO : hubManagerId 있으면 hubManagerId 검증하는 로직 필요
         validateMaster(hubForCreate.role());
@@ -34,12 +36,12 @@ public class HubService implements HubUseCase {
         // TODO: 추후에 좌표 조회하는 로직으로 변경 하기
         HubCoordinate coordinates = getCoordinatesByCenter(hubForCreate.center());
 
-        return hubPersistencePort.saveHub(hubForCreate, coordinates.getAxisX(), coordinates.getAxisY());
+        return hubCacheService.createHub(hubForCreate, coordinates.getAxisX(), coordinates.getAxisY());
     }
 
     // TODO: 불필요한 쿼리가 날아가지 않는가? 확인
     @Override
-    public Hub updateHub(HubForUpdate hubForUpdate) {
+    public HubUpdateResponse updateHub(HubForUpdate hubForUpdate) {
 
         // TODO : hubManagerId 있으면 hubManagerId 검증하는 로직 필요
         validateMaster(hubForUpdate.role());
@@ -56,7 +58,7 @@ public class HubService implements HubUseCase {
             axisY = new BigDecimal("40.54815556");
         }
 
-        return hubPersistencePort.updateHub(hubForUpdate, axisX, axisY);
+        return hubCacheService.updateHub(hubForUpdate, axisX, axisY);
     }
 
     // TODO: 불필요한 쿼리가 날아가지 않는가? 확인
@@ -64,9 +66,9 @@ public class HubService implements HubUseCase {
     public Hub deleteHub(HubForDelete hubForDelete) {
 
         validateMaster(hubForDelete.role());
-        validateHubWithHubRoutes(hubForDelete.hubId());
+        validateHub(hubForDelete.hubId());
 
-        return hubPersistencePort.deleteHub(hubForDelete);
+        return hubCacheService.deleteHub(hubForDelete);
     }
 
     public Hub validateHub(String hubId) {

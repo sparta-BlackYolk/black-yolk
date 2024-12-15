@@ -85,7 +85,7 @@ public class HubReadOnlyReadOnlyRepositoryImpl implements HubReadOnlyRepository 
     /*
     select distinct h.*
     from hub h
-    join hub_route hr
+    left join hub_route hr
       on hr.isDeleted = false
          and (hr.departureHubId = :hubId or hr.arrivalHubId = :hubId)
     where h.hubId = :hubId
@@ -105,7 +105,7 @@ public class HubReadOnlyReadOnlyRepositoryImpl implements HubReadOnlyRepository 
         BooleanExpression isDepartureOrArrivalHub = isDepartureHub.or(isArrivalHub);
 
         HubEntity result = jpaQueryFactory.selectFrom(hubEntity).distinct()
-            .join(hubRouteEntity).on(isHubRouteNotDeleted.and(isDepartureOrArrivalHub)).fetchJoin()
+            .leftJoin(hubRouteEntity).on(isHubRouteNotDeleted.and(isDepartureOrArrivalHub))
             .where(isHubIdEquals.and(isHubNotDeleted))
             .fetchOne();
 
