@@ -2,7 +2,6 @@ package com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto;
 
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRoute;
 import com.sparta.blackyolk.logistic_service.hubroute.data.vo.HubRouteStatus;
-import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.data.domain.Page;
 
@@ -30,8 +29,8 @@ public record HubRoutePageResponse(
         String departureHubName,
         String arrivalHubName,
         HubRouteStatus hubRouteStatus,
-        BigDecimal distance,
-        Integer duration
+        Long distance,
+        Long duration
     ) {
         public static List<HubRouteResponse> toDTO(List<HubRoute> hubRouteEntityList) {
             return hubRouteEntityList.stream()

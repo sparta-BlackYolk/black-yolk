@@ -15,7 +15,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -48,10 +47,10 @@ public class HubRouteEntity extends BaseEntity {
     private HubRouteStatus status = HubRouteStatus.ACTIVE;
 
     @Column(name = "duration", nullable = false)
-    private Integer duration; // 분
+    private Long duration; // milliseconds
 
     @Column(name = "distance", precision = 10, scale = 2, nullable = false)
-    private BigDecimal distance; // km
+    private Long distance; // meters
 
     @PrePersist
     private void prePersistence() {
@@ -64,8 +63,8 @@ public class HubRouteEntity extends BaseEntity {
         Long userId,
         HubEntity departureHub,
         HubEntity arrivalHub,
-        Integer duration,
-        BigDecimal distance
+        Long duration,
+        Long distance
     ) {
         super(userId, userId);
         this.hubRouteId = null;
