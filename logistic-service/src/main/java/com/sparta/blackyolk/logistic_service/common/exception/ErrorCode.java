@@ -22,6 +22,7 @@ public enum ErrorCode {
     HUB_ROUTE_ALREADY_EXIST(409, "HUB_ROUTE_ALREADY_EXIST", "이미 존재하는 허브 경로입니다."),
 
     // Path
+    PATH_ACCESS_DENIED(403, "PATH_ACCESS_DENIED", "최단 경로 조회에 접근할 수 없습니다."),
     PATH_NOT_EXIST(404, "PATH_NOT_EXIST", "존재하지 경로입니다."),
 
     // 외부 REST API

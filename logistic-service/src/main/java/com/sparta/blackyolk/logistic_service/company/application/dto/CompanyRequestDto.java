@@ -20,4 +20,6 @@ public class CompanyRequestDto {
 
     private Long user_id;
 
+    private String authorization;
+
 }

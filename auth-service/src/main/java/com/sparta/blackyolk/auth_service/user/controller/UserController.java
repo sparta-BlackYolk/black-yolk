@@ -92,9 +92,8 @@ public class UserController {
         return userService.getUserByUsername(username);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long userId) {
-        UserResponseDto responseDto = userService.getUserById(userId);
-        return ResponseEntity.ok(responseDto);
+    @GetMapping("/search/{userId}")
+    public Optional<UserResponseDto> getUserById(@PathVariable Long userId){
+        return userService.getUserById(userId);
     }
 }

@@ -2,6 +2,7 @@ package com.sparta.blackyolk.logistic_service.company.application;
 
 import com.sparta.blackyolk.logistic_service.common.exception.CustomException;
 import com.sparta.blackyolk.logistic_service.common.exception.ErrorCode;
+import com.sparta.blackyolk.logistic_service.common.service.UserService;
 import com.sparta.blackyolk.logistic_service.company.application.dto.CompanyRequestDto;
 import com.sparta.blackyolk.logistic_service.company.application.dto.CompanyResponseDto;
 import com.sparta.blackyolk.logistic_service.company.application.dto.UserData;
@@ -14,6 +15,7 @@ import com.sparta.blackyolk.logistic_service.hub.framework.repository.HubReadOnl
 import com.sparta.blackyolk.logistic_service.hub.framework.repository.HubRepository;
 import lombok.AllArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class CompanyService {
@@ -31,13 +34,12 @@ public class CompanyService {
     private final UserService userService;
 
     public CompanyResponseDto createCompany(CompanyRequestDto requestDto) {
-        //존재하는 User인지 확인
-        UserData user = userService.getUserById(requestDto.getUser_id());
-        System.out.println("user = " + user);
-
-        // 존재하는 Hub인지 확인
-        Optional<HubEntity> hub = Optional.ofNullable(hubReadOnlyRepository.findByHubIdAndIsDeletedFalse(String.valueOf(requestDto.getHub_id()))
-                .orElseThrow(() -> new CustomException(ErrorCode.HUB_NOT_EXIST)));
+        // User 존재 여부 확인
+        UserData user = userService.getUserById(requestDto.getUser_id())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_EXIST));
+        // Hub 존재 여부 확인
+        HubEntity hub = hubReadOnlyRepository.findByHubIdAndIsDeletedFalse(String.valueOf(requestDto.getHub_id()))
+                .orElseThrow(() -> new CustomException(ErrorCode.HUB_NOT_EXIST));
 
         Company company = companyRepository.save(Company.create(requestDto));
 
