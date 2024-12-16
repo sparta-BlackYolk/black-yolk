@@ -1,5 +1,6 @@
 package com.sparta.blackyolk.auth_service.courier.service;
 
+import com.sparta.blackyolk.auth_service.client.HubGetResponse;
 import com.sparta.blackyolk.auth_service.client.LogisticServiceClient;
 import com.sparta.blackyolk.auth_service.courier.dto.CourierRequestDto;
 import com.sparta.blackyolk.auth_service.courier.dto.CourierResponseDto;
@@ -32,6 +33,18 @@ public class CourierService {
     // 배송 담당자 등록
     @Transactional
     public CourierResponseDto createCourier(CourierRequestDto requestDto, User loggedInUser) {
+        log.info("Checking if hub exists: hubId={}, userId={}, role={}",
+                requestDto.getHubId(), loggedInUser.getId(), loggedInUser.getRole().name());
+
+        // 0. 허브 존재 여부 확인
+        boolean hubExists = logisticServiceClient.checkHubExists(requestDto.getHubId().toString());
+        log.info("FeignClient 호출 완료: hubId={}, userId={}, role={}, 존재 여부={}",
+                requestDto.getHubId(), loggedInUser.getUsername(), loggedInUser.getRole().name(), hubExists);
+        if (!hubExists) {
+            throw new IllegalArgumentException("유효하지 않은 허브 ID: " + requestDto.getHubId());
+        }
+
+
         // 1. 등록하려는 사용자의 정보를 조회
         User user = userRepository.findById(requestDto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다. userId: " + requestDto.getUserId()));
@@ -156,12 +169,12 @@ public class CourierService {
         // 2. 권한에 따른 처리
         if (loggedInUser.getRole() == UserRoleEnum.MASTER) {
             // MASTER는 모든 정보 수정 가능
-            return applyUpdates(courier, updateRequestDto);
+            return applyUpdates(courier, updateRequestDto, loggedInUser);
 
         } else if (loggedInUser.getRole() == UserRoleEnum.HUB_ADMIN) {
             // HUB_ADMIN은 자신이 관리하는 허브 소속의 배송 담당자만 수정 가능
             validateHubOwnership(loggedInUser, courier.getHubId());
-            return applyUpdates(courier, updateRequestDto);
+            return applyUpdates(courier, updateRequestDto, loggedInUser);
 
         } else {
             // 다른 역할은 수정 권한 없음
@@ -170,15 +183,16 @@ public class CourierService {
     }
 
     // 공통: 수정 로직 처리
-    private CourierResponseDto applyUpdates(Courier courier, CourierUpdateRequestDto updateRequestDto) {
+    private CourierResponseDto applyUpdates(Courier courier, CourierUpdateRequestDto updateRequestDto, User loggedInUser) {
         // 허브 ID 수정
-        if (updateRequestDto.getHubId() != null) {
-            try {
-                // 허브 ID 검증
-                logisticServiceClient.getHubById(updateRequestDto.getHubId().toString());
-            } catch (Exception e) {
-                throw new IllegalArgumentException("유효하지 않은 hubId입니다: " + updateRequestDto.getHubId());
-            }
+        // 0. 허브 존재 여부 확인
+        boolean hubExists = logisticServiceClient.checkHubExists(
+                updateRequestDto.getHubId().toString()
+        );
+
+        if (!hubExists) {
+            throw new IllegalArgumentException("유효하지 않은 허브 ID: " + updateRequestDto.getHubId());
+        }else{
             courier.setHubId(updateRequestDto.getHubId());
         }
 
