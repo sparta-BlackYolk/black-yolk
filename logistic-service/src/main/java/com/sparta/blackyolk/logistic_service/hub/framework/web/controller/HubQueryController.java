@@ -2,6 +2,8 @@ package com.sparta.blackyolk.logistic_service.hub.framework.web.controller;
 
 import com.sparta.blackyolk.logistic_service.common.pagenation.PaginationConstraint;
 import com.sparta.blackyolk.logistic_service.hub.application.service.HubCacheService;
+import com.sparta.blackyolk.logistic_service.hub.data.HubEntity;
+import com.sparta.blackyolk.logistic_service.hub.framework.repository.HubRepository;
 import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubGetResponse;
 import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubPageResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HubQueryController {
 
     private final HubCacheService hubCacheService;
+    private final HubRepository hubRepository;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{hubId}")
@@ -46,5 +49,30 @@ public class HubQueryController {
         log.info("[Hub search 조회 pageable] : {}", pageable);
 
         return hubCacheService.getHubs(pageable, keyword);
+    }
+
+    @GetMapping("/isAdmin")
+    public boolean isHubAdmin(@RequestParam("hubId") String hubId, @RequestParam("userName") String userName) {
+        log.info("허브 서비스 요청 수신: hubId={}, userName={}", hubId, userName);
+
+        HubEntity hubEntity = hubRepository.findById(hubId)
+                .orElseThrow(() -> new IllegalArgumentException("허브를 찾을 수 없습니다: " + hubId));
+        boolean isAdmin = hubEntity.getHubManagerId().equals(userName);
+
+//        log.info("허브 관리자 확인 결과: hubId={}, userName={}, isAdmin={}", hubId, userName, isAdmin);
+        System.out.println("허브 서비스 요청 수신: hubId=" + hubId + ", userName=" + userName);
+        System.out.println("허브 관리자 확인 결과: hubId=" + hubId + ", userName=" + userName + ", isAdmin=" + isAdmin);
+
+        return isAdmin;
+    }
+
+    @GetMapping("/{hubId}/exists")
+    public boolean checkHubExists(
+            @PathVariable("hubId") String hubId
+    ) {
+        log.info("Validating existence of hub '{}'", hubId);
+
+        // 허브가 존재하는지 확인 (예외 발생 시 false 반환)
+        return hubRepository.findById(hubId).isPresent();
     }
 }
