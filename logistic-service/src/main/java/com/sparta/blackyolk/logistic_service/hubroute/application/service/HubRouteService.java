@@ -104,7 +104,7 @@ public class HubRouteService implements HubRouteUseCase {
 
     private void validateMaster(String role) {
         if (!"MASTER".equals(role)) {
-            throw new CustomException(ErrorCode.ACCESS_DENIED);
+            throw new CustomException(ErrorCode.USER_ACCESS_DENIED);
         }
     }
 

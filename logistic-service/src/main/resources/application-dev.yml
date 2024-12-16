@@ -43,6 +43,8 @@ spring:
 
 logging:
   level:
+    root: INFO
+    com.your.package.FeignConfig: WARN
     org.hibernate: WARN
     org.springframework.cache: DEBUG
     org.springframework.data.redis: DEBUG
@@ -58,3 +60,11 @@ naver:
   rest-api-key-id: ${X-NCP-APIGW-API-KEY-ID}
   rest-api-key: ${X-NCP-APIGW-API-KEY}
 
+feign:
+  client:
+    config:
+      default:
+        retryer: true # 재시도 활성화
+        requestOptions:
+          connectTimeout: 1000 # 연결 제한 시간
+          readTimeout: 2000    # 읽기 제한 시간

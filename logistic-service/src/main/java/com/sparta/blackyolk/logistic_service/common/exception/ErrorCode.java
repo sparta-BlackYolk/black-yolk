@@ -10,6 +10,8 @@ public enum ErrorCode {
     // 공통
     UNAUTHORIZED(401, "UNAUTHORIZED", "로그인을 해주세요."),
     FORBIDDEN(403, "USER_FORBIDDEN", "접근 권한이 없습니다."),
+    REQUEST_ACCEPTED(202, "REQUEST_ACCEPTED", "잠시만 기다려주세요."),
+    SERVICE_UNAVAILABLE(503, "SERVICE_UNAVAILABLE", "잠시후에 다시 요청해주세요."),
 
     // Hub
     HUB_BAD_REQUEST(400, "HUB_BAD_REQUEST", "잘못된 허브 요청입니다."),
@@ -28,10 +30,12 @@ public enum ErrorCode {
     // 외부 REST API
     URI_BAD_REQUEST(400, "URI_BAD_REQUEST", "잘못된 URI 요청입니다."),
     REST_API_FAIL(500, "REST_API_FAIL", "외부 API 요청 실패"),
+    GEOCODING_API_FAIL(404, "GEOCODING_API_FAIL", "잘못된 주소 요청입니다."),
 
     // User
     USER_BAD_REQUEST(400, "USER_BAD_REQUEST", "잘못된 사용자 요청입니다."),
     USER_NOT_EXIST(404, "USER_NOT_EXIST", "존재하지 않는 사용자 입니다."),
+    USER_ACCESS_DENIED(403, "USER_ACCESS_DENIED", "접근 권한이 없습니다."),
 
 
     // example
@@ -41,7 +45,7 @@ public enum ErrorCode {
     RESOURCE_NOT_EXIST(404, "{RESOURCE}_NOT_EXIST", "클라이언트가 요청한 특정 리소스를 찾을 수 없는 경우"),
     RESOURCE_ALREADY_EXIST(409, "{RESOURCE}_ALREADY_EXIST", "클라이언트가 요청한 리소스가 이미 존재하는 경우"),
 
-    INTERNAL_SERVER_ERROR(500, "INTERNAL_SERVER_ERROR", "서버 오류"),
+    INTERNAL_SERVER_ERROR(500, "INTERNAL_SERVER_ERROR", "서버에 일시적인 오류가 발생했습니다."),
     CACHE_CONNECTION_ERROR(500, "CACHE_CONNECTION_ERROR", "캐시 오류");
 
     private final int code;
