@@ -4,6 +4,7 @@ import com.sparta.blackyolk.logistic_service.common.domain.UserResponseDto;
 import com.sparta.blackyolk.logistic_service.common.exception.ErrorCode;
 import com.sparta.blackyolk.logistic_service.common.exception.UserServiceException;
 import com.sparta.blackyolk.logistic_service.common.feignclient.UserClient;
+import com.sparta.blackyolk.logistic_service.company.application.dto.UserData;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
@@ -25,6 +26,11 @@ public class UserClientFallbackFactory implements FallbackFactory<UserClient> {
                     ErrorCode.SERVICE_UNAVAILABLE.getCode(),
                     ErrorCode.SERVICE_UNAVAILABLE.getDetailMessage()
                 );
+            }
+
+            @Override
+            public Optional<UserData> getUserById(Long userId) {
+                return Optional.empty();
             }
         };
     }
