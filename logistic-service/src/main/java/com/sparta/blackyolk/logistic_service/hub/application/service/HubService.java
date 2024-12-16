@@ -1,63 +1,89 @@
 package com.sparta.blackyolk.logistic_service.hub.application.service;
 
+import com.sparta.blackyolk.logistic_service.common.domain.UserResponseDto;
+import com.sparta.blackyolk.logistic_service.common.domain.vo.UserRoleEnum;
 import com.sparta.blackyolk.logistic_service.common.exception.CustomException;
 import com.sparta.blackyolk.logistic_service.common.exception.ErrorCode;
+import com.sparta.blackyolk.logistic_service.common.service.UserService;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForCreate;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForDelete;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForUpdate;
+import com.sparta.blackyolk.logistic_service.hub.application.domain.model.HubCoordinate;
 import com.sparta.blackyolk.logistic_service.hub.application.port.HubPersistencePort;
 import com.sparta.blackyolk.logistic_service.hub.application.usecase.HubUseCase;
+import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubCreateResponse;
+import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubUpdateResponse;
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class HubService implements HubUseCase {
 
     private final HubPersistencePort hubPersistencePort;
-    private final String URL = "https://dapi.kakao.com/v2/local/search/address.json?query=";
-    private final String ADDRESS = "제주 애월읍";
+    private final HubCacheService hubCacheService;
+    private final CoordinateService coordinateService;
+    private final UserService userService;
 
     @Override
-    public Hub createHub(HubForCreate hubForCreate) {
+    public HubCreateResponse createHub(HubForCreate hubForCreate) {
 
-        // TODO : hubManagerId 있으면 hubManagerId 검증하는 로직 필요
+        if (hubForCreate.hubManagerId() != null) {
+            validateHubManagerId(hubForCreate.hubManagerId(), hubForCreate.authorization());
+        }
+
         validateMaster(hubForCreate.role());
         validateHubCenter(hubForCreate.center());
 
-        // TODO: 좌표 조회하는 로직
-        String url = URL + ADDRESS;
+        String hubAddress = getHubAddress(
+            hubForCreate.sido(),
+            hubForCreate.sigungu(),
+            hubForCreate.eupmyun(),
+            hubForCreate.roadName(),
+            hubForCreate.buildingNumber()
+        );
+        HubCoordinate coordinates = coordinateService.getCoordinatesByAddress(hubAddress);
 
-        BigDecimal axisX = new BigDecimal("126.851675");
-        BigDecimal axisY = new BigDecimal("37.54815556");
-
-        // TODO : 허브 이름이나 좌표 혹은 주소 가지고 중복된 허브인지 확인하는 로직 추가 -> domain으로 넘길 수 있을까?
-
-        return hubPersistencePort.saveHub(hubForCreate, axisX, axisY);
+        return hubCacheService.createHub(hubForCreate, coordinates.getAxisX(), coordinates.getAxisY());
     }
 
+    // TODO: 불필요한 쿼리가 날아가지 않는가? 확인
     @Override
-    public Hub updateHub(HubForUpdate hubForUpdate) {
+    public HubUpdateResponse updateHub(HubForUpdate hubForUpdate) {
 
-        // TODO : hubManagerId 있으면 hubManagerId 검증하는 로직 필요
+        if (hubForUpdate.hubManagerId() != null) {
+            validateHubManagerId(hubForUpdate.hubManagerId(), hubForUpdate.authorization());
+        }
+
         validateMaster(hubForUpdate.role());
 
-        Hub hub = validateHub(hubForUpdate.hubId());
+        Hub hub = hubCacheService.validateHub(hubForUpdate.hubId());
 
         BigDecimal axisX = hub.getHubCoordinate().getAxisX();
         BigDecimal axisY = hub.getHubCoordinate().getAxisY();
 
-        // TODO : 좌표 업데이트 하는 로직 추가 -> domain으로 넘길 수 있을까?
         if (hubForUpdate.address() != null) {
-            // 좌표 업데이트 함
-            axisX = new BigDecimal("130.851675");
-            axisY = new BigDecimal("40.54815556");
+            String hubAddress = getHubAddress(
+                hubForUpdate.address().sido(),
+                hubForUpdate.address().sigungu(),
+                hubForUpdate.address().eupmyun(),
+                hubForUpdate.address().roadName(),
+                hubForUpdate.address().buildingNumber()
+            );
+            HubCoordinate coordinates = coordinateService.getCoordinatesByAddress(hubAddress);
+            axisX = coordinates.getAxisX();
+            axisY = coordinates.getAxisY();
         }
 
-        return hubPersistencePort.updateHub(hubForUpdate, axisX, axisY);
+        return hubCacheService.updateHub(hubForUpdate, axisX, axisY);
     }
 
     // TODO: 불필요한 쿼리가 날아가지 않는가? 확인
@@ -65,15 +91,9 @@ public class HubService implements HubUseCase {
     public Hub deleteHub(HubForDelete hubForDelete) {
 
         validateMaster(hubForDelete.role());
-        validateHubWithHubRoutes(hubForDelete.hubId());
+        hubCacheService.validateHub(hubForDelete.hubId());
 
-        return hubPersistencePort.deleteHub(hubForDelete);
-    }
-
-    public Hub validateHub(String hubId) {
-        return hubPersistencePort.findByHubId(hubId).orElseThrow(
-            () -> new CustomException(ErrorCode.HUB_NOT_EXIST)
-        );
+        return hubCacheService.deleteHub(hubForDelete);
     }
 
     public Hub validateHubWithHubRoutes(String hubId) {
@@ -88,10 +108,37 @@ public class HubService implements HubUseCase {
         }
     }
 
+    private void validateHubManagerId(String hubManagerId, String authorization) {
+
+        log.info("[Hub 생성] authorization 확인: {}", authorization);
+
+        UserResponseDto user = userService.getUser(hubManagerId, authorization).orElseThrow(
+            () -> new CustomException(ErrorCode.USER_NOT_EXIST)
+        );
+
+        if (!user.getRole().equals(UserRoleEnum.HUB_ADMIN)) {
+            log.info("[Hub 생성] user role 확인: {}", user.getRole());
+            throw new CustomException(ErrorCode.USER_BAD_REQUEST, "HUB_ADMIN 권한의 사용자가 아닙니다.");
+        }
+    }
+
     private void validateHubCenter(String center) {
         Optional<Hub> hub = hubPersistencePort.findByHubCenter(center);
         if (hub.isPresent()) {
             throw new CustomException(ErrorCode.HUB_ALREADY_EXIST);
         }
+    }
+
+    private String getHubAddress(
+        String sido,
+        String sigungu,
+        String eupmyun,
+        String roadName,
+        String buildingNumber
+    ) {
+        return Stream.of(sido, sigungu, eupmyun, roadName, buildingNumber)
+                 .filter(Objects::nonNull) // null 필드 제거
+                 .filter(s -> !s.isBlank()) // 빈 문자열 제거
+                 .collect(Collectors.joining(" "));
     }
 }

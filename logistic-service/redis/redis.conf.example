@@ -1,0 +1,9 @@
+1. 이 파일을 복사하고 뒤의 .example을 제거해 확장자가 conf인 redis.conf로 만듭니다.
+  - redis.conf.example -> redis.conf
+
+2. 이 파일에 다음의 내용만 남깁니다.
+  - requirepass [비밀번호 설정]
+
+예시) 비밀번호를 1234로 정했다면, 하위의 requirepass 1234 만 남기고 모두 삭제합니다.
+
+requirepass 1234

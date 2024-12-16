@@ -7,7 +7,7 @@ spring:
 
   datasource:
     url: jdbc:postgresql://localhost:5432/auth_db # postgreSql URL
-    username: postgres # 데이터베이스 사용자명
+    username: newsrain # 데이터베이스 사용자명
     password: ${DB_PASSWORD} # 데이터베이스 비밀번호
     driver-class-name: org.postgresql.Driver # postgreSql 드라이버
   jpa:

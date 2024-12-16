@@ -1,6 +1,5 @@
 package com.sparta.blackyolk.logistic_service.hubroute.framework.adapter;
 
-import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.data.HubEntity;
 import com.sparta.blackyolk.logistic_service.hub.framework.repository.HubReadOnlyRepository;
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRoute;
@@ -10,9 +9,9 @@ import com.sparta.blackyolk.logistic_service.hubroute.application.port.HubRouteP
 import com.sparta.blackyolk.logistic_service.hubroute.data.HubRouteEntity;
 import com.sparta.blackyolk.logistic_service.hubroute.framework.repository.HubRouteReadOnlyRepository;
 import com.sparta.blackyolk.logistic_service.hubroute.framework.repository.HubRouteRepository;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,17 +34,38 @@ public class HubRoutePersistenceAdapter implements HubRoutePersistencePort {
     }
 
     @Transactional(readOnly = true)
-    public Page<HubRouteEntity> findAllHubRoutesByHubIdWithKeyword(String hubId, String keyword, Pageable pageable) {
+    public Page<HubRoute> findAllHubRoutesByHubIdWithKeyword(String hubId, String keyword, Pageable pageable) {
         return hubRouteReadOnlyRepository.findAllHubRoutesByHubIdAndIsDeletedFalseWithKeyword(
             hubId,
             keyword,
             pageable
-        );
+        ).map(HubRouteEntity::toDomain);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<HubRoute> findHubRouteByDepartureHubIdAndArrivalHubId(String departureHubId, String arrivalHubId) {
+        return hubRouteReadOnlyRepository.findByDepartureHubIdAndArrivalHubId(departureHubId, arrivalHubId)
+            .map(HubRouteEntity::toDomain)
+            .or(Optional::empty);
+    }
+
+    @Override
+    public List<HubRoute> findAllHubRoutes() {
+        return hubRouteReadOnlyRepository.findAllHubRoutesAndIsDeletedFalseAndActive().stream()
+            .map(HubRouteEntity::toDomain)
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<HubRoute> findAllByHubId(String hubId) {
+        return hubRouteReadOnlyRepository.findAllByHubIdAndIsDeletedFalseAndActive(hubId).stream()
+            .map(HubRouteEntity::toDomain)
+            .collect(Collectors.toList());
     }
 
     @Transactional
     @Override
-    public HubRoute createHubRoute(Long userId, HubRoute hubRoute) {
+    public HubRoute createHubRoute(String userId, HubRoute hubRoute) {
 
         List<HubEntity> hubEntities = hubReadOnlyRepository.findByHubIdsAndIsDeletedFalse(
             List.of(hubRoute.getDepartureHub().getHubId(), hubRoute.getArrivalHub().getHubId())

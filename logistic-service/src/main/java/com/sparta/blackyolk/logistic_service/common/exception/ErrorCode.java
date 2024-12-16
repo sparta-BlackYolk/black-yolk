@@ -12,6 +12,7 @@ public enum ErrorCode {
     FORBIDDEN(403, "USER_FORBIDDEN", "접근 권한이 없습니다."),
 
     // Hub
+    HUB_BAD_REQUEST(400, "HUB_BAD_REQUEST", "잘못된 허브 요청입니다."),
     HUB_NOT_EXIST(404, "HUB_NOT_EXIST", "존재하지 않는 허브입니다."),
     HUB_ALREADY_EXIST(409, "HUB_ALREADY_EXIST", "이미 존재하는 허브입니다."),
 
@@ -19,6 +20,18 @@ public enum ErrorCode {
     HUB_ROUTE_BAD_REQUEST(400, "HUB_ROUTE_BAD_REQUEST", "잘못된 허브 경로 요청입니다."),
     HUB_ROUTE_NOT_EXIST(404, "HUB_ROUTE_NOT_EXIST", "존재하지 않는 허브 경로입니다."),
     HUB_ROUTE_ALREADY_EXIST(409, "HUB_ROUTE_ALREADY_EXIST", "이미 존재하는 허브 경로입니다."),
+
+    // Path
+    PATH_ACCESS_DENIED(403, "PATH_ACCESS_DENIED", "최단 경로 조회에 접근할 수 없습니다."),
+    PATH_NOT_EXIST(404, "PATH_NOT_EXIST", "존재하지 경로입니다."),
+
+    // 외부 REST API
+    URI_BAD_REQUEST(400, "URI_BAD_REQUEST", "잘못된 URI 요청입니다."),
+    REST_API_FAIL(500, "REST_API_FAIL", "외부 API 요청 실패"),
+
+    // User
+    USER_BAD_REQUEST(400, "USER_BAD_REQUEST", "잘못된 사용자 요청입니다."),
+    USER_NOT_EXIST(404, "USER_NOT_EXIST", "존재하지 않는 사용자 입니다."),
 
 
     // example

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,53 +32,57 @@ public class HubCommandController {
 
     private final HubUseCase hubUseCase;
 
-    // TODO : 지우기
-    private final Long TEST_USER = 1L;
-    private final String TEST_ROLE = "MASTER";
-
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public HubCreateResponse createHub(
-        @Valid @RequestBody HubCreateRequest hubCreateRequest
+        @Valid @RequestBody HubCreateRequest hubCreateRequest,
+        @RequestHeader(value = "X-User-Id", required = true) String userId,
+        @RequestHeader(value = "X-Role", required = true) String role,
+        @RequestHeader(value = "Authorization", required = true) String authorization
     ) {
-        // TODO : user token, user role 받기
-        HubForCreate hubForCreate = HubCreateRequest.toDomain(
-            TEST_USER,
-            TEST_ROLE,
-            hubCreateRequest
-        );
-        Hub hub = hubUseCase.createHub(hubForCreate);
+        log.info("[Hub 생성] header 확인: {}", userId);
+        log.info("[Hub 생성] header 확인: {}", role);
 
-        return HubCreateResponse.toDTO(hub);
+        HubForCreate hubForCreate = HubCreateRequest.toDomain(
+            userId,
+            role,
+            hubCreateRequest,
+            authorization
+        );
+
+        return hubUseCase.createHub(hubForCreate);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{hubId}")
     public HubUpdateResponse updateHub(
         @PathVariable(value = "hubId") String hubId,
-        @RequestBody HubUpdateRequest hubUpdateRequest
+        @Valid @RequestBody HubUpdateRequest hubUpdateRequest,
+        @RequestHeader(value = "X-User-Id", required = true) String userId,
+        @RequestHeader(value = "X-Role", required = true) String role,
+        @RequestHeader(value = "Authorization", required = true) String authorization
     ) {
-        // TODO : user token, user role 받기
         HubForUpdate hubForUpdate = HubUpdateRequest.toDomain(
-            TEST_USER,
-            TEST_ROLE,
+            userId,
+            role,
             hubId,
-            hubUpdateRequest
+            hubUpdateRequest,
+            authorization
         );
-        Hub hub = hubUseCase.updateHub(hubForUpdate);
 
-        return HubUpdateResponse.toDTO(hub);
+        return hubUseCase.updateHub(hubForUpdate);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{hubId}")
     public HubDeleteResponse deleteHub(
-        @PathVariable(value = "hubId") String hubId
+        @PathVariable(value = "hubId") String hubId,
+        @RequestHeader(value = "X-User-Id", required = true) String userId,
+        @RequestHeader(value = "X-Role", required = true) String role
     ) {
-        // TODO : user token, user role 받기
         HubForDelete hubForDelete = new HubForDelete(
-            TEST_USER,
-            TEST_ROLE,
+            userId,
+            role,
             hubId
         );
         Hub hub = hubUseCase.deleteHub(hubForDelete);

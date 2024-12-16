@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -34,7 +35,7 @@ public class LocalJwtAuthenticationFilter implements GlobalFilter {
         log.info("Incoming request path: {}", path); // 요청 경로 로그 출력
 
         // 특정 경로에 대해 필터를 건너뜀 (예: /auth/signup, /auth/login)
-        if (path.equals("/api/auth/users/signup") || path.equals("/api/auth/users/login")) {
+        if (path.equals("/api/auth/users/signup") || path.equals("/api/auth/users/login") || path.equals("/api/slack/send")) {
             log.info("Path {} is excluded from authentication", path); // 인증 제외 경로 로그 출력
             return chain.filter(exchange);
         }
@@ -51,14 +52,25 @@ public class LocalJwtAuthenticationFilter implements GlobalFilter {
         }
 
         // JWT 토큰 검증
-        if (!validateToken(token, exchange)) {
-            log.warn("Token validation failed for token: {}", token); // 검증 실패 시 경고 로그 출력
+//        if (!validateToken(token, exchange)) {
+//            log.warn("Token validation failed for token: {}", token); // 검증 실패 시 경고 로그 출력
+//            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+//            return exchange.getResponse().setComplete();
+//        }
+//
+//        log.info("Token validation succeeded"); // 검증 성공 로그 출력
+//        return chain.filter(exchange); // 필터 체인을 통해 요청 전달
+        try {
+            // JWT 검증 및 헤더 추가
+            ServerWebExchange modifiedExchange = validateToken(token, exchange);
+            log.info("[토큰 검증 성공] header 확인 : {}", modifiedExchange.getRequest().getHeaders());
+
+            return chain.filter(modifiedExchange);
+        } catch (Exception e) {
+            log.warn("토큰 검증 실패] {}", e.getMessage());
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
-
-        log.info("Token validation succeeded"); // 검증 성공 로그 출력
-        return chain.filter(exchange); // 필터 체인을 통해 요청 전달
     }
 
     // Authorization 헤더에서 Bearer 토큰을 추출하는 메서드
@@ -72,7 +84,7 @@ public class LocalJwtAuthenticationFilter implements GlobalFilter {
     }
 
     // JWT 토큰을 검증하는 메서드
-    private boolean validateToken(String token, ServerWebExchange exchange) {
+    private ServerWebExchange validateToken(String token, ServerWebExchange exchange) {
         try {
             // Secret Key를 기반으로 HMAC-SHA 키 생성
             SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey));
@@ -89,16 +101,20 @@ public class LocalJwtAuthenticationFilter implements GlobalFilter {
             log.info("Extracted Claims: {}", claims);
 
             // 헤더에 사용자 정보 추가
-            exchange.getRequest().mutate()
+            // 새로운 요청 객체 생성 및 헤더 추가
+            ServerHttpRequest modifiedRequest = exchange.getRequest().mutate()
                     .header("X-User-Id", claims.getSubject()) // 'sub' 필드 사용
                     .header("X-Role", claims.get("role").toString()) // 역할(Role)을 새로운 헤더에 추가
 //                    .header("X-Role", claims.get("auth").toString()) // 'auth' 필드 사용
                     .build();
 
-            return true; // 검증 성공
+//            return true; // 검증 성공
+            // 수정된 요청을 포함하는 ServerWebExchange 생성
+            return exchange.mutate().request(modifiedRequest).build();
         } catch (Exception e) {
             log.error("JWT validation error: {}", e.getMessage(), e);
-            return false; // 검증 실패
+//            return false; // 검증 실패
+            throw e; // 예외를 호출한 메서드로 전달
         }
     }
 

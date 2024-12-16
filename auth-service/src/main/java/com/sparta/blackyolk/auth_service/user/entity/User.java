@@ -1,5 +1,6 @@
 package com.sparta.blackyolk.auth_service.user.entity;
 
+import com.sparta.blackyolk.auth_service.user.dto.UserResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -61,5 +62,17 @@ public class User {
         this.password = password;
         this.slackId = slackId;
         this.role = role;
+    }
+
+    public UserResponseDto toDTO() {
+        return UserResponseDto.builder()
+            .userId(this.id)
+            .username(this.username)
+            .email(this.email)
+            .slackId(this.slackId)
+            .role(this.role)
+            .createdAt(this.createdAt)
+            .updatedAt(this.updatedAt)
+            .build();
     }
 }

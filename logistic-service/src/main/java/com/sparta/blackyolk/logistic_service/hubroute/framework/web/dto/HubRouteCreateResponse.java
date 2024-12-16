@@ -2,16 +2,14 @@ package com.sparta.blackyolk.logistic_service.hubroute.framework.web.dto;
 
 import com.sparta.blackyolk.logistic_service.hubroute.application.domain.HubRoute;
 import com.sparta.blackyolk.logistic_service.hubroute.data.vo.HubRouteStatus;
-import java.math.BigDecimal;
 
 public record HubRouteCreateResponse(
     String hubRouteId,
     String departureHubName,
     String arrivalHubName,
     HubRouteStatus hubRouteStatus,
-    BigDecimal distance,
-    Integer duration,
-    String timeSlot
+    Long distance,
+    Long duration
 ) {
 
     public static HubRouteCreateResponse toDTO(
@@ -23,8 +21,7 @@ public record HubRouteCreateResponse(
             hubRoute.getArrivalHub().getHubName(),
             hubRoute.getStatus(),
             hubRoute.getDistance(),
-            hubRoute.getDuration(),
-            hubRoute.getTimeSlot()
+            hubRoute.getDuration()
         );
     }
 }

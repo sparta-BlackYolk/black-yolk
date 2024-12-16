@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,58 +32,55 @@ public class HubRouteCommandController {
 
     private final HubRouteUseCase hubRouteUseCase;
 
-    // TODO : 지우기
-    private final Long TEST_USER = 1L;
-    private final String TEST_ROLE = "MASTER";
-
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public HubRouteCreateResponse createHubRoute(
+        @RequestHeader(value = "X-User-Id", required = true) String userId,
+        @RequestHeader(value = "X-Role", required = true) String role,
         @PathVariable(value = "hubId") String hubId,
         @Valid @RequestBody HubRouteCreateRequest hubRouteCreateRequest
     ) {
-        // TODO : user token, user role 받기
         HubRouteForCreate hubRouteForCreate = HubRouteCreateRequest.toDomain(
-            TEST_USER,
-            TEST_ROLE,
+            userId,
+            role,
             hubId,
             hubRouteCreateRequest
         );
-        HubRoute hubRoute = hubRouteUseCase.createHubRoute(hubRouteForCreate);
 
-        return HubRouteCreateResponse.toDTO(hubRoute);
+        return hubRouteUseCase.createHubRoute(hubRouteForCreate);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{hubRouteId}")
     public HubRouteUpdateResponse updateHubRoute(
+        @RequestHeader(value = "X-User-Id", required = true) String userId,
+        @RequestHeader(value = "X-Role", required = true) String role,
         @PathVariable(value = "hubId") String hubId,
         @PathVariable(value = "hubRouteId") String hubRouteId,
         @Valid @RequestBody HubRouteUpdateRequest hubRouteUpdateRequest
     ) {
-        // TODO : user token, user role 받기
         HubRouteForUpdate hubRouteForUpdate = HubRouteUpdateRequest.toDomain(
-            TEST_USER,
-            TEST_ROLE,
+            userId,
+            role,
             hubId,
             hubRouteId,
             hubRouteUpdateRequest
         );
-        HubRoute hubRoute = hubRouteUseCase.updateHubRoute(hubRouteForUpdate);
 
-        return HubRouteUpdateResponse.toDTO(hubRoute);
+        return hubRouteUseCase.updateHubRoute(hubRouteForUpdate);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{hubRouteId}")
     public HubRouteDeleteResponse deleteResponse(
+        @RequestHeader(value = "X-User-Id", required = true) String userId,
+        @RequestHeader(value = "X-Role", required = true) String role,
         @PathVariable(value = "hubId") String hubId,
         @PathVariable(value = "hubRouteId") String hubRouteId
     ) {
-        // TODO : user token, user role 받기
         HubRouteForDelete hubRouteForDelete = new HubRouteForDelete(
-            TEST_USER,
-            TEST_ROLE,
+            userId,
+            role,
             hubId,
             hubRouteId
         );

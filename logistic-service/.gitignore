@@ -38,3 +38,9 @@ out/
 ### VS Code ###
 .vscode/
 .env
+
+hubv1.sql
+hubv2.sql
+hubv3.sql
+
+redis/redis.conf

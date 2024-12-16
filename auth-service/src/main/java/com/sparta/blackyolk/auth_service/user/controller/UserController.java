@@ -7,7 +7,9 @@ import com.sparta.blackyolk.auth_service.user.entity.UserRoleEnum;
 import com.sparta.blackyolk.auth_service.user.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/auth/users")
 @RequiredArgsConstructor
@@ -96,5 +99,14 @@ public class UserController {
     public ResponseEntity<DeleteResponseDto> deleteUser(@PathVariable Long userId) {
         DeleteResponseDto responseDto = userService.deleteUser(userId);
         return ResponseEntity.ok(responseDto);
+    }
+
+    @GetMapping("/{username}")
+    public Optional<UserResponseDto> getUser(
+        @PathVariable String username,
+        @RequestHeader(value = "Authorization") String authorization
+    ) {
+        log.info("Authorization Header in auth-service: {}", authorization);
+        return userService.getUserByUsername(username);
     }
 }

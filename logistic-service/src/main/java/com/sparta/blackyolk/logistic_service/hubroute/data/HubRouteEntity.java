@@ -15,7 +15,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -44,20 +43,14 @@ public class HubRouteEntity extends BaseEntity {
     private HubEntity arrivalHub;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "hub_status", nullable = false, columnDefinition = "varchar(255)")
+    @Column(name = "hub_route_status", nullable = false, columnDefinition = "varchar(255)")
     private HubRouteStatus status = HubRouteStatus.ACTIVE;
 
     @Column(name = "duration", nullable = false)
-    private Integer duration; // 분
+    private Long duration; // milliseconds
 
     @Column(name = "distance", precision = 10, scale = 2, nullable = false)
-    private BigDecimal distance; // km
-
-    @Column(name = "time_slot", nullable = false, columnDefinition = "varchar(255)")
-    private String timeSlot; // ex. 09:00-12:00
-
-    @Column(name = "time_slot_weight", nullable = false)
-    private double timeSlotWeight; // 시간대 별 가중치
+    private Long distance; // meters
 
     @PrePersist
     private void prePersistence() {
@@ -67,13 +60,11 @@ public class HubRouteEntity extends BaseEntity {
     }
 
     public HubRouteEntity(
-        Long userId,
+        String userId,
         HubEntity departureHub,
         HubEntity arrivalHub,
-        Integer duration,
-        BigDecimal distance,
-        String timeSlot,
-        double timeSlotWeight
+        Long duration,
+        Long distance
     ) {
         super(userId, userId);
         this.hubRouteId = null;
@@ -81,12 +72,10 @@ public class HubRouteEntity extends BaseEntity {
         this.arrivalHub = arrivalHub;
         this.duration = duration;
         this.distance = distance;
-        this.timeSlot = timeSlot;
-        this.timeSlotWeight = timeSlotWeight;
     }
 
     public static HubRouteEntity toEntity(
-        Long userId,
+        String userId,
         HubEntity departureHubEntity,
         HubEntity arrivalHubEntity,
         HubRoute hubRoute
@@ -96,9 +85,7 @@ public class HubRouteEntity extends BaseEntity {
             departureHubEntity,
             arrivalHubEntity,
             hubRoute.getDuration(),
-            hubRoute.getDistance(),
-            hubRoute.getTimeSlot(),
-            hubRoute.getTimeSlotWeight()
+            hubRoute.getDistance()
         );
     }
 
@@ -109,21 +96,17 @@ public class HubRouteEntity extends BaseEntity {
             this.departureHub.toDomain(),
             this.arrivalHub.toDomain(),
             this.status,
-            this.timeSlot,
             this.duration,
-            this.distance,
-            this.timeSlotWeight
+            this.distance
         );
     }
 
     public void update(HubRouteForUpdate hubRouteForUpdate) {
         super.updateFrom(hubRouteForUpdate.userId());
-        Optional.ofNullable(hubRouteForUpdate.timeSlot()).ifPresent(value -> this.timeSlot = value);
-        Optional.ofNullable(hubRouteForUpdate.timeSlotWeight()).ifPresent(value -> this.timeSlotWeight = value);
         Optional.ofNullable(hubRouteForUpdate.status()).ifPresent(value -> this.status = value);
     }
 
-    public void delete(Long userId) {
+    public void delete(String userId) {
         this.status = HubRouteStatus.INACTIVE;
         super.deleteFrom(userId);
     }
