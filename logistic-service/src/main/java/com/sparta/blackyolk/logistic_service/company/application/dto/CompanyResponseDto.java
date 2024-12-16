@@ -1,8 +1,7 @@
 package com.sparta.blackyolk.logistic_service.company.application.dto;
 
-import com.sparta.blackyolk.logistic_service.company.entity.Company;
-import com.sparta.blackyolk.logistic_service.company.entity.CompanyType;
-import jakarta.persistence.*;
+import com.sparta.blackyolk.logistic_service.company.domain.Company;
+import com.sparta.blackyolk.logistic_service.company.domain.CompanyType;
 import lombok.*;
 
 import java.util.UUID;
@@ -19,7 +18,7 @@ public class CompanyResponseDto {
 
     private CompanyType companyType;
 
-    private Long hub_id;
+    private String hub_id;
 
     private Long user_id;
 

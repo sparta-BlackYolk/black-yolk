@@ -1,4 +1,4 @@
-package com.sparta.blackyolk.logistic_service.company.entity;
+package com.sparta.blackyolk.logistic_service.company.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;

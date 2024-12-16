@@ -91,4 +91,9 @@ public class UserController {
         log.info("Authorization Header in auth-service: {}", authorization);
         return userService.getUserByUsername(username);
     }
+
+    @GetMapping("/search/{userId}")
+    public Optional<UserResponseDto> getUserById(@PathVariable Long userId){
+        return userService.getUserById(userId);
+    }
 }

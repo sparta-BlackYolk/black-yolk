@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -193,5 +194,12 @@ public class UserService {
         return userRepository.findByUsername(username)
             .map(User::toDTO)
             .or(Optional::empty);
+    }
+
+    public Optional<UserResponseDto> getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .map(User::toDTO)
+                .or(Optional::empty);
+
     }
 }
