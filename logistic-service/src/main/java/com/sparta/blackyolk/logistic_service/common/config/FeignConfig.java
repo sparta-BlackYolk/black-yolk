@@ -49,7 +49,7 @@ public class FeignConfig {
 
         public CustomRetryer() {
             // 실패한 요청에 대해 재시도 횟수 및 재시도 간 대기 시간 설정
-            super(100, 1000, 3);
+            super(1000, 1000, 3);
         }
 
         @Override
