@@ -22,7 +22,6 @@ import java.util.UUID;
 public class CourierController {
 
     private final CourierService courierService;
-    private final UserDetailsImpl userDetails;
 
     // 배송 담당자 등록
     @PreAuthorize("hasAnyRole('MASTER', 'HUB_ADMIN')")

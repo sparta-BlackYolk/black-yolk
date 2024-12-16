@@ -13,5 +13,5 @@ public interface LogisticServiceClient {
     Object getHubById(@PathVariable("hubId") String hubId);
 
     @GetMapping("/api/hubs/isAdmin") // 허브 관리자가 자신의 허브 ID인지 확인
-    boolean isHubAdmin(@RequestParam("hubId") String hubId, @RequestParam("userId") Long userId);
+    boolean isHubAdmin(@RequestParam("hubId") String hubId, @RequestParam("userName") String userName);
 }

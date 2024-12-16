@@ -41,17 +41,39 @@ public class CourierService {
             throw new IllegalArgumentException("해당 사용자(userId: " + requestDto.getUserId() + ")는 이미 배송 담당자로 등록되어 있습니다.");
         }
 
-        // 3. 역할에 따른 로직 분기
+        // 3. 등록하려는 사용자의 역할 검증
+        if (user.getRole() != UserRoleEnum.COMPANY_DELIVERY && user.getRole() != UserRoleEnum.HUB_DELIVERY) {
+            throw new IllegalArgumentException("등록하려는 사용자는 배송 담당자 역할이어야 합니다.");
+        }
+
+        // 4. 역할에 따른 로직 분기
         if (loggedInUser.getRole() == UserRoleEnum.MASTER) {
             // 마스터는 모든 권한을 가지고 바로 저장 가능
+            validateHubConstraints(user, requestDto); // 역할에 따른 허브 ID 제약 검증
             return saveCourier(requestDto, user);
         } else if (loggedInUser.getRole() == UserRoleEnum.HUB_ADMIN) {
             // 허브 관리자는 자신의 허브에 속한 배송 담당자만 등록 가능
             validateHubOwnership(loggedInUser, requestDto.getHubId());
+            validateHubConstraints(user, requestDto); // 역할에 따른 허브 ID 제약 검증
             return saveCourier(requestDto, user);
         } else {
             // 그 외의 역할은 등록 권한 없음
             throw new IllegalArgumentException("배송 담당자를 등록할 권한이 없습니다.");
+        }
+    }
+
+    // 역할에 따른 허브 ID 제약 검증 메서드
+    private void validateHubConstraints(User user, CourierRequestDto requestDto) {
+        if (user.getRole() == UserRoleEnum.COMPANY_DELIVERY) {
+            // COMPANY_DELIVERY는 허브 ID가 필수
+            if (requestDto.getHubId() == null) {
+                throw new IllegalArgumentException("COMPANY_DELIVERY 역할에는 허브 ID가 필수입니다.");
+            }
+        } else if (user.getRole() == UserRoleEnum.HUB_DELIVERY) {
+            // HUB_DELIVERY는 허브 ID가 없어야 함
+            if (requestDto.getHubId() != null) {
+                throw new IllegalArgumentException("HUB_DELIVERY 역할에서는 허브 ID를 설정할 수 없습니다.");
+            }
         }
     }
 
@@ -211,7 +233,7 @@ public class CourierService {
             throw new IllegalArgumentException("허브 ID가 필요합니다.");
         }
 
-        boolean isOwner = logisticServiceClient.isHubAdmin(hubId.toString(), hubAdmin.getId());
+        boolean isOwner = logisticServiceClient.isHubAdmin(hubId.toString(), hubAdmin.getUsername());
         if (!isOwner) {
             throw new IllegalArgumentException("권한이 없습니다. 해당 허브에 속한 배송 담당자가 아닙니다.");
         }
@@ -230,15 +252,6 @@ public class CourierService {
 
     private List<CourierResponseDto> convertToResponseDtos(List<Courier> couriers) {
         return couriers.stream().map(this::convertToResponseDto).toList();
-    }
-
-    // 공통: 수정 로직
-    private CourierResponseDto updateCourierDetails(Courier courier, CourierUpdateRequestDto updateRequestDto) {
-        if (updateRequestDto.getSlackId() != null) {
-            courier.setSlackId(updateRequestDto.getSlackId());
-        }
-        courierRepository.save(courier);
-        return convertToResponseDto(courier);
     }
 
     // 공통: 삭제 로직

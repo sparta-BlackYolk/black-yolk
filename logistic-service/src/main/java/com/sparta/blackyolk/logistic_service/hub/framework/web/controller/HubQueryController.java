@@ -2,6 +2,8 @@ package com.sparta.blackyolk.logistic_service.hub.framework.web.controller;
 
 import com.sparta.blackyolk.logistic_service.common.pagenation.PaginationConstraint;
 import com.sparta.blackyolk.logistic_service.hub.application.service.HubCacheService;
+import com.sparta.blackyolk.logistic_service.hub.data.HubEntity;
+import com.sparta.blackyolk.logistic_service.hub.framework.repository.HubRepository;
 import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubGetResponse;
 import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubPageResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HubQueryController {
 
     private final HubCacheService hubCacheService;
+    private final HubRepository hubRepository;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{hubId}")
@@ -46,5 +49,12 @@ public class HubQueryController {
         log.info("[Hub search 조회 pageable] : {}", pageable);
 
         return hubCacheService.getHubs(pageable, keyword);
+    }
+
+    @GetMapping("/isAdmin")
+    public boolean isHubAdmin(@RequestParam("hubId") String hubId, @RequestParam("userName") String userName) {
+        HubEntity hubEntity = hubRepository.findById(hubId)
+                .orElseThrow(() -> new IllegalArgumentException("허브를 찾을 수 없습니다: " + hubId));
+        return hubEntity.getHubManagerId().equals(userName);
     }
 }
