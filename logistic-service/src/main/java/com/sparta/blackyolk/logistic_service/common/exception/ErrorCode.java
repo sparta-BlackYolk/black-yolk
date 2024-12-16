@@ -35,6 +35,7 @@ public enum ErrorCode {
     // User
     USER_BAD_REQUEST(400, "USER_BAD_REQUEST", "잘못된 사용자 요청입니다."),
     USER_NOT_EXIST(404, "USER_NOT_EXIST", "존재하지 않는 사용자 입니다."),
+    USER_ACCESS_DENIED(403, "USER_ACCESS_DENIED", "접근 권한이 없습니다."),
 
 
     // example
