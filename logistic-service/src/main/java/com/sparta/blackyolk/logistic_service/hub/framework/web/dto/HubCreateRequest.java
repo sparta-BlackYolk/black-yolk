@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public record HubCreateRequest(
 
-    Long hubManagerId,
+    String hubManagerId,
 
     @NotBlank(message = "허브 명을 입력해주세요.")
     String name,
@@ -21,13 +21,15 @@ public record HubCreateRequest(
 ) {
 
     public static HubForCreate toDomain(
-        Long userId,
+        String userId,
         String role,
-        HubCreateRequest hubCreateRequest
+        HubCreateRequest hubCreateRequest,
+        String authorization
     ) {
         return new HubForCreate(
             userId,
             role,
+            authorization,
             hubCreateRequest.hubManagerId(),
             hubCreateRequest.name(),
             hubCreateRequest.center(),

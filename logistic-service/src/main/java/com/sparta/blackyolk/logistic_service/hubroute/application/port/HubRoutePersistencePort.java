@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface HubRoutePersistencePort {
-    HubRoute createHubRoute(Long userId, HubRoute hubRoute);
+    HubRoute createHubRoute(String userId, HubRoute hubRoute);
     Optional<HubRoute> findByHubRouteId(String hubRouteId);
     HubRoute updateHubRoute(HubRouteForUpdate hubRouteForUpdate);
     HubRoute deleteHubRoute(HubRouteForDelete hubRouteForDelete);

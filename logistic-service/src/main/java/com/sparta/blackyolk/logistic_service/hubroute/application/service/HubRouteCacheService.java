@@ -55,7 +55,7 @@ public class HubRouteCacheService {
     }
 
     @CacheEvict(cacheNames = {"hub_route_page_cache", "hub_route_path_cache"}, allEntries = true)
-    public HubRouteCreateResponse createHubRoute(Long userId, HubRoute hubRoute) {
+    public HubRouteCreateResponse createHubRoute(String userId, HubRoute hubRoute) {
 
         log.info("[HubRoute 생성]: {}", hubRoute);
 
