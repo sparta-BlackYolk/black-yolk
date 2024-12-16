@@ -3,7 +3,6 @@ package com.sparta.blackyolk.logistic_service.company.controller;
 import com.sparta.blackyolk.logistic_service.company.application.CompanyService;
 import com.sparta.blackyolk.logistic_service.company.application.dto.CompanyRequestDto;
 import com.sparta.blackyolk.logistic_service.company.application.dto.CompanyResponseDto;
-import com.sparta.blackyolk.logistic_service.company.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

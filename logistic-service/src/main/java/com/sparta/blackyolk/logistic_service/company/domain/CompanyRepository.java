@@ -1,6 +1,5 @@
-package com.sparta.blackyolk.logistic_service.company.repository;
+package com.sparta.blackyolk.logistic_service.company.domain;
 
-import com.sparta.blackyolk.logistic_service.company.entity.Company;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

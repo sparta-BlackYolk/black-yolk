@@ -100,9 +100,13 @@ public class LocalJwtAuthenticationFilter implements GlobalFilter {
             Claims claims = claimsJws.getBody();
             log.info("Extracted Claims: {}", claims);
 
+            // 기존 Authorization 헤더를 그대로 유지하고, 새로운 토큰을 Authorization 헤더에 넣기
+            String authorizationHeader = "Bearer " + token;
+
             // 헤더에 사용자 정보 추가
             // 새로운 요청 객체 생성 및 헤더 추가
             ServerHttpRequest modifiedRequest = exchange.getRequest().mutate()
+                    .header("Authorization", authorizationHeader) // Authorization 헤더에 토큰 추가
                     .header("X-User-Id", claims.getSubject()) // 'sub' 필드 사용
                     .header("X-Role", claims.get("role").toString()) // 역할(Role)을 새로운 헤더에 추가
 //                    .header("X-Role", claims.get("auth").toString()) // 'auth' 필드 사용

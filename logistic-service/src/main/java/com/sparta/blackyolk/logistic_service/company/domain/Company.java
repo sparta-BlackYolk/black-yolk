@@ -1,4 +1,4 @@
-package com.sparta.blackyolk.logistic_service.company.entity;
+package com.sparta.blackyolk.logistic_service.company.domain;
 
 import com.sparta.blackyolk.logistic_service.company.application.dto.CompanyRequestDto;
 import jakarta.persistence.*;
@@ -26,7 +26,7 @@ public class Company extends BaseEntity{
     private CompanyType companyType;
 
     @Column(nullable = false)
-    private Long hub_id;
+    private String hub_id;
     // 허브 정보: Hub 테이블과 연관관계 설정
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "hub_id", referencedColumnName = "id")
@@ -50,7 +50,7 @@ public class Company extends BaseEntity{
     }
 
     public static Company create(CompanyRequestDto requestDto) {
-        return com.sparta.blackyolk.logistic_service.company.entity.Company.builder()
+        return Company.builder()
                 .name(requestDto.getName())
                 .companyType(requestDto.getCompanyType())
                 .hub_id(requestDto.getHub_id())

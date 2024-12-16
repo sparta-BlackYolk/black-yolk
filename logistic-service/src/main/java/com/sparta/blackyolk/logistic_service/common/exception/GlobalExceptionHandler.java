@@ -1,5 +1,7 @@
 package com.sparta.blackyolk.logistic_service.common.exception;
 
+import feign.FeignException;
+import feign.RetryableException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -9,10 +11,49 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(RetryableException.class)
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    public ResponseEntity<ErrorResponse> handleRetryableException(RetryableException ex) {
+
+        log.error("[Feign 호출 실패] 재시도 실패: {}", ex.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse(
+            ErrorCode.SERVICE_UNAVAILABLE.getCode(),
+            ErrorCode.SERVICE_UNAVAILABLE.getErrorCode(),
+            ErrorCode.SERVICE_UNAVAILABLE.getDetailMessage() + " 원인: " + ex.getMessage()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(ErrorCode.SERVICE_UNAVAILABLE.getCode()));
+    }
+
+    @ExceptionHandler(FeignException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<ErrorResponse> handleFeignException(FeignException ex) {
+
+        log.error("[Feign 호출 에러] 상태 코드: {}, 메시지: {}", ex.status(), ex.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse(
+            ErrorCode.INTERNAL_SERVER_ERROR.getCode(),
+            ErrorCode.INTERNAL_SERVER_ERROR.getErrorCode(),
+            ErrorCode.INTERNAL_SERVER_ERROR.getDetailMessage() + " 원인: " + ex.getMessage()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(ErrorCode.SERVICE_UNAVAILABLE.getCode()));
+    }
+
+    @ExceptionHandler(UserServiceException.class)
+    public ResponseEntity<ErrorResponse> handleUserServiceException(UserServiceException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+            ErrorCode.SERVICE_UNAVAILABLE.getCode(),
+            ErrorCode.SERVICE_UNAVAILABLE.getErrorCode(),
+            ex.getMessage() != null ? ex.getMessage() : ErrorCode.SERVICE_UNAVAILABLE.getDetailMessage()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(ErrorCode.SERVICE_UNAVAILABLE.getCode()));
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<ErrorResponse>> handleValidationExceptions(MethodArgumentNotValidException ex) {
@@ -39,6 +80,16 @@ public class GlobalExceptionHandler {
             ex.getMessage()                 // 에러 메시지
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(ex.getStatusCode()));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+            HttpStatus.BAD_REQUEST.value(),
+            "BAD_REQUEST",
+            ex.getMessage()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
