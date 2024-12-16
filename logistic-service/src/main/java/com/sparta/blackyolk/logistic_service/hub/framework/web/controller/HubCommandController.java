@@ -4,6 +4,7 @@ import com.sparta.blackyolk.logistic_service.hub.application.domain.Hub;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForCreate;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForDelete;
 import com.sparta.blackyolk.logistic_service.hub.application.domain.HubForUpdate;
+import com.sparta.blackyolk.logistic_service.hub.application.usecase.HubFailUseCase;
 import com.sparta.blackyolk.logistic_service.hub.application.usecase.HubUseCase;
 import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubCreateRequest;
 import com.sparta.blackyolk.logistic_service.hub.framework.web.dto.HubCreateResponse;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HubCommandController {
 
     private final HubUseCase hubUseCase;
+    private final HubFailUseCase hubFailUseCase;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
@@ -38,10 +41,15 @@ public class HubCommandController {
         @Valid @RequestBody HubCreateRequest hubCreateRequest,
         @RequestHeader(value = "X-User-Id", required = true) String userId,
         @RequestHeader(value = "X-Role", required = true) String role,
-        @RequestHeader(value = "Authorization", required = true) String authorization
+        @RequestHeader(value = "Authorization", required = true) String authorization,
+        @RequestParam(value = "fail", required = false, defaultValue = "false") boolean fail
     ) {
         log.info("[Hub 생성] header 확인: {}", userId);
         log.info("[Hub 생성] header 확인: {}", role);
+
+        if (fail) {
+            hubFailUseCase.handleFailCase();
+        }
 
         HubForCreate hubForCreate = HubCreateRequest.toDomain(
             userId,
