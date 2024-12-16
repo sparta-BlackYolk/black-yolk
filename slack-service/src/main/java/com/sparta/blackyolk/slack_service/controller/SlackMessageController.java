@@ -1,4 +1,4 @@
-package com.sparta.blackyolk.slack_service.presentation;
+package com.sparta.blackyolk.slack_service.controller;
 
 
 import com.sparta.blackyolk.slack_service.application.service.GeminiService;
@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequiredArgsConstructor

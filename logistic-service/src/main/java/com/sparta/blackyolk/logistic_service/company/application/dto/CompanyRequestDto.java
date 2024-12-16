@@ -1,7 +1,6 @@
 package com.sparta.blackyolk.logistic_service.company.application.dto;
 
-import com.sparta.blackyolk.logistic_service.company.entity.CompanyType;
-import jakarta.persistence.*;
+import com.sparta.blackyolk.logistic_service.company.domain.CompanyType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +16,7 @@ public class CompanyRequestDto {
 
     private CompanyType companyType;
 
-    private Long hub_id;
+    private String hub_id;
 
     private Long user_id;
 
