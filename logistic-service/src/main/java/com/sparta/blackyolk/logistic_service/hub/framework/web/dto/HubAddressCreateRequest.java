@@ -8,7 +8,6 @@ public record HubAddressCreateRequest(
     @NotBlank(message = "시/도를 입력해주세요.")
     String sido,
 
-    @NotBlank(message = "시/군/구를 입력해주세요.")
     String sigungu,
 
     String eupmyun,
