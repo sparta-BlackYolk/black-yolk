@@ -62,7 +62,7 @@ public class CoordinateService {
         } catch (URISyntaxException e) {
             throw new CustomException(ErrorCode.URI_BAD_REQUEST);
         } catch (Exception e) {
-            throw new CustomException(ErrorCode.REST_API_FAIL, e.getMessage());
+            throw new CustomException(ErrorCode.GEOCODING_API_FAIL);
         }
     }
 
