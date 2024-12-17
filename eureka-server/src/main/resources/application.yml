@@ -16,6 +16,11 @@ eureka:
     hostname: localhost # Eureka Server의 호스트 이름
 
 management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
   zipkin:
     tracing:
       endpoint: "http://localhost:9411/api/v2/spans"

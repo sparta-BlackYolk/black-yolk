@@ -54,6 +54,11 @@ springdoc:
     path: /swagger-ui.html
 
 management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
   zipkin:
     tracing:
       endpoint: "http://localhost:9411/api/v2/spans"
