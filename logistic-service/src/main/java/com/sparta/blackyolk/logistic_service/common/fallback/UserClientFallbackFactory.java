@@ -18,7 +18,7 @@ public class UserClientFallbackFactory implements FallbackFactory<UserClient> {
     public UserClient create(Throwable cause) {
         return new UserClient() {
             @Override
-            public Optional<UserResponseDto> getUser(String username, String authorization) {
+            public Optional<UserResponseDto> getUser(String username) {
 
                 log.error("[[UserClientFallbackFactory 호출됨] : {}", cause.getMessage());
 
