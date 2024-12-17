@@ -51,7 +51,7 @@ https://github.com/sparta-BlackYolk/black-yolk/wiki
 <img src="https://img.shields.io/badge/git-F05032?style=flat-square&logo=git&logoColor=white"/> <img src="https://img.shields.io/badge/github-181717?style=flat-square&logo=github&logoColor=white"/> <img src="https://img.shields.io/badge/Notion-000000?style=flat-square&logo=Notion&logoColor=white"/>
 
 ### 🛠 ERD
-![image]()
+![ERD](https://github.com/user-attachments/assets/d0208046-7d54-4959-a16a-46028b87b00c)
 
 ### 🛠 인프라 설계도
 <img width="1404" alt="인프라 설계도 수정 수정" src="https://github.com/user-attachments/assets/d5006b18-8e72-43f1-84dc-efb0436ec029" />
