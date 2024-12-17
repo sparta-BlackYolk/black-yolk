@@ -1,4 +1,4 @@
-package com.sparta.msa_exam.auth.auth_service;
+package com.sparta.blackyolk.auth_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
