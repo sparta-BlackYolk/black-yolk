@@ -11,7 +11,7 @@
 |김난영| |
 |박소현|Hub 관리 및 Hub 간 이동 정보 관리 기능 구현, Zipkin 및 Swagger 배포|
 |신상우|Product & Company 관리, Slack & Geimini API 연동, Feign Client와 Gateway 통신|
-|최영준| 사용자 관리 & 권한 시스템과 Security
+|최영준| 사용자와 배송담당자 관리 & Security와 권한 시스템
 
 # 📖 프로젝트 소개
 
