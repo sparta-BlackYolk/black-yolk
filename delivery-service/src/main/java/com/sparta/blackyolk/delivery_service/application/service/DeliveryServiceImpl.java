@@ -38,6 +38,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     }
 
     @Override
+    @Transactional
     public UUID createDelivery() {
         return null;
     }
