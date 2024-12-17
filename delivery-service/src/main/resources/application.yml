@@ -82,3 +82,13 @@ eureka:
     service-url:
       defaultZone: http://${EUREKA_NAME}:${EUREKA_PORT}/${EUREKA_HOST}/
     region: ap-northeast-2
+
+---
+
+management:
+  zipkin:
+    tracing:
+      endpoint: "http://localhost:9411/api/v2/spans"
+  tracing:
+    sampling:
+      probability: 1.0

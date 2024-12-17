@@ -14,3 +14,11 @@ eureka:
       defaultZone: http://localhost:19090/eureka/ # Eureka 클라이언트의 서비스 URL
   instance:
     hostname: localhost # Eureka Server의 호스트 이름
+
+management:
+  zipkin:
+    tracing:
+      endpoint: "http://localhost:9411/api/v2/spans"
+  tracing:
+    sampling:
+      probability: 1.0
