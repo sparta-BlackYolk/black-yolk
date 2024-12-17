@@ -36,3 +36,12 @@ service:
     # JWT 비밀키
 
     access-expiration: 3600000 # JWT 만료 시간 (ms)
+
+feign:
+  client:
+    config:
+      default:
+        retryer: true # 재시도 활성화
+        requestOptions:
+          connectTimeout: 1000 # 연결 제한 시간
+          readTimeout: 2000    # 읽기 제한 시간
