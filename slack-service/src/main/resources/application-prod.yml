@@ -1,0 +1,67 @@
+server:
+  port: 19102
+
+spring:
+  application:
+    name: slack-service
+
+  config:
+    import:
+      - optional:file:env.properties[.properties]
+
+  datasource:
+    url: jdbc:postgresql://postgres:5432/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PW}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      auto-commit: false
+      minimum-idle: 5
+      maximum-pool-size: 20
+      transaction-isolation: TRANSACTION_READ_COMMITTED
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_batch_fetch_size: 500
+    open-in-view: false
+
+  logging:
+    level:
+      org.hibernate: WARN
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:19090/eureka/ # Eureka URL
+slack:
+  bot:
+    token: ${SLACK_BOT_TOKEN}
+gemini:
+  token: ${GEMINI_TOKEN}
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+  zipkin:
+    tracing:
+      endpoint: "http://zipkin:9411/api/v2/spans"
+  tracing:
+    sampling:
+      probability: 1.0

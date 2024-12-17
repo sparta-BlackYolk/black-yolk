@@ -1,0 +1,72 @@
+server:
+  port: 19091  # Gateway 서비스가 실행될 포트
+
+spring:
+  application:
+    name: gateway-service  # Gateway 서비스 이름
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service  # 인증 서비스 라우트
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/auth/**  # /api/auth/** 경로 매칭
+        - id: order-service  # 주문 서비스 라우트
+          uri: lb://order-service  # Load Balancer로 전달
+          predicates:
+            - Path=/orders/**  # /orders/** 경로 매칭
+        - id: hubs # Logistic(Hub, Product, Company) 서비스 라우트
+          uri: lb://logistic-service
+          predicates:
+            - Path=/api/hubs/** # /Logistic/** 경로 매칭
+        - id: hub-routes # Logistic(Hub, Product, Company) 서비스 라우트
+          uri: lb://logistic-service
+          predicates:
+            - Path=/api/hub-routes/**
+        - id: companies # 업체 서비스
+          uri: lb://logistic-service
+          predicates:
+            - Path=/api/companies/**
+        - id: products # 상품 서비스
+          uri: lb://logistic-service
+          predicates:
+            - Path=/api/products/**
+        - id: delivery-service  # 배송 서비스 라우트
+          uri: lb://delivery-service
+          predicates:
+            - Path=/delivery/**  # /delivery/** 경로 매칭
+        - id: slack-service  # 슬랙 서비스
+          uri: lb://slack-service
+          predicates:
+            - Path=/api/slack/**
+
+      discovery:
+        locator:
+          enabled: true  # Eureka를 통해 동적으로 라우트를 생성
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:19090/eureka/ # Eureka Server URL
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  # Actuator의 모든 엔드포인트 노출 (운영 환경에서는 제한 필요)
+  endpoint:
+    health:
+      show-details: always  # Actuator 헬스체크에서 세부정보 표시
+
+  zipkin:
+    tracing:
+      endpoint: "http://zipkin:9411/api/v2/spans"
+  tracing:
+    sampling:
+      probability: 1.0
+
+service:
+  jwt:
+    secret-key: ${JWT_SECRET_KEY}
+    # JWT 비밀키
+
