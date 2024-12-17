@@ -1,0 +1,91 @@
+server:
+  port: 19097
+
+spring:
+  application:
+    name: logistic-service
+
+  config:
+    import:
+      - optional:file:env.properties[.properties]
+
+  datasource:
+    url: jdbc:postgresql://postgres:5432/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PW}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      auto-commit: false
+      minimum-idle: 5
+      maximum-pool-size: 20
+      transaction-isolation: TRANSACTION_READ_COMMITTED
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_batch_fetch_size: 500
+    open-in-view: false
+
+  cache:
+    type: redis
+
+  data:
+    redis:
+      host: redis
+      port: 6380
+      username: default
+      password: ${REDIS_PW}
+
+logging:
+  level:
+    root: INFO
+    com.your.package.FeignConfig: WARN
+    org.hibernate: WARN
+    org.springframework.cache: DEBUG
+    org.springframework.data.redis: DEBUG
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:19090/eureka/ # Eureka URL
+
+naver:
+  coordinate-url: https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode
+  drive-url: https://naveropenapi.apigw.ntruss.com/map-direction/v1/driving
+  rest-api-key-id: ${X-NCP-APIGW-API-KEY-ID}
+  rest-api-key: ${X-NCP-APIGW-API-KEY}
+
+feign:
+  client:
+    config:
+      default:
+        retryer: true # 재시도 활성화
+        requestOptions:
+          connectTimeout: 1000 # 연결 제한 시간
+          readTimeout: 2000    # 읽기 제한 시간
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+  zipkin:
+    tracing:
+      endpoint: "http://zipkin:9411/api/v2/spans"
+  tracing:
+    sampling:
+      probability: 1.0

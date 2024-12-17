@@ -1,0 +1,99 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:19090/eureka/
+
+server:
+  port: 19099
+
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    driver-class-name: org.postgresql.Driver
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      pool-name: hikari-pool
+      maximum-pool-size: 9
+      minimum-idle: 5
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      connection-test-query: SELECT 1
+      auto-commit: true
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: Asia/Seoul
+          batch_size: 20
+        order_inserts: true
+        show-sql: true
+        format_sql: true
+        globally_quoted_identifiers: true
+        globally_quoted_identifiers_skip_column_definitions: true
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      username: ${REDIS_USERNAME}
+      password: ${REDIS_PASSWORD}
+  config:
+    import: classpath:application-key-prod.yml
+  sql:
+    init:
+      mode: never
+  application:
+    name: delivery-service
+
+---
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+
+---
+
+logging:
+  level:
+    org.hibernate:
+      SQL: debug
+      type: error
+    com.zaxxer.hikari.HikariDataSource: error
+    root: DEBUG
+    org.springframework.web: DEBUG
+    org.springdoc: DEBUG
+
+---
+
+eureka:
+  instance:
+    initial-status: up
+    prefer-ip-address: false
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    service-url:
+      defaultZone: http://${EUREKA_NAME}:${EUREKA_PORT}/${EUREKA_HOST}/
+    region: ap-northeast-2
+
+---
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+  zipkin:
+    tracing:
+      endpoint: "http://zipkin:9411/api/v2/spans"
+  tracing:
+    sampling:
+      probability: 1.0

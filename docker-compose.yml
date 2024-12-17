@@ -1,9 +1,26 @@
 version: '3.8'
 
 services:
+  postgres:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    volumes:
+      - db_data:/var/lib/postgresql/data   # 데이터 영구 저장
+#      - ./postgres/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    env_file: ./postgres/.env
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_PASSWORD: ${DB_PW}
+      POSTGRES_USER: ${DB_USER}
+    ports:
+      - "5433:5432"
+    networks:
+      - tms-network
+
   redis-stack:
     image: redis/redis-stack
-    container_name: caching_redis
+    container_name: redis
     restart: always
     volumes:
       - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
@@ -17,12 +34,123 @@ services:
   zipkin:
     image: openzipkin/zipkin:3.4.2
     container_name: zipkin
+    restart: unless-stopped
     ports:
       - "9411:9411"
-    restart: unless-stopped
+    networks:
+      - tms-network
+
+  eureka:
+    build:
+      context: eureka-server
+      dockerfile: Dockerfile
+    container_name: eureka
+    ports:
+      - "19090:19090"
+    depends_on:
+      - zipkin
+      - postgres
+      - redis-stack
+    networks:
+      - tms-network
+
+  gateway:
+    build:
+      context: gateway
+      dockerfile: Dockerfile
+    container_name: gateway
+    ports:
+      - "19091:19091"
+    env_file: gateway/.env
+    depends_on:
+      - eureka
+      - redis-stack
+      - zipkin
+    networks:
+      - tms-network
+
+  logistic:
+    build:
+      context: logistic-service
+      dockerfile: Dockerfile
+    container_name: logistic
+    ports:
+      - "19097:19097"
+    env_file: logistic-service/.env
+    depends_on:
+      - eureka
+      - postgres
+      - redis-stack
+      - zipkin
+    networks:
+      - tms-network
+
+  auth:
+    build:
+      context: auth-service
+      dockerfile: Dockerfile
+    container_name: auth
+    ports:
+      - "19095:19095"
+    env_file: auth-service/.env
+    depends_on:
+      - eureka
+      - postgres
+      - zipkin
+    networks:
+      - tms-network
+
+  delivery:
+    build:
+      context: delivery-service
+      dockerfile: Dockerfile
+    container_name: delivery
+    ports:
+      - "19099:19099"
+    env_file: delivery-service/.env
+    depends_on:
+      - eureka
+      - postgres
+      - redis-stack
+      - zipkin
+    networks:
+      - tms-network
+
+  order:
+    build:
+      context: order-service
+      dockerfile: Dockerfile
+    container_name: order
+    ports:
+      - "19093:19093"
+    env_file: order-service/.env
+    depends_on:
+      - eureka
+      - postgres
+      - redis-stack
+      - zipkin
+    networks:
+      - tms-network
+
+  slack:
+    build:
+      context: slack-service
+      dockerfile: Dockerfile
+    container_name: slack
+    ports:
+      - "19102:19102"
+    env_file: slack-service/.env
+    depends_on:
+      - eureka
+      - postgres
+      - redis-stack
+      - zipkin
     networks:
       - tms-network
 
 networks:
   tms-network:
     driver: bridge
+
+volumes:
+  db_data:
