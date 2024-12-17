@@ -36,3 +36,11 @@ service:
     # JWT 비밀키
 
     access-expiration: 3600000 # JWT 만료 시간 (ms)
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html

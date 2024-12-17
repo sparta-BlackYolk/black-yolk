@@ -64,6 +64,7 @@ public class WebSecurityConfig {
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
                         .requestMatchers("/api/auth/users/signup", "/api/auth/users/login").permitAll() // 회원가입, 로그인은 인증 제외하고 JwtAuthorizationFilter에서 shouldNotFilter로 추가 작업
                         .requestMatchers("/api/auth/couriers/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll() // Swagger 허용
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 
