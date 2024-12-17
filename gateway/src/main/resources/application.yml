@@ -58,6 +58,13 @@ management:
     health:
       show-details: always  # Actuator 헬스체크에서 세부정보 표시
 
+  zipkin:
+    tracing:
+      endpoint: "http://localhost:9411/api/v2/spans"
+  tracing:
+    sampling:
+      probability: 1.0
+
 service:
   jwt:
     secret-key: ${JWT_SECRET_KEY}

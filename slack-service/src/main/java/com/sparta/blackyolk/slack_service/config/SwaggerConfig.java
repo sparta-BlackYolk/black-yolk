@@ -1,4 +1,4 @@
-package com.sparta.blackyolk.delivery_service.infrastructure.config;
+package com.sparta.blackyolk.slack_service.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -15,9 +15,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @OpenAPIDefinition(
         info = @Info(
-                title = "Delivery API",
+                title = "Slack API",
                 version = "v1",
-                description = "Delivery API 입니다."
+                description = "Slack API 입니다."
         )
 )
 public class SwaggerConfig {

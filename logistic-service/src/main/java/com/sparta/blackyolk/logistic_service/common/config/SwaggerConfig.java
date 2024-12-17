@@ -1,4 +1,4 @@
-package com.sparta.blackyolk.delivery_service.infrastructure.config;
+package com.sparta.blackyolk.logistic_service.common.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -15,9 +15,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @OpenAPIDefinition(
         info = @Info(
-                title = "Delivery API",
+                title = "Logistic API",
                 version = "v1",
-                description = "Delivery API 입니다."
+                description = "Logistic의 Hub, HubRoute, Company, Product API 입니다."
         )
 )
 public class SwaggerConfig {

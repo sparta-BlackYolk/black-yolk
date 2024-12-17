@@ -26,6 +26,14 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// Zipkin
+	implementation 'io.micrometer:micrometer-observation'
+	implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+	implementation 'io.zipkin.brave:brave' // 추가된 부분
+	implementation 'io.zipkin.brave:brave-instrumentation-spring-web'
+	implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
+	implementation 'io.github.openfeign:feign-micrometer'
 }
 
 dependencyManagement {

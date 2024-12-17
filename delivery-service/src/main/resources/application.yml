@@ -52,23 +52,12 @@ spring:
 
 ---
 springdoc:
-  use-fqn: true
-  cache:
-    disabled: true
   api-docs:
-    path: /api-docs
-    groups:
-      enabled: true
+    enabled: true
+    path: /v3/api-docs
   swagger-ui:
+    enabled: true
     path: /swagger-ui.html
-    tags-sorter: alpha
-    operations-sorter: alpha
-    groups-order: asc
-    display-request-duration: true
-    doc-expansion: none
-    disable-swagger-default-url: true
-  default-consumes-media-type: application/json
-  default-produces-media-type: application/json
 
 ---
 
@@ -78,6 +67,9 @@ logging:
       SQL: debug
       type: error
     com.zaxxer.hikari.HikariDataSource: error
+    root: DEBUG
+    org.springframework.web: DEBUG
+    org.springdoc: DEBUG
 
 ---
 
@@ -90,3 +82,18 @@ eureka:
     service-url:
       defaultZone: http://${EUREKA_NAME}:${EUREKA_PORT}/${EUREKA_HOST}/
     region: ap-northeast-2
+
+---
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+  zipkin:
+    tracing:
+      endpoint: "http://localhost:9411/api/v2/spans"
+  tracing:
+    sampling:
+      probability: 1.0
