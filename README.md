@@ -53,6 +53,6 @@ https://github.com/sparta-BlackYolk/black-yolk/wiki
 ### 🛠 ERD
 ![image]()
 
-### 🛠 프로젝트 아키텍처
-![image]()
+### 🛠 인프라 설계도
+<img width="1404" alt="인프라 설계도 수정 수정" src="https://github.com/user-attachments/assets/d5006b18-8e72-43f1-84dc-efb0436ec029" />
 
