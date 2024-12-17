@@ -68,3 +68,11 @@ feign:
         requestOptions:
           connectTimeout: 1000 # 연결 제한 시간
           readTimeout: 2000    # 읽기 제한 시간
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
