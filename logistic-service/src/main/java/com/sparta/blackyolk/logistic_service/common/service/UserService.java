@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface UserService {
 
-    Optional<UserResponseDto> getUser(String username, String authorization);
+    Optional<UserResponseDto> getUser(String username);
     Optional<UserData> getUserById(Long userId);
 }

@@ -10,8 +10,6 @@ import com.sparta.blackyolk.logistic_service.company.application.dto.UserData;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(
     name = "auth-service",
@@ -22,8 +20,7 @@ public interface UserClient extends UserService {
 
     @GetMapping("/api/auth/users/{username}")
     Optional<UserResponseDto> getUser(
-        @PathVariable(value = "username") String username,
-        @RequestHeader(value = "Authorization") String authorization
+        @PathVariable(value = "username") String username
     );
 
     @GetMapping("/api/auth/users/search/{userId}")

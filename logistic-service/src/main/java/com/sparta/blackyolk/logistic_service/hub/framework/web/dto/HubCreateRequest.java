@@ -23,13 +23,11 @@ public record HubCreateRequest(
     public static HubForCreate toDomain(
         String userId,
         String role,
-        HubCreateRequest hubCreateRequest,
-        String authorization
+        HubCreateRequest hubCreateRequest
     ) {
         return new HubForCreate(
             userId,
             role,
-            authorization,
             hubCreateRequest.hubManagerId(),
             hubCreateRequest.name(),
             hubCreateRequest.center(),

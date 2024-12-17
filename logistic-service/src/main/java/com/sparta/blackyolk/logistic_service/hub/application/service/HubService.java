@@ -38,7 +38,7 @@ public class HubService implements HubUseCase {
     public HubCreateResponse createHub(HubForCreate hubForCreate) {
 
         if (hubForCreate.hubManagerId() != null) {
-            validateHubManagerId(hubForCreate.hubManagerId(), hubForCreate.authorization());
+            validateHubManagerId(hubForCreate.hubManagerId());
         }
 
         validateMaster(hubForCreate.role());
@@ -61,7 +61,7 @@ public class HubService implements HubUseCase {
     public HubUpdateResponse updateHub(HubForUpdate hubForUpdate) {
 
         if (hubForUpdate.hubManagerId() != null) {
-            validateHubManagerId(hubForUpdate.hubManagerId(), hubForUpdate.authorization());
+            validateHubManagerId(hubForUpdate.hubManagerId());
         }
 
         validateMaster(hubForUpdate.role());
@@ -109,12 +109,12 @@ public class HubService implements HubUseCase {
         }
     }
 
-    private void validateHubManagerId(String hubManagerId, String authorization) {
+    private void validateHubManagerId(String hubManagerId) {
 
         log.info("[Hub 생성] 사용자 인증 및 권한 확인 시작");
 
         try {
-            UserResponseDto user = userService.getUser(hubManagerId, authorization)
+            UserResponseDto user = userService.getUser(hubManagerId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_EXIST));
 
             log.info("[Hub 생성] 사용자 role 확인: {}", user.getRole());
